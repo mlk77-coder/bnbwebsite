@@ -1,9 +1,8 @@
 "use client";
 
 import { CustomSession } from "@/lib/auth-options";
-import LanguagesToggle from "../languages-toggle";
-import UserMenu from "../user-menu";
-import LoginButton from "./login-button";
+import LanguagesToggle from "../i18n/languages-toggle";
+import UserMenu from "../account/user-menu";
 import { Link } from "@/navigation";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";

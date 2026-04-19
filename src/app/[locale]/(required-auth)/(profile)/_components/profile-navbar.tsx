@@ -1,6 +1,6 @@
 import Link from "@/components/client-link";
 import { profileLinks } from "../_constant/profile-links";
-import LogoutButton from "@/app/[locale]/_components/header/logout-button";
+import LogoutButton from "@/app/[locale]/_components/header/account/logout-button";
 import { cookies } from "next/headers";
 import getSession from "@/lib/get-session";
 import { getTranslations } from "next-intl/server";

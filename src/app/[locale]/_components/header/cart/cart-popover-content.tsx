@@ -9,7 +9,7 @@ import { Cart } from "@/types/cart";
 import { PopoverClose } from "@radix-ui/react-popover";
 import { X } from "lucide-react";
 import { Fragment } from "react";
-import useUpdateCart from "../../cart/hooks/use-update-cart";
+import useUpdateCart from "../../../cart/hooks/use-update-cart";
 import { useTranslations } from "next-intl";
 import useCurrencyStore from "@/store/use-currency-store";
 import Loader from "@/components/ui/loader";

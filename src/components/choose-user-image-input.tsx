@@ -1,64 +1,64 @@
-import { convertFileToURL } from "@/lib/utils";
-import { Image } from "lucide-react";
-import { ElementRef, FC, useRef } from "react";
-import { useFormContext } from "react-hook-form";
-import { Button } from "./ui/button";
-import { FormControl, FormField, FormItem, FormMessage } from "./ui/form";
-import { useTranslations } from "next-intl";
+import { convertFileToURL } from '@/lib/utils';
+import { Image } from 'lucide-react';
+import { ElementRef, FC, useRef } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { Button } from './ui/button';
+import { FormControl, FormField, FormItem, FormMessage } from './ui/form';
+import { useTranslations } from 'next-intl';
 
 type PropsType = {
   placeholderImage?: string;
 };
 
-const ChooseUserImageInput: FC<PropsType> = ({ placeholderImage = "" }) => {
+const ChooseUserImageInput: FC<PropsType> = ({ placeholderImage = '' }) => {
   const t = useTranslations();
-  const inputRef = useRef<ElementRef<"input">>(null);
+  const inputRef = useRef<ElementRef<'input'>>(null);
   const form = useFormContext();
-  const file: File | undefined = form.watch("image");
+  const file: File | undefined = form.watch('image');
 
   return (
-    <div className="w-full flex gap-4 justify-start items-center">
+    <div className='flex w-full items-center justify-start gap-4'>
       <button
         onClick={() => inputRef?.current?.click()}
-        type="button"
-        aria-label="choose profile image"
-        className="size-32 bg-secondary flex justify-center items-center rounded-full"
+        type='button'
+        aria-label='choose profile image'
+        className='bg-secondary flex size-32 items-center justify-center rounded-full'
       >
         {file?.name ? (
           <img
-            className="size-full object-cover rounded-full"
+            className='size-full rounded-full object-cover'
             src={convertFileToURL(file)}
-            alt="profile image"
+            alt='profile image'
           />
         ) : placeholderImage ? (
           <img
-            className="size-full object-cover rounded-full"
+            className='size-full rounded-full object-cover'
             src={placeholderImage}
-            alt="profile image"
+            alt='profile image'
           />
         ) : (
-          <Image strokeWidth={1.1} className="size-14" />
+          <Image strokeWidth={1.1} className='size-14' />
         )}
       </button>
       <Button
         onClick={() => inputRef?.current?.click()}
-        variant="link"
-        type="button"
-        className="capitalize underline-offset-4"
+        variant='link'
+        type='button'
+        className='capitalize underline-offset-4'
       >
         {t('choose-image')}
       </Button>
       <FormField
         control={form.control}
-        name="image"
+        name='image'
         render={({ field }) => (
           <FormItem>
             <FormControl>
               <input
                 hidden
-                type="file"
+                type='file'
                 ref={inputRef}
-                onChange={(e) => {
+                onChange={e => {
                   if (e.target.files?.[0]) {
                     field.onChange(e.target.files?.[0]);
                   }

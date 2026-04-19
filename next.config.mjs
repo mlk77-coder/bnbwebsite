@@ -23,6 +23,11 @@ const nextConfig = {
         hostname: "back.icecube-stores.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
+      },
     ],
   },
 };

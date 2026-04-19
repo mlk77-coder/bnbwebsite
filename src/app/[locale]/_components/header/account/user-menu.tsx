@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CustomSession } from "@/lib/auth-options";
 import { Link } from "@/navigation";
-import { User, Package, MapPin, Clock, Settings, LogOut, ChevronRight } from "lucide-react";
+import { User, Package, MapPin, Clock, Settings, ChevronRight } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { FC } from "react";
 import LogoutButton from "./logout-button";

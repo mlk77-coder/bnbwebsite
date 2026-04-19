@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Tooltip } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { Link } from "@/navigation";
-import { UserRound, LogIn } from "lucide-react";
+import { UserRound } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 const LoginButton = () => {

@@ -1,6 +1,6 @@
-import { Category } from "@/types/categories";
-import { FC } from "react";
-import MobileSubSubCategory from "./mobile-sub-sub-category";
+import { Category } from '@/types/categories';
+import { FC } from 'react';
+import MobileSubSubCategory from './mobile-sub-sub-category';
 
 type PropsType = {
   subCategory: Category | undefined;
@@ -13,7 +13,7 @@ const MobileSubCategory: FC<PropsType> = ({
   if (!subCategory) return null;
 
   return (
-    <div className="py-4 !px-5 sm:!px-8 flex-col flex flex-wrap justify-start items-start gap-4">
+    <div className='flex flex-col flex-wrap items-start justify-start gap-4 px-5! py-4 sm:px-8!'>
       {subCategory.sub_categories?.map((subSubCategory, index) => (
         <MobileSubSubCategory
           isLast={subCategory.sub_categories.length - 1 === index}

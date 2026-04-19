@@ -1,3 +1,5 @@
+"use client";
+
 import { SheetClose } from "@/components/ui/sheet";
 import { Link } from "@/navigation";
 import { useTranslations } from "next-intl";

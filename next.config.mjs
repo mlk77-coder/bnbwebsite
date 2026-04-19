@@ -1,23 +1,30 @@
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import createNextIntlPlugin from "next-intl/plugin";
 
-const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)))
-const nm = (...segments) => path.join(projectRoot, 'node_modules', ...segments)
+const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Must match turbopack.root when both are set (Next normalizes tracing + Turbopack to one root).
-  outputFileTracingRoot: projectRoot,
-  turbopack: {
-    // Extra lockfile under the user profile makes Next infer the wrong workspace root; PostCSS
-    // then resolves `@import "tailwindcss"` from `...\Documents\GitHub` instead of this app.
-    root: projectRoot,
-    resolveAlias: {
-      tailwindcss: nm('tailwindcss'),
-      'tw-animate-css': nm('tw-animate-css'),
-      shadcn: nm('shadcn'),
-    },
+  reactStrictMode: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "ice-cube-back.r-link.io",
+        pathname: "/**",
+      },
+      {
+        protocol: "http",
+        hostname: "192.168.132.150",
+        port:"8000",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "back.icecube-stores.com",
+        pathname: "/**",
+      },
+    ],
   },
-}
+};
 
-export default nextConfig
+export default withNextIntl(nextConfig);

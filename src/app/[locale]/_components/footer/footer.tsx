@@ -87,41 +87,6 @@ const Footer = ({ socialLinks }: { socialLinks: SocialLink[] }) => {
 
   return (
     <footer className="w-full bg-linear-to-b from-gray-50 to-white border-t border-gray-100">
-      {/* Newsletter Section - Glassmorphism Card */}
-      {/* <div className="max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-10">
-        <div className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 p-6 md:p-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
-                <Sparkles className="w-6 h-6 text-primary" />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-gray-900">
-                  {t("newsletter-title")}
-                </h3>
-                <p className="text-sm text-gray-500">
-                  {t("newsletter-subtitle")}
-                </p>
-              </div>
-            </div>
-            <div className="flex w-full md:w-auto gap-2">
-              <Input
-                type="email"
-                placeholder={t("enter-your-email")}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full md:w-72 h-11 bg-gray-50 border-gray-200 rounded-xl focus-visible:ring-primary/20"
-              />
-              <Button
-                className="h-11 px-6 rounded-xl bg-primary hover:bg-primary/90 transition-all duration-300"
-              >
-                {t("subscribe")}
-                <ChevronRight className="w-4 h-4 ms-1 rtl:rotate-180" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div> */}
 
       {/* Main Footer Content */}
       <div className="max-w-screen-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8">

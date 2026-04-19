@@ -6,7 +6,11 @@ const HtmlHead = () => {
         sizes="180x180"
         href="/favicon/apple-touch-icon.png"
       />
-      <link rel="icon" href="/favicon/favicon.ico" sizes="48x48" />
+      <link
+        rel="icon"
+        href="/favicon/favicon.ico"
+        sizes="16x16 32x32 48x48"
+      />
       <link
         rel="icon"
         href="/favicon/favicon.svg"

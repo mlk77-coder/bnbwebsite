@@ -2,6 +2,13 @@ import PageWrapper from '@/components/page-wrapper';
 import { sectionWrapperClassName } from '@/components/section-wrapper';
 import { fetcher } from '@/lib/fetcher';
 import getSession from '@/lib/get-session';
+import {
+  heroDummyBestSellingProducts,
+  heroDummyCollectionsCategories,
+  heroDummyContent,
+  heroDummyDiscounts,
+  heroDummyHighlightedProducts,
+} from '@/lib/hero-section-dummy-data';
 import { cn } from '@/lib/utils';
 import { GetHomeDataResponse } from '@/types/home';
 import { Metadata } from 'next';
@@ -11,7 +18,7 @@ import { FC } from 'react';
 import BestSellers from './_components/home/best-sellers';
 import Collections from './_components/home/collections';
 import ExploreOurSelection from './_components/home/explore-our-selection';
-import Hero from './_components/home/hero';
+import { HeroSection } from './_components/home/hero-section';
 import NewArrivals from './_components/home/new-arrivals';
 import SalesSlider from './_components/home/sales-slider';
 import RecentlyViewed from './_components/recently-viewed';
@@ -88,7 +95,13 @@ const HomePage: FC<PropsType> = async props => {
   return (
     <PageWrapper>
       <h1 className='sr-only'>Welcome to BNB Store</h1>
-      {/* <Hero content={response.data.content} />
+      <HeroSection
+        content={heroDummyContent}
+        bestSellingProducts={heroDummyBestSellingProducts}
+        highlightedProducts={heroDummyHighlightedProducts}
+        discounts={heroDummyDiscounts}
+        collectionsCategories={heroDummyCollectionsCategories}
+      />
 
       {response.data.latest_six_categories.length === 0 ? null : (
         <ExploreOurSelection categories={response.data.latest_six_categories} />
@@ -121,7 +134,7 @@ const HomePage: FC<PropsType> = async props => {
         className={cn('mt-16', sectionWrapperClassName)}
         isLoggedIn={isLoggedIn}
         token={session && session.user ? session.user.access_token : userToken}
-      /> */}
+      />
     </PageWrapper>
   );
 };

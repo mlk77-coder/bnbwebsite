@@ -56,7 +56,7 @@ const NavLinks: FC<PropsType> = ({ categories, sales }) => {
       }}
       className="flex justify-center items-center w-full overflow-visible"
     >
-      <NavigationMenuList dir={dir} className="gap-1">
+      <NavigationMenuList dir={dir}>
         {/* New Arrivals Link */}
         <NavigationMenuItem className="group/item">
           <Link
@@ -100,7 +100,7 @@ const NavLinks: FC<PropsType> = ({ categories, sales }) => {
                 </ClientLink>
               </span>
             </NavigationMenuTrigger>
-            <NavigationMenuContent className="w-screen left-0 right-0">
+            <NavigationMenuContent className="w-screen inset-x-0">
               <SaleSubMenu sales={sales} onLinkClick={handleLinkClick} />
             </NavigationMenuContent>
           </NavigationMenuItem>
@@ -137,7 +137,7 @@ const NavLinks: FC<PropsType> = ({ categories, sales }) => {
               </span>
             </NavigationMenuTrigger>
             {category.sub_categories?.length > 0 && (
-              <NavigationMenuContent className="w-screen left-0 right-0">
+              <NavigationMenuContent className="w-screen inset-x-0">
                 <NavSubMenu 
                   category={category} 
                   onLinkClick={handleLinkClick} 

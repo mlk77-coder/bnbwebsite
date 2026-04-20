@@ -1,14 +1,14 @@
-"use client"
-import { Carousel, CarouselContent } from "@/components/ui/carousel";
-import AutoPlay from "embla-carousel-autoplay";
+'use client';
+import { Carousel, CarouselContent } from '@/components/ui/carousel';
+import AutoPlay from 'embla-carousel-autoplay';
 
 const HeroCarousel = ({ children }: { children?: React.ReactNode }) => {
   return (
     <Carousel
       opts={{
-        align: "start",
+        align: 'start',
         loop: true,
-        containScroll: "trimSnaps",
+        containScroll: 'trimSnaps',
       }}
       plugins={[
         AutoPlay({

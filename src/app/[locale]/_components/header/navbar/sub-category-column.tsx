@@ -24,18 +24,25 @@ const SubCategoryColumn: FC<SubCategoryColumnProps> = ({
           className="group"
         >
           {/* Main SubCategory Link */}
-          <IntlLink
+            <IntlLink
             href={`/category/${categorySlug}/${subCategory.slug}`}
             className="group/link flex items-center gap-1 text-sm font-semibold text-gray-900 hover:text-primary transition-colors duration-200 mb-2.5"
             onClick={onLinkClick}
           >
             <span className="capitalize">{subCategory.name}</span>
-            <ChevronRight className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all duration-200" />
+            <ChevronRight
+              className={cn(
+                "w-3.5 h-3.5 opacity-0 transition-all duration-200",
+                "ltr:-translate-x-1 ltr:group-hover/link:translate-x-0",
+                "rtl:translate-x-1 rtl:group-hover/link:translate-x-0 rtl:rotate-180",
+                "group-hover/link:opacity-100"
+              )}
+            />
           </IntlLink>
 
           {/* Sub-sub categories */}
           {subCategory.sub_categories.length > 0 && (
-            <ul className="space-y-1.5 border-l-2 border-gray-100 pl-3 group-hover:border-primary/20 transition-colors duration-300">
+            <ul className="space-y-1.5 border-s-2 border-gray-100 ps-3 group-hover:border-primary/20 transition-colors duration-300">
               {subCategory.sub_categories.slice(0, 5).map((subSubCategory) => (
                 <li key={subSubCategory.id}>
                   <Link
@@ -44,14 +51,14 @@ const SubCategoryColumn: FC<SubCategoryColumnProps> = ({
                     href={`/category/${categorySlug}/${subCategory.slug}/${subSubCategory.slug}`}
                     className={cn(
                       "block text-sm text-gray-500 hover:text-gray-700 transition-colors duration-200",
-                      "relative pl-0 hover:pl-2 transition-all duration-200",
-                      "before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2",
+                      "relative ps-0 hover:ps-2 transition-all duration-200",
+                      "before:absolute before:start-0 before:top-1/2 before:-translate-y-1/2",
                       "before:w-1 before:h-1 before:rounded-full before:bg-gray-300",
                       "hover:before:bg-primary"
                     )}
                     onClick={onLinkClick}
                   >
-                    <span className="capitalize pl-3">{subSubCategory.name}</span>
+                    <span className="capitalize ps-3">{subSubCategory.name}</span>
                   </Link>
                 </li>
               ))}
@@ -59,7 +66,7 @@ const SubCategoryColumn: FC<SubCategoryColumnProps> = ({
                 <li>
                   <IntlLink
                     href={`/category/${categorySlug}/${subCategory.slug}`}
-                    className="text-xs text-primary hover:text-primary/80 font-medium pl-3"
+                    className="text-xs text-primary hover:text-primary/80 font-medium ps-3"
                     onClick={onLinkClick}
                   >
                     +{subCategory.sub_categories.length - 5} more

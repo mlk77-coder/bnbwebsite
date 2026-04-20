@@ -1,9 +1,9 @@
-@import "tailwindcss";
-@plugin "tailwindcss-animate";
-@plugin "@tailwindcss/typography";
-@plugin "tailwind-scrollbar-hide";
+@import 'tailwindcss';
+@plugin 'tailwindcss-animate';
+@plugin '@tailwindcss/typography';
+@plugin 'tailwind-scrollbar-hide';
 
-@source "../../../src/**/*.{js,ts,jsx,tsx,mdx}";
+@source '../../../src/**/*.{js,ts,jsx,tsx,mdx}';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -80,7 +80,8 @@
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -89,7 +90,8 @@
 }
 
 @keyframes heartBeat {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   14% {
@@ -152,8 +154,8 @@
 
 @layer base {
   :root {
-    --font-roboto: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial,
-      sans-serif;
+    --font-roboto:
+      ui-sans-serif, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     --background: 0 0% 98%;
     --foreground: 240 6.8% 25%;
     --card: 0 0% 98%;
@@ -216,15 +218,15 @@
     display: grid;
     grid-template-columns: minmax(0, 6fr) minmax(0, 4fr);
     grid-template-areas:
-      "header header"
-      "carousel promo-image";
+      'header header'
+      'carousel promo-image';
   }
   .collection-invert {
     display: grid;
     grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
     grid-template-areas:
-      "header header"
-      "promo-image carousel";
+      'header header'
+      'promo-image carousel';
   }
   .HoverCardContent {
     width: var(--radix-hover-card-trigger-width);
@@ -235,14 +237,14 @@
     display: grid;
     grid-template-areas:
       /* "membership" */
-      "shopping"
-      "customer-service"
-      "about-us"
-      "social-media";
+      'shopping'
+      'customer-service'
+      'about-us'
+      'social-media';
   }
 
   .grid-areas-md {
-    grid-template-areas: "shopping customer-service about-us social-media";
+    grid-template-areas: 'shopping customer-service about-us social-media';
   }
 }
 

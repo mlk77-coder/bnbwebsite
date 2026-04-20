@@ -126,7 +126,7 @@ const NavSubMenu: FC<NavSubMenuProps> = ({ category, onLinkClick }) => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
               
               {/* Content */}
-              <div className="absolute bottom-0 left-0 right-0 p-5">
+              <div className="absolute inset-x-0 bottom-0 p-5">
                 <p className="text-white/80 text-sm font-medium mb-1">{t("featured-collection")}</p>
                 <h3 className="text-white text-xl font-bold mb-3">{category.name}</h3>
                 <span className={cn(

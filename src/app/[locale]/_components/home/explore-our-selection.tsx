@@ -13,7 +13,7 @@ type PropsType = {
 const ExploreOurSelection: FC<PropsType> = async ({ categories }) => {
   const t = await getTranslations();
   return (
-    <SectionWrapper className="space-y-4">
+    <SectionWrapper id="explore-categories" className="space-y-4">
       <h2 className="text-base sm:text-xl font-bold text-primary ltr:tracking-wider">
         {t("explore-our-selection")}
       </h2>

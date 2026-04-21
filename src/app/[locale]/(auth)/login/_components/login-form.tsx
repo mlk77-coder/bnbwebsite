@@ -1,17 +1,19 @@
-"use client";
+'use client';
 
-import FormInput from "@/components/form-input";
-import PasswordInput from "@/components/password-input";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-import { cn } from "@/lib/utils";
-import { Link } from "@/navigation";
-import Image from "next/image";
-import { FC, Fragment } from "react";
-import useLogin from "../../hooks/use-login";
-import { useTranslations } from "next-intl";
-import { VerifyAccountDialog } from "../../_components/verify-account-dialog";
-import { signIn } from "next-auth/react";
+import FormInput from '@/components/form-input';
+import PasswordInput from '@/components/password-input';
+import { Button, buttonVariants } from '@/components/ui/button';
+import { Form } from '@/components/ui/form';
+import { cn } from '@/lib/utils';
+import { Link } from '@/navigation';
+import Image from 'next/image';
+import { FC, Fragment } from 'react';
+import useLogin from '../../hooks/use-login';
+import { useTranslations } from 'next-intl';
+import { VerifyAccountDialog } from '../../_components/verify-account-dialog';
+import { signIn } from 'next-auth/react';
+import { motion } from 'framer-motion';
+import { ArrowRight, Loader2 } from 'lucide-react';
 
 type PropsType = {
   hardLink?: boolean;
@@ -28,108 +30,132 @@ const LoginForm: FC<PropsType> = ({ hardLink = false, userToken }) => {
     openVerifyDialog,
     setOpenVerifyDialog,
   } = useLogin(userToken);
+
   return (
     <Fragment>
       <Form {...form}>
         <form
-          className="w-full mt-6 space-y-6"
+          className='w-full space-y-5'
           onSubmit={form.handleSubmit(onSubmit)}
         >
-          <FormInput
-            control={form.control}
-            name="email"
-            label={t("form.fields.email")}
-          />
-          <div className="flex justify-start items-start flex-col">
-            <PasswordInput
+          <div className='space-y-4'>
+            <FormInput
               control={form.control}
-              name="password"
-              label={t("form.fields.password")}
+              name='email'
+              label={t('form.fields.email')}
             />
-            <Link
-              className={cn(buttonVariants({ variant: "link" }), "self-end")}
-              href="/forgot-password"
-            >
-              {t("auth.forgot-password-link")}
-            </Link>
+            <div className='space-y-1'>
+              <PasswordInput
+                control={form.control}
+                name='password'
+                label={t('form.fields.password')}
+              />
+              <div className='flex justify-end'>
+                <Link
+                  className={cn(
+                    buttonVariants({ variant: 'link' }),
+                    'text-muted-foreground hover:text-primary h-auto px-0 py-0 text-xs font-medium'
+                  )}
+                  href='/forgot-password'
+                >
+                  {t('auth.forgot-password-link')}
+                </Link>
+              </div>
+            </div>
           </div>
+
           <Button
             disabled={isPending}
-            size="lg"
-            className="w-full text-xl rounded-lg"
+            size='lg'
+            className='group w-full gap-2 rounded-xl text-sm font-semibold tracking-wide uppercase'
           >
-            {t("auth.sign-in")}
+            {isPending ? (
+              <Loader2 className='size-4 animate-spin' />
+            ) : (
+              <>
+                {t('auth.sign-in')}
+                <ArrowRight className='size-4 transition-transform group-hover:translate-x-0.5' />
+              </>
+            )}
           </Button>
         </form>
 
-        <p className="w-full pt-5">
-          {t("auth.dont-have-an-account")}{" "}
+        {/* Sign up link */}
+        <p className='text-muted-foreground mt-5 text-center text-xs'>
+          {t('auth.dont-have-an-account')}{' '}
           {hardLink ? (
             <a
-              className={cn(
-                buttonVariants({ variant: "link" }),
-                "text-base text-orange py-0 h-fit px-0.5"
-              )}
+              className='text-foreground hover:text-primary font-medium underline-offset-4 transition-colors hover:underline'
               onClick={handleRedirect}
-              href="/register"
+              href='/register'
             >
-              {t("auth.sign-up")}
+              {t('auth.sign-up')}
             </a>
           ) : (
             <Link
-              className={cn(
-                buttonVariants({ variant: "link" }),
-                "ext-base text-orange py-0 h-fit px-0.5"
-              )}
+              className='text-foreground hover:text-primary font-medium underline-offset-4 transition-colors hover:underline'
               scroll={false}
-              href="/register"
+              href='/register'
               replace
             >
-              {t("auth.sign-up")}
+              {t('auth.sign-up')}
             </Link>
           )}
         </p>
-        <p className="py-2 uppercase text-lg w-full text-center relative before:absolute before:top-1/2 before:left-0 before:w-full before:-z-10 before:h-[1px] before:bg-foreground">
-          <span className="bg-background inline-block px-3">{t("or")}</span>
-        </p>
-        <div className="w-full space-y-2">
-          <Button
-            onClick={() => signIn("google")}
-            variant="outline"
-            className="w-full h-auto gap-2 py-1 rounded-xl"
+
+        {/* Social login divider */}
+        <div className='relative my-5'>
+          <div className='absolute inset-0 flex items-center'>
+            <div className='border-border/50 w-full border-t' />
+          </div>
+          <div className='relative flex justify-center'>
+            <span className='bg-background text-muted-foreground px-2 text-[10px] font-medium tracking-wider uppercase'>
+              {t('continue-with')}
+            </span>
+          </div>
+        </div>
+
+        {/* Social buttons */}
+        <div className='grid gap-2.5'>
+          <motion.button
+            type='button'
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+            onClick={() => signIn('google')}
+            className='border-border/60 text-foreground hover:border-border hover:bg-secondary/30 flex w-full items-center justify-center gap-2 rounded-xl border bg-white py-2.5 text-sm font-medium shadow-sm transition-all hover:shadow-md'
           >
             <Image
-              src="/google.svg"
-              width={30}
-              height={30}
-              className="size-10"
-              alt="google icon"
+              src='/google.svg'
+              width={18}
+              height={18}
+              className='size-5'
+              alt='Google'
             />
-            <span className="italic font-bold text-lg">
-              {t("continue-with-google")}
-            </span>
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => signIn("apple")}
-            className="w-full h-auto gap-4 py-2 rounded-xl"
+            <span>{t('continue-with-google')}</span>
+          </motion.button>
+
+          <motion.button
+            type='button'
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+            onClick={() => signIn('apple')}
+            className='border-border/60 bg-foreground text-background hover:bg-foreground/90 flex w-full items-center justify-center gap-3 rounded-xl border py-2.5 text-sm font-medium shadow-sm transition-all hover:shadow-md'
           >
             <Image
-              src="/apple.svg"
-              width={30}
-              height={30}
-              className="size-8"
-              alt="google icon"
+              src='/apple.svg'
+              width={18}
+              height={18}
+              className='size-4.5 invert'
+              alt='Apple'
             />
-            <span className="italic font-bold text-lg">
-              {t("continue-with-apple")}
-            </span>
-          </Button>
+            <span>{t('continue-with-apple')}</span>
+          </motion.button>
         </div>
       </Form>
+
       <VerifyAccountDialog
-        email={form.getValues("email")}
-        password={form.getValues("password")}
+        email={form.getValues('email')}
+        password={form.getValues('password')}
         fromLogin
         open={openVerifyDialog}
         setOpen={setOpenVerifyDialog}

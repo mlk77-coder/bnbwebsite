@@ -1,15 +1,17 @@
-"use client";
+'use client';
 
-import SheetCloseLink from "@/app/[locale]/_components/SheetCloseLink";
-import { Link } from "@/navigation";
-import { ProductCard as ProductCardType } from "@/types/products";
-import { useLocale, useTranslations } from "next-intl";
-import { FC, useMemo, useState } from "react";
-import { getLangDir } from "rtl-detect";
-import { Card, CardFooter } from "../ui/card";
-import ColorSelector from "./color-selector";
-import ProductImage from "./product-image";
-import ProductInfo from "./product-info";
+import SheetCloseLink from '@/app/[locale]/_components/SheetCloseLink';
+import { Link } from '@/navigation';
+import { cn } from '@/lib/utils';
+import { ProductCard as ProductCardType } from '@/types/products';
+import { useLocale } from 'next-intl';
+import { FC, useMemo, useState } from 'react';
+import { getLangDir } from 'rtl-detect';
+import ColorSelector from './color-selector';
+import ProductImage from './product-image';
+import ProductInfo from './product-info';
+import { QuickAddButton } from './quick-add-button';
+import { WishlistHeart } from './wishlist-heart';
 
 type PropsType = {
   product: ProductCardType;
@@ -18,49 +20,52 @@ type PropsType = {
 
 const ProductCard: FC<PropsType> = ({ product, insideSheet }) => {
   const locale = useLocale();
-  const t = useTranslations();
   const dir = getLangDir(locale);
-  const colorsImages = useMemo(() => {
-    return product.product_color_attributes.filter(
-      (color) => color.color && color.color_image && color.image
-    );
-  }, [product.product_color_attributes]);
+  const [selectedColor, setSelectedColor] = useState('');
 
-  const [selectedColor, setSelectedColor] = useState("");
+  const colorsImages = useMemo(
+    () =>
+      product.product_color_attributes.filter(
+        c => c.color && c.color_image && c.image
+      ),
+    [product.product_color_attributes]
+  );
+
   const Wrapper = insideSheet ? SheetCloseLink : Link;
 
   return (
-    <Card
-      dir={dir}
-      key={product.id}
-      className="p-0 group relative rounded-none border-0 shadow-none"
-    >
-      <div className="relative">
-        <Wrapper href={`/products/${product.slug}`}>
-          {product.quantity === 0 ? (
-            <div className="z-10 text-orange font-black uppercase ltr:tracking-widest flex bg-white/80 justify-center items-center absolute left-0 top-0 w-full h-full">
-              {t("out-of-stock")}
-            </div>
-          ) : null}
-          <ProductImage
-            product={product}
+    <article dir={dir} className={cn('group relative flex flex-col')}>
+      {/* ── Image zone ── */}
+      <div className='relative overflow-hidden rounded-xl'>
+        {/* Clickable image → product page */}
+        <Wrapper href={`/products/${product.slug}`} tabIndex={-1} aria-hidden>
+          <ProductImage product={product} selectedColor={selectedColor} />
+        </Wrapper>
+
+        {/* Floating wishlist heart */}
+        <WishlistHeart id={product.id} />
+
+        {/* Quick-add to cart */}
+        <QuickAddButton
+          slug={product.slug}
+          outOfStock={product.quantity === 0}
+        />
+      </div>
+
+      {/* ── Info zone ── */}
+      <div className='flex flex-1 flex-col'>
+        {colorsImages.length > 0 && (
+          <ColorSelector
+            colorsImages={colorsImages}
             selectedColor={selectedColor}
             setSelectedColor={setSelectedColor}
           />
+        )}
+        <Wrapper href={`/products/${product.slug}`}>
+          <ProductInfo product={product} />
         </Wrapper>
       </div>
-      <CardFooter className="px-0 pt-2 pb-0 clear-start flex-col justify-start items-start gap-1">
-        <ColorSelector
-          colorsImages={colorsImages}
-          setSelectedColor={setSelectedColor}
-        />
-        <ProductInfo
-          product={product}
-          insideSheet={insideSheet}
-          selectedColor={selectedColor}
-        />
-      </CardFooter>
-    </Card>
+    </article>
   );
 };
 

@@ -7,6 +7,7 @@
   "auth": {
     "forgot-password-link": "نسيت كلمة المرور؟",
     "sign-in": "تسجيل الدخول",
+    "sign-in-to-your-account": "تسجيل الدخول إلى حسابك",
     "dont-have-an-account": "ليس لديك حساب؟",
     "sign-up": "إنشاء الحساب",
     "confirm-sign-up": "من خلال إنشاء الحساب، فإنك توافق على <terms>شروط الاستخدام</terms> و<privacy>سياسة الخصوصية</privacy>.",
@@ -380,6 +381,7 @@
   "pay-button": "طلب",
   "get-shipping-cost": "الحصول على تكلفة الشحن",
   "are-you-sure-you-want-to-remove-name-from-your-wishlist": "هل أنت متأكد من انك تريد ازالة {name} من قائمة المفضلة",
+  "continue-with": "أو تابع باستخدام",
   "continue-with-google": "متابعة بإستخدام Google",
   "continue-with-apple": "متابعة بإستخدام Apple",
   "explore-our-selection-description": "تصفح فئات مختارة بعناية لاكتشاف الأنماط التي تحبها والوصول إلى القطع المناسبة بسرعة أكبر.",

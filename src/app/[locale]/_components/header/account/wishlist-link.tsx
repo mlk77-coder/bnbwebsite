@@ -4,9 +4,8 @@ import { buttonVariants } from "@/components/ui/button";
 import { Tooltip } from "@/components/ui/tooltip";
 import { CustomSession } from "@/lib/auth-options";
 import { cn } from "@/lib/utils";
-import { Link } from "@/navigation";
+import { Link, usePathname, useRouter } from "@/navigation";
 import { Heart } from "lucide-react";
-import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { FC, Fragment, useState, useEffect } from "react";
 
@@ -16,6 +15,8 @@ type WishlistLinkProps = {
 
 const WishlistLink: FC<WishlistLinkProps> = ({ session }) => {
   const t = useTranslations();
+  const router = useRouter();
+  const pathname = usePathname();
   const [isAnimating, setIsAnimating] = useState(false);
 
   // Animation effect on mount
@@ -69,7 +70,11 @@ const WishlistLink: FC<WishlistLinkProps> = ({ session }) => {
       ) : (
         <button 
           className={classNames} 
-          onClick={() => signIn()}
+          onClick={() =>
+            router.push(
+              `/login?${new URLSearchParams({ callbackUrl: pathname || "/" }).toString()}`
+            )
+          }
           onMouseEnter={() => setIsAnimating(true)}
           onMouseLeave={() => setIsAnimating(false)}
         >

@@ -16,27 +16,27 @@ interface Slide {
 const FALLBACK_SLIDES: Slide[] = [
   {
     id: 1,
-    image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=2400&q=90',
-    mobileImage: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=90',
-    alt: 'Luxury Lifestyle Collection',
+    image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=2400&q=90',
+    mobileImage: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=90',
+    alt: 'Home & Living',
   },
   {
     id: 2,
-    image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=2400&q=90',
-    mobileImage: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=90',
-    alt: 'Premium Tech Showcase',
+    image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=2400&q=90',
+    mobileImage: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1200&q=90',
+    alt: 'Beauty & Cosmetics',
   },
   {
     id: 3,
     image: 'https://images.unsplash.com/photo-1556906781-9a412961c28c?auto=format&fit=crop&w=2400&q=90',
     mobileImage: 'https://images.unsplash.com/photo-1556906781-9a412961c28c?auto=format&fit=crop&w=1200&q=90',
-    alt: 'Fashion & Style',
+    alt: 'Footwear & Sneakers',
   },
   {
     id: 4,
-    image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=2400&q=90',
-    mobileImage: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=90',
-    alt: 'Home Elegance',
+    image: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?auto=format&fit=crop&w=2400&q=90',
+    mobileImage: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?auto=format&fit=crop&w=1200&q=90',
+    alt: 'Skincare & Self-care',
   },
 ];
 

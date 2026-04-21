@@ -1,4 +1,8 @@
-import type { HomePageCategory, HomePageContent, HomePageDiscount } from '@/types/home';
+import type {
+  HomePageCategory,
+  HomePageContent,
+  HomePageDiscount,
+} from '@/types/home';
 import type { ProductCard } from '@/types/products';
 
 /**
@@ -34,11 +38,11 @@ function product(p: {
   };
 }
 
-/** Hero carousel — wide, high‑res (boutique, editorial, home, lifestyle) */
-const SLIDE_1 = u('photo-1441986300917-64674bd600d8', 2400);
-const SLIDE_2 = u('photo-1607082348824-0a96f2a4b9da', 2400);
-const SLIDE_3 = u('photo-1469334031218-e382a71b716b', 2400);
-const SLIDE_4 = u('photo-1616486338812-3dadae4b4ace', 2400);
+/** Hero carousel — wide, high‑res: fashion, home, beauty, lifestyle, tech */
+const SLIDE_1 = u('photo-1616486338812-3dadae4b4ace', 2400); // Home & Living elegant interior
+const SLIDE_2 = u('photo-1596462502278-27bfdc403348', 2400); // Beauty & cosmetics
+const SLIDE_3 = u('photo-1556906781-9a412961c28c', 2400); // Sneakers / footwear
+const SLIDE_4 = u('photo-1522338242992-e1a54906a8da', 2400); // Skincare / self-care
 
 export const heroDummyContent: HomePageContent = {
   id: 1,
@@ -55,19 +59,19 @@ export const heroDummyContent: HomePageContent = {
   media_urls: [
     {
       web: { id: 101, url: SLIDE_1 },
-      mobile: { id: 1011, url: u('photo-1441986300917-64674bd600d8', 1200) },
+      mobile: { id: 1011, url: u('photo-1616486338812-3dadae4b4ace', 1200) },
     },
     {
       web: { id: 102, url: SLIDE_2 },
-      mobile: { id: 1021, url: u('photo-1607082348824-0a96f2a4b9da', 1200) },
+      mobile: { id: 1021, url: u('photo-1596462502278-27bfdc403348', 1200) },
     },
     {
       web: { id: 103, url: SLIDE_3 },
-      mobile: { id: 1031, url: u('photo-1469334031218-e382a71b716b', 1200) },
+      mobile: { id: 1031, url: u('photo-1556906781-9a412961c28c', 1200) },
     },
     {
       web: { id: 104, url: SLIDE_4 },
-      mobile: { id: 1041, url: u('photo-1616486338812-3dadae4b4ace', 1200) },
+      mobile: { id: 1041, url: u('photo-1522338242992-e1a54906a8da', 1200) },
     },
   ],
 };
@@ -217,5 +221,80 @@ export const heroDummyCollectionsCategories: HomePageCategory[] = [
     slug: 'menswear',
     image: u('photo-1503342217505-b0a15ec3261c', 900),
     parents_slugs: [],
+  },
+];
+
+// ─── Featured Products by Category ────────────────────────────────────────────
+
+export type FeaturedCategory = {
+  id: number;
+  name: string;
+  slug: string;
+  products: ProductCard[];
+};
+
+const fp = (id: number, name: string, slug: string, img: string, price: string, sale?: number): ProductCard =>
+  product({ id, name, slug, image: u(img, 900), price, has_discount: sale ? 1 : 0, price_after_sale: sale ?? null });
+
+export const heroDummyFeaturedCategories: FeaturedCategory[] = [
+  {
+    id: 1,
+    name: "Women's Fashion",
+    slug: 'women',
+    products: [
+      fp(7001, 'Floral Midi Dress',       'floral-midi-dress',       'photo-1496747611176-843222e1e57c', '89.00',  65),
+      fp(7002, 'Linen Wide-Leg Trousers', 'linen-wide-leg-trousers', 'photo-1515886657613-9f3515b0c78f', '74.00'),
+      fp(7003, 'Silk Wrap Blouse',        'silk-wrap-blouse',        'photo-1469334031218-e382a71b716b', '68.00',  49),
+      fp(7004, 'Trench Coat',             'trench-coat',             'photo-1591047139829-d91aecb6caea', '219.00'),
+      fp(7005, 'Oversized Blazer',        'oversized-blazer',        'photo-1539109136881-3be0616acf4b', '139.00', 99),
+      fp(7006, 'Knit Cardigan',           'knit-cardigan',           'photo-1434389677669-e08b4cac3105', '79.00'),
+      fp(7007, 'Pleated Skirt',           'pleated-skirt',           'photo-1581044777550-4cfa60707c03', '59.00',  45),
+      fp(7008, 'Denim Jacket',            'denim-jacket',            'photo-1542291026-7eec264c27ff', '119.00'),
+    ],
+  },
+  {
+    id: 2,
+    name: "Men's Fashion",
+    slug: 'men',
+    products: [
+      fp(7101, 'Slim Chino Pants',        'slim-chino-pants',        'photo-1519085360753-af0119f7cbe7', '85.00'),
+      fp(7102, 'Oxford Dress Shirt',      'oxford-dress-shirt',      'photo-1503342217505-b0a15ec3261c', '69.00',  52),
+      fp(7103, 'Merino Wool Sweater',     'merino-wool-sweater',     'photo-1521572163474-6864f9cf17ab', '115.00'),
+      fp(7104, 'Slim Fit Suit Jacket',    'slim-fit-suit-jacket',    'photo-1594938291221-94f18cbb5660', '279.00', 210),
+      fp(7105, 'Classic Leather Belt',    'classic-leather-belt',    'photo-1553062407-98eeb64c6a62', '55.00'),
+      fp(7106, 'Linen Summer Shirt',      'linen-summer-shirt',      'photo-1488161628813-04466f872be2', '65.00',  48),
+      fp(7107, 'Athletic Joggers',        'athletic-joggers',        'photo-1491553895911-0055eca6402d', '79.00'),
+      fp(7108, 'Puffer Vest',             'puffer-vest',             'photo-1434389677669-e08b4cac3105', '99.00',  74),
+    ],
+  },
+  {
+    id: 3,
+    name: 'Accessories',
+    slug: 'accessories',
+    products: [
+      fp(7201, 'Minimal Gold Watch',      'minimal-gold-watch',      'photo-1523275335684-37898b6baf30', '189.00'),
+      fp(7202, 'Polarized Sunglasses',    'polarized-sunglasses',    'photo-1572635196237-14b3f281503f', '118.00', 89),
+      fp(7203, 'Leather Crossbody Bag',   'leather-crossbody-bag',   'photo-1553062407-98eeb64c6a62', '159.00'),
+      fp(7204, 'Silk Evening Scarf',      'silk-evening-scarf',      'photo-1594223274512-ad4803739b7c', '48.00',  35),
+      fp(7205, 'Tortoise Hair Clips Set', 'tortoise-hair-clips',     'photo-1576053139778-7e32f2ae3cfd', '24.00'),
+      fp(7206, 'Gold Hoop Earrings',      'gold-hoop-earrings',      'photo-1617038220319-276d3cfab638', '39.00',  29),
+      fp(7207, 'Canvas Tote Bag',         'canvas-tote-bag',         'photo-1508394522741-82ac9c15ba69', '45.00'),
+      fp(7208, 'Signature Eau de Parfum', 'signature-edp',           'photo-1491553895911-0055eca6402d', '95.00',  72),
+    ],
+  },
+  {
+    id: 4,
+    name: 'Home & Living',
+    slug: 'home-living',
+    products: [
+      fp(7301, 'Ceramic Desk Vase',       'ceramic-desk-vase',       'photo-1578662996442-48f60103fc96', '64.00'),
+      fp(7302, 'Linen Throw Pillow',      'linen-throw-pillow',      'photo-1616486338812-3dadae4b4ace', '38.00',  28),
+      fp(7303, 'Espresso Glass Mugs ×2',  'espresso-glass-mugs',     'photo-1544145945-f90425340c7e', '36.00'),
+      fp(7304, 'Marble Cheese Board',     'marble-cheese-board',     'photo-1556909114-f6e7ad7d3136', '82.00',  59),
+      fp(7305, 'Woven Storage Basket',    'woven-storage-basket',    'photo-1616627455735-25b716496f5c', '55.00'),
+      fp(7306, 'Scented Soy Candle',      'scented-soy-candle',      'photo-1608181831718-c9e3b46cc7c7', '29.00'),
+      fp(7307, 'Bamboo Serving Tray',     'bamboo-serving-tray',     'photo-1565193566173-7a0ee3dbe261', '47.00',  35),
+      fp(7308, 'Terracotta Plant Pot',    'terracotta-plant-pot',    'photo-1485955900006-10f4d324d411', '33.00'),
+    ],
   },
 ];

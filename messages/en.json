@@ -7,6 +7,7 @@
   "auth": {
     "forgot-password-link": "Forgot password?",
     "sign-in": "Sign in",
+    "sign-in-to-your-account": "Sign in to your account",
     "dont-have-an-account": "Don't have an account?",
     "sign-up": "Sign up",
     "confirm-sign-up": "By creating an account, you agree to the <terms>Terms of use</terms> and <privacy>Privacy Policy</privacy>.",
@@ -383,6 +384,7 @@
   "pay-button": "Order",
   "get-shipping-cost": "Get Shipping Cost",
   "are-you-sure-you-want-to-remove-name-from-your-wishlist": "Are you sure you want to remove {name} from your wishlist?",
+  "continue-with": "Or continue with",
   "continue-with-google": "Continue with Google",
   "continue-with-apple": "Continue with Apple",
   "explore-our-selection-description": "Browse handpicked categories to discover styles you love and find the perfect pieces faster.",

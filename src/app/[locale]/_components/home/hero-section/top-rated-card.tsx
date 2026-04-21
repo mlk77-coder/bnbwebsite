@@ -23,11 +23,13 @@ export function TopRatedCard({ product }: TopRatedCardProps) {
   return (
     <motion.div
       whileHover={{ y: -4 }}
-      className="bg-card border border-border p-5 sm:p-6 h-full flex flex-col shadow-sm hover:shadow-xl transition-shadow duration-300"
+      className="bg-card rounded-xl p-5 sm:p-6 h-full flex flex-col shadow-sm hover:shadow-xl transition-shadow duration-300"
     >
-      <div className="flex items-center gap-2 mb-4">
-        <Star className="w-5 h-5 text-primary fill-primary" />
-        <h3 className="text-lg sm:text-xl font-bold text-gray-900 font-sans">{t('hero-top-rated-for-you')}</h3>
+      <div className="flex items-center gap-3.5 mb-4">
+        <div className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+          <Star className="w-5 h-5 text-primary" strokeWidth={1.5} />
+        </div>
+        <h3 className="text-lg leading-tight font-bold tracking-tight text-foreground sm:text-xl">{t('hero-top-rated-for-you')}</h3>
       </div>
 
       <Link href={href} className="relative flex-1 min-h-[180px] sm:min-h-[220px] rounded-xl overflow-hidden group block">

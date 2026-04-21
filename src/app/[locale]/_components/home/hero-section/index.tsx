@@ -2,9 +2,8 @@
 
 import { useTranslations } from 'next-intl';
 import { HeroSlider } from './hero-slider';
-import { HeroProductQuad } from './hero-product-quad';
+import { QuadCard } from './quad-card';
 import { TopRatedCard } from './top-rated-card';
-import { OurCollectionsCard } from './our-collections-card';
 import type { HeroSectionProps } from './hero-section-types';
 
 export function HeroSection({
@@ -32,21 +31,27 @@ export function HeroSection({
       <div className='relative z-10 -mt-24 w-full px-2.5 pb-8 sm:-mt-32 sm:px-4 sm:pb-12 lg:-mt-40 lg:px-6 xl:px-24'>
         <div className='max-w-screen-3xl mx-auto'>
           <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4 lg:gap-5'>
-            <HeroProductQuad
+            <QuadCard
               variant='trendy'
               title={t('Trendy')}
               products={highlightedProducts}
               seeMoreHref='/'
               seeMoreLabel={t('see-more')}
             />
-            <HeroProductQuad
+            <QuadCard
               variant='best-selling'
               title={t('best-sellers')}
               products={bestSellingProducts}
               seeMoreHref={saleHref}
               seeMoreLabel={t('see-more')}
             />
-            <OurCollectionsCard categories={collectionsCategories} />
+            <QuadCard
+              variant='collections'
+              title={t('hero-our-collections')}
+              categories={collectionsCategories}
+              seeMoreHref='/#explore-categories'
+              seeMoreLabel={t('hero-view-all-categories')}
+            />
             <TopRatedCard product={topRatedProduct} />
           </div>
         </div>

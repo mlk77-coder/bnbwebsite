@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import "react-photo-view/dist/react-photo-view.css";
 import { getLangDir } from "rtl-detect";
-import { helvetica, roboto } from "../fonts";
+import { playfairDisplay, montserrat, cairo } from "../fonts";
 import HtmlBody from "./_components/html-body";
 import HtmlHead from "./_components/html-head";
 import "./globals.css";
@@ -186,9 +186,10 @@ export default async function RootLayout(props: PropsType) {
       <HtmlHead />
       <body
         className={cn(
-          "min-h-screen w-full bg-background font-sans antialiased flex flex-col justify-start items-start",
-          roboto.variable,
-          helvetica.variable
+          "min-h-screen w-full bg-background antialiased flex flex-col justify-start items-start",
+          playfairDisplay.variable,
+          montserrat.variable,
+          cairo.variable
         )}
       >
         <HtmlBody>

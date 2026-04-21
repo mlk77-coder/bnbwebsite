@@ -44,10 +44,10 @@ const Navbar = async () => {
   const token = isLoggedIn ? session?.user?.access_token || '' : user_token;
   const response = await getCart(token, locale, isLoggedIn, request);
   return (
-    <header className='sticky inset-s-0 top-0 z-50 w-full'>
+    <header className='sticky inset-s-0 top-0 z-50 w-full font-body'>
       {/* Main Header with Glassmorphism Effect */}
-      <div className='border-b border-gray-100/80 bg-white/80 shadow-sm shadow-gray-200/50 backdrop-blur-xl backdrop-saturate-150'>
-        <div className='max-w-screen-3xl mx-auto px-3 md:px-6 lg:px-8'>
+      <div className='border-b border-gray-100/80 bg-white/80 shadow-sm shadow-gray-200/50 backdrop-blur-xl backdrop-saturate-150 w-full'>
+        <div className='px-2.5 md:px-4 lg:px-6 xl:px-24 mx-auto max-w-screen-3xl w-full'>
           {/* Top Row: Logo, Search, Actions */}
           <div className='flex h-14 items-center gap-2 md:gap-4'>
             {/* Left Section: Mobile Menu & Logo — same width as right section */}

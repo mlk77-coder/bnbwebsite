@@ -56,13 +56,13 @@ const NavLinks: FC<PropsType> = ({ categories, sales }) => {
       }}
       className="flex justify-center items-center w-full overflow-visible"
     >
-      <NavigationMenuList dir={dir}>
+      <NavigationMenuList dir={dir} className="font-body">
         {/* New Arrivals Link */}
         <NavigationMenuItem className="group/item">
           <Link
             href="/new-arrivals"
             className={cn(
-              "relative flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-700",
+              "relative flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-gray-700",
               "hover:text-gray-900 transition-all duration-300",
               "rounded-lg hover:bg-gray-50/80",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
@@ -83,11 +83,12 @@ const NavLinks: FC<PropsType> = ({ categories, sales }) => {
               <span role="button" className="cursor-pointer">
                 <ClientLink
                   className={cn(
-                    "relative flex items-center gap-1.5 px-3 py-2 text-sm font-medium",
+                    "relative flex items-center gap-1.5 px-3 py-2 text-xs font-medium",
                     "text-red-600 hover:text-red-700 transition-all duration-300",
                     "rounded-lg hover:bg-red-50/80",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-200",
-                    "group-data-[state=open]/item:bg-red-50/80"
+                    "group-data-[state=open]/item:bg-red-50/80",
+                    "font-display tracking-widest"
                   )}
                   href={`/sale`}
                   slug="sale"
@@ -95,7 +96,7 @@ const NavLinks: FC<PropsType> = ({ categories, sales }) => {
                   onClick={handleLinkClick}
                 >
                   <Flame className="w-4 h-4" />
-                  <span className="uppercase tracking-wide">{t("sale")}</span>
+                  <span className="uppercase text-xs">{t("sale")}</span>
                   <ChevronDown className="w-3.5 h-3.5 opacity-60 group-data-[state=open]/item:rotate-180 transition-transform duration-200" />
                 </ClientLink>
               </span>
@@ -117,7 +118,7 @@ const NavLinks: FC<PropsType> = ({ categories, sales }) => {
               <span role="button" className="cursor-pointer">
                 <ClientLink
                   className={cn(
-                    "relative flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700",
+                    "relative flex items-center gap-1 px-3 py-2 text-xs font-medium text-gray-700",
                     "hover:text-gray-900 transition-all duration-300",
                     "rounded-lg hover:bg-gray-50/80",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20",

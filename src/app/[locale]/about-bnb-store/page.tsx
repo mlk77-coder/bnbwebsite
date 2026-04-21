@@ -40,8 +40,8 @@ export async function generateMetadata(): Promise<Metadata> {
       title: SITE_BRAND_NAME,
       description: t("about-bnb-store-description"),
       images: [`${process.env.NEXT_PUBLIC_LOCAL_URL}/logo-light.png`],
-      creator: "@R-Link",
-      site: "@R-Link",
+      creator: "@Ibrahim",
+      site: "@Ibrahim",
     },
   };
 }

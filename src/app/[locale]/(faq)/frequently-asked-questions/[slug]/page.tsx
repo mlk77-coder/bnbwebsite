@@ -63,8 +63,8 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
       title: "BNB Store",
       description: t("faq-description"),
       images: [`${process.env.NEXT_PUBLIC_LOCAL_URL}/logo-light.png`],
-      creator: "@R-Link",
-      site: "@R-Link",
+      creator: "@Ibrahim",
+      site: "@Ibrahim",
     },
   };
 }

@@ -28,7 +28,7 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
       template: `%s | ${SITE_BRAND_NAME}`,
     },
     authors: [{ name: SITE_BRAND_NAME, url: process.env.NEXT_PUBLIC_LOCAL_URL }],
-    creator: "R-Link",
+    creator: "Ibrahim",
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_LOCAL_URL}/${locale}`,
     },

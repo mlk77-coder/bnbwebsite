@@ -45,8 +45,8 @@ export async function generateMetadata(): Promise<Metadata> {
         "reset-your-account-password-easily-and-securely-to-regain-access-and-continue-shopping"
       ),
       images: [`${process.env.NEXT_PUBLIC_LOCAL_URL}/logo-light.png`],
-      creator: "@R-Link",
-      site: "@R-Link",
+      creator: "@Ibrahim",
+      site: "@Ibrahim",
     },
     icons: {
       icon: "/favicon/favicon.ico",

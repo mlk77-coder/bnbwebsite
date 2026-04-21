@@ -39,8 +39,8 @@ export async function generateMetadata(): Promise<Metadata> {
       title: "BNB Store",
       description: t("cookies-policy-description"),
       images: [`${process.env.NEXT_PUBLIC_LOCAL_URL}/logo-light.png`],
-      creator: "@R-Link",
-      site: "@R-Link",
+      creator: "@Ibrahim",
+      site: "@Ibrahim",
     },
   };
 }

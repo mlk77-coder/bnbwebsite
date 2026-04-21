@@ -47,10 +47,10 @@ export function HeroSection({
             />
             <QuadCard
               variant='collections'
-              title={t('hero-our-collections')}
+              title={t('new-arrivals')}
               categories={collectionsCategories}
-              seeMoreHref='/#explore-categories'
-              seeMoreLabel={t('hero-view-all-categories')}
+              seeMoreHref='/new-arrivals'
+              seeMoreLabel={t('see-more')}
             />
             <TopRatedCard product={topRatedProduct} />
           </div>

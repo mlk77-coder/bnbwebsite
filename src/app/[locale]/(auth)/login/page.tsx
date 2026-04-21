@@ -52,8 +52,8 @@ export async function generateMetadata({
         "log-in-to-your-account-to-manage-orders-view-purchase-history-and-enjoy-a-seamless-and-secure-shopping-experience"
       ),
       images: [`${process.env.NEXT_PUBLIC_LOCAL_URL}/logo-light.png`],
-      creator: "@R-Link",
-      site: "@R-Link",
+      creator: "@Ibrahim",
+      site: "@Ibrahim",
     },
     icons: {
       icon: "/favicon/favicon.ico",

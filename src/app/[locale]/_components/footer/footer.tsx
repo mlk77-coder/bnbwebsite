@@ -110,7 +110,7 @@ const Footer = ({ socialLinks }: { socialLinks: SocialLink[] }) => {
   return (
     <footer className='w-full border-t border-gray-100 bg-linear-to-b from-gray-50 to-white'>
       {/* Main Footer Content */}
-      <div className='max-w-screen-3xl mx-auto px-4 pt-12 pb-8 sm:px-6 lg:px-8'>
+      <div className='max-w-screen-3xl mx-auto px-2.5 md:px-4 lg:px-6 xl:px-24 pt-12 pb-8'>
         <div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-12 lg:gap-12'>
           {/* Brand Column */}
           <div className='space-y-6 lg:col-span-4'>

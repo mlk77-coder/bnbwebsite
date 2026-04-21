@@ -51,8 +51,8 @@ export async function generateMetadata({
         "create-a-new-account-to-start-shopping-effortlessly-manage-your-orders-and-enjoy-a-personalized-and-secure-experience-on-our-platform"
       ),
       images: [`${process.env.NEXT_PUBLIC_LOCAL_URL}/logo-light.png`],
-      creator: "@R-Link",
-      site: "@R-Link",
+      creator: "@Ibrahim",
+      site: "@Ibrahim",
     },
     icons: {
       icon: "/favicon/favicon.ico",

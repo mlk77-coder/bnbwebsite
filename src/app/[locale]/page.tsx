@@ -1,5 +1,7 @@
 import PageWrapper from '@/components/page-wrapper';
-import { sectionWrapperClassName } from '@/components/section-wrapper';
+import SectionWrapper, {
+  sectionWrapperClassName,
+} from '@/components/section-wrapper';
 import { fetcher } from '@/lib/fetcher';
 import getSession from '@/lib/get-session';
 import {
@@ -16,14 +18,9 @@ import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { cookies, headers } from 'next/headers';
 import { FC } from 'react';
-import BestSellers from './_components/home/best-sellers';
 import { CategoriesCarousel } from './_components/home/categories-carousel';
-import Collections from './_components/home/collections';
-import ExploreOurSelection from './_components/home/explore-our-selection';
-import { HeroSection } from './_components/home/hero-section';
-import NewArrivals from './_components/home/new-arrivals';
-import SalesSlider from './_components/home/sales-slider';
 import { FeaturedProducts } from './_components/home/featured-products';
+import { HeroSection } from './_components/home/hero-section';
 import RecentlyViewed from './_components/recently-viewed';
 
 type PropsType = {
@@ -251,9 +248,10 @@ const HomePage: FC<PropsType> = async props => {
         discounts={heroDummyDiscounts}
         collectionsCategories={heroDummyCollectionsCategories}
       />
-
       {/* Categories Carousel - New beautiful circular design */}
-      <CategoriesCarousel categories={dummyCategories} />
+      <SectionWrapper className='bg-transparent py-0!'>
+        <CategoriesCarousel categories={response.data.latest_six_categories} />
+      </SectionWrapper>
 
       {/* Featured Products with category filter */}
       <FeaturedProducts categories={heroDummyFeaturedCategories} />

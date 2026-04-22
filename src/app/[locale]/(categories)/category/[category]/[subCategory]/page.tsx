@@ -1,23 +1,20 @@
-import { getCategory } from "@/api/categories/get-category-details";
-import RecentlyViewed from "@/app/[locale]/_components/recently-viewed";
-import CategoryBigCard from "@/components/category-big-card";
-import CustomBreadcrumb from "@/components/custom-breadcrumb";
-import PageWrapper from "@/components/page-wrapper";
+import { getCategory } from '@/api/categories/get-category-details';
+import RecentlyViewed from '@/app/[locale]/_components/recently-viewed';
+import CategoryCirclesCarousel from '@/components/category-circles-carousel';
+import CustomBreadcrumb from '@/components/custom-breadcrumb';
+import PageWrapper from '@/components/page-wrapper';
 import SectionWrapper, {
   sectionWrapperClassName,
-} from "@/components/section-wrapper";
-import { buttonVariants } from "@/components/ui/button";
-import getSession from "@/lib/get-session";
-import { cn } from "@/lib/utils";
-import { Link } from "@/navigation";
-import { Metadata } from "next";
-import { cookies, headers } from "next/headers";
-import { notFound } from "next/navigation";
-import { FC } from "react";
-import CarouselWithProgressBar from "@/components/carousel-with-progress-bar";
-import { CarouselItem } from "@/components/ui/carousel";
-import SubCategoryProducts from "../../../components/sub-category-products";
-import { getAllSlugs } from "./[...subSubCategory]/page";
+} from '@/components/section-wrapper';
+import getSession from '@/lib/get-session';
+import { cn } from '@/lib/utils';
+import { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
+import { cookies, headers } from 'next/headers';
+import { notFound } from 'next/navigation';
+import { FC } from 'react';
+import SubCategoryProducts from '../../../components/sub-category-products';
+import { getAllSlugs } from './[...subSubCategory]/page';
 
 type PropsType = {
   params: Promise<{
@@ -31,10 +28,7 @@ type PropsType = {
 export async function generateMetadata(props: PropsType): Promise<Metadata> {
   const params = await props.params;
 
-  const {
-    subCategory,
-    locale
-  } = params;
+  const { subCategory, locale } = params;
 
   try {
     const data = await getCategory(subCategory, locale);
@@ -47,9 +41,9 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
         robots: {
           index: true,
           follow: true,
-          "max-snippet": -1,
-          "max-image-preview": "standard",
-          "max-video-preview": -1,
+          'max-snippet': -1,
+          'max-image-preview': 'standard',
+          'max-video-preview': -1,
           notranslate: false,
           noimageindex: false,
         },
@@ -64,21 +58,21 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
           url: `${process.env.NEXT_PUBLIC_LOCAL_URL}/en/category/${categoryData.parent_category.slug}/${categoryData.slug}`,
           title: categoryData.name,
           description: categoryData.description,
-          siteName: "BNB Store",
+          siteName: 'BNB Store',
           locale,
-          images: [categoryData.image || ""],
+          images: [categoryData.image || ''],
         },
       };
     } else {
       return {
-        title: "Unknown Category",
-        description: "No description available for this category.",
+        title: 'Unknown Category',
+        description: 'No description available for this category.',
       };
     }
   } catch (error) {
     return {
-      title: "Error",
-      description: "Unable to fetch category data at the moment.",
+      title: 'Error',
+      description: 'Unable to fetch category data at the moment.',
     };
   }
 }
@@ -86,16 +80,13 @@ const Page: FC<PropsType> = async props => {
   const searchParams = await props.searchParams;
   const params = await props.params;
 
-  const {
-    category,
-    subCategory,
-    locale
-  } = params;
+  const { category, subCategory, locale } = params;
 
   try {
     const cookieStore = await cookies();
+    const t = await getTranslations();
     const session = await getSession();
-    const userToken = cookieStore.get("x-user-session")?.value || "";
+    const userToken = cookieStore.get('x-user-session')?.value || '';
     const isLoggedIn = Boolean(session && session.user);
     const headersList = await headers();
     const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
@@ -110,14 +101,10 @@ const Page: FC<PropsType> = async props => {
 
     if (data.status === 404) return notFound();
 
-    const {
-      category: categoryData,
-      sub_categories,
-      sub_sub_categories,
-    } = data.data;
+    const { category: categoryData, sub_categories } = data.data;
     return (
       <PageWrapper>
-        <SectionWrapper className="px-2.5 md:px-4 lg:px-6 xl:px-7 py-4 md:py-4 lg:py-8 max-w-7xl space-y-8">
+        <SectionWrapper className='space-y-8! md:py-4 lg:py-8'>
           <CustomBreadcrumb
             activeLink={categoryData.name}
             links={[
@@ -127,51 +114,26 @@ const Page: FC<PropsType> = async props => {
               },
             ]}
           />
-          <div className="max-w-3xl mx-auto space-y-4">
-            <h1 className="text-primary text-3xl font-bold">{categoryData.name}</h1>
-            <p>{categoryData.description}</p>
-          </div>
           {sub_categories.length > 1 ? (
-            <CarouselWithProgressBar>
-              {sub_categories.map((c) => {
-                const x = getAllSlugs(c);
-                return (
-                  <CarouselItem key={c.id} className="md:basis-1/2 size-fit">
-                    <CategoryBigCard
-                      className="size-full"
-                      href={`/category/${x.join("/")}`}
-                      image={c.image}
-                      name={c.name}
-                    />
-                  </CarouselItem>
-                );
-              })}
-            </CarouselWithProgressBar>
+            <CategoryCirclesCarousel
+              items={sub_categories.map(c => ({
+                id: c.id,
+                name: c.name,
+                image: c.image,
+                href: `/category/${getAllSlugs(c).join('/')}`,
+              }))}
+              title={t('hero-shop-by-category')}
+              description={t('explore-our-selection-description')}
+              sectionClassName='py-0!'
+            />
           ) : null}
-          <nav className="pt-5 flex justify-start overflow-x-auto md:flex-wrap items-start gap-5">
-            {sub_sub_categories.map((c) => {
-              const x = getAllSlugs(c);
-              return (
-                <Link
-                  key={c.id}
-                  className={cn(
-                    buttonVariants({ variant: "link" }),
-                    "text-base shrink-0 text-foreground hover:text-orange underline px-0"
-                  )}
-                  href={`/category/${x.join("/")}`}
-                >
-                  {c.name}
-                </Link>
-              );
-            })}
-          </nav>
           <SubCategoryProducts
             category={subCategory}
             searchParams={searchParams}
           />
         </SectionWrapper>
         <RecentlyViewed
-          className={cn("mt-16", sectionWrapperClassName)}
+          className={cn('mt-16', sectionWrapperClassName)}
           isLoggedIn={isLoggedIn}
           token={
             session && session.user ? session.user.access_token : userToken

@@ -12,6 +12,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
+import { useLocale } from 'next-intl';
 
 export type CategoryCircleItem = {
   id: number | string;
@@ -63,6 +64,7 @@ export function CategoryCirclesCarousel({
 }: CategoryCirclesCarouselProps) {
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [current, setCurrent] = useState(0);
+  const locale = useLocale();
   const [count, setCount] = useState(0);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
@@ -100,9 +102,7 @@ export function CategoryCirclesCarousel({
 
   return (
     <section className={cn('w-full py-8 sm:py-12', sectionClassName)}>
-      <div
-        className={cn('max-w-screen-3xl mx-auto w-full', innerClassName)}
-      >
+      <div className={cn('max-w-screen-3xl mx-auto w-full', innerClassName)}>
         {(title || description) && (
           <div
             className={cn(
@@ -152,7 +152,7 @@ export function CategoryCirclesCarousel({
                 )}
                 aria-label='Previous'
               >
-                <ChevronLeft className='h-4 w-4 sm:h-5 sm:w-5' />
+                <ChevronLeft className='h-4 w-4 sm:h-5 sm:w-5 rtl:rotate-180' />
               </button>
               <button
                 onClick={nextSlide}
@@ -165,7 +165,7 @@ export function CategoryCirclesCarousel({
                 )}
                 aria-label='Next'
               >
-                <ChevronRight className='h-4 w-4 sm:h-5 sm:w-5' />
+                <ChevronRight className='h-4 w-4 sm:h-5 sm:w-5 rtl:rotate-180' />
               </button>
             </div>
           </div>
@@ -179,6 +179,7 @@ export function CategoryCirclesCarousel({
           <Carousel
             setApi={setApi}
             opts={{ align: 'start', dragFree: true }}
+            dir={locale == 'ar' ? 'rtl' : 'ltr'}
             className='cursor-grab select-none active:cursor-grabbing'
           >
             <CarouselContent className='-ml-3 sm:-ml-4'>

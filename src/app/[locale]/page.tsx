@@ -12,8 +12,9 @@ import {
   heroDummyFeaturedCategories,
   heroDummyHighlightedProducts,
 } from '@/lib/hero-section-dummy-data';
+import { dummyHomeCategories } from '@/lib/dummy-catalog-data';
 import { cn } from '@/lib/utils';
-import { GetHomeDataResponse, HomePageCategory } from '@/types/home';
+import { GetHomeDataResponse } from '@/types/home';
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { cookies, headers } from 'next/headers';
@@ -81,7 +82,6 @@ const HomePage: FC<PropsType> = async props => {
   const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
     headers: headersList,
   });
-  const t = await getTranslations();
   const response = await fetcher<GetHomeDataResponse>(
     `home-page-content`,
     locale,
@@ -90,153 +90,7 @@ const HomePage: FC<PropsType> = async props => {
     request
   );
 
-  if (!response.ok) return <>error</>;
-
-  const u = (photoSlug: string, w = 900) =>
-    `https://images.unsplash.com/${photoSlug}?auto=format&fit=crop&w=${w}&q=90`;
-
-  const dummyCategories: HomePageCategory[] = [
-    {
-      id: 1,
-      name: 'Women',
-      slug: 'women',
-      image: u('photo-1483985988355-763728e1935b'),
-      parents_slugs: [],
-    },
-    {
-      id: 2,
-      name: 'Curve',
-      slug: 'curve',
-      image: u('photo-1581044777550-4cfa60707c03'),
-      parents_slugs: [],
-    },
-    {
-      id: 3,
-      name: 'Kids',
-      slug: 'kids',
-      image: u('photo-1519345182560-3f2917c472ef'),
-      parents_slugs: [],
-    },
-    {
-      id: 4,
-      name: 'Men',
-      slug: 'men',
-      image: u('photo-1519085360753-af0119f7cbe7'),
-      parents_slugs: [],
-    },
-    {
-      id: 5,
-      name: 'Beachwear',
-      slug: 'beachwear',
-      image: u('photo-1524504388940-b1c1722653e1'),
-      parents_slugs: [],
-    },
-    {
-      id: 6,
-      name: 'Tops',
-      slug: 'tops',
-      image: u('photo-1521572163474-6864f9cf17ab'),
-      parents_slugs: [],
-    },
-    {
-      id: 7,
-      name: 'Dresses',
-      slug: 'dresses',
-      image: u('photo-1496747611176-843222e1e57c'),
-      parents_slugs: [],
-    },
-    {
-      id: 8,
-      name: 'Cell Phones',
-      slug: 'cell-phones',
-      image: u('photo-1511707171634-5f897ff02aa9'),
-      parents_slugs: [],
-    },
-    {
-      id: 9,
-      name: 'Shoes',
-      slug: 'shoes',
-      image: u('photo-1542291026-7eec264c27ff'),
-      parents_slugs: [],
-    },
-    {
-      id: 10,
-      name: 'Jewelry',
-      slug: 'jewelry',
-      image: u('photo-1617038220319-276d3cfab638'),
-      parents_slugs: [],
-    },
-    {
-      id: 11,
-      name: 'Home & Living',
-      slug: 'home-living',
-      image: u('photo-1616627455735-25b716496f5c'),
-      parents_slugs: [],
-    },
-    {
-      id: 12,
-      name: 'Beauty',
-      slug: 'beauty',
-      image: u('photo-1522338242992-e1a54906a8da'),
-      parents_slugs: [],
-    },
-    {
-      id: 13,
-      name: 'Sports',
-      slug: 'sports',
-      image: u('photo-1461896836934-ffe607ba8211'),
-      parents_slugs: [],
-    },
-    {
-      id: 14,
-      name: 'Baby',
-      slug: 'baby',
-      image: u('photo-1515488042361-ee00e0ddd4e4'),
-      parents_slugs: [],
-    },
-    {
-      id: 15,
-      name: 'Underwear',
-      slug: 'underwear',
-      image: u('photo-1512436991641-6745cdb1723f'),
-      parents_slugs: [],
-    },
-    {
-      id: 16,
-      name: 'Toys & Games',
-      slug: 'toys-games',
-      image: u('photo-1566576912321-d58ddd7a6088'),
-      parents_slugs: [],
-    },
-    {
-      id: 17,
-      name: 'Bags',
-      slug: 'bags',
-      image: u('photo-1594223274512-ad4803739b7c'),
-      parents_slugs: [],
-    },
-    {
-      id: 18,
-      name: 'Watches',
-      slug: 'watches',
-      image: u('photo-1523170335258-f5ed11844a49'),
-      parents_slugs: [],
-    },
-    {
-      id: 19,
-      name: 'Perfumes',
-      slug: 'perfumes',
-      image: u('photo-1594035910387-fea47794261f'),
-      parents_slugs: [],
-    },
-    {
-      id: 20,
-      name: 'Accessories',
-      slug: 'accessories',
-      image: u('photo-1576053139778-7e32f2ae3cfd'),
-      parents_slugs: [],
-    },
-  ];
+  const categories = response.ok ? dummyHomeCategories : dummyHomeCategories;
 
   return (
     <PageWrapper>
@@ -250,7 +104,7 @@ const HomePage: FC<PropsType> = async props => {
       />
       {/* Categories Carousel - New beautiful circular design */}
       <SectionWrapper className='bg-transparent py-0!'>
-        <CategoriesCarousel categories={response.data.latest_six_categories} />
+        <CategoriesCarousel categories={categories} />
       </SectionWrapper>
 
       {/* Featured Products with category filter */}

@@ -1,10 +1,11 @@
-import { fetcher } from "@/lib/fetcher";
-import { GetProductsResponse } from "@/types/products";
+import { fetcher } from '@/lib/fetcher';
+import { getDummyProductList } from '@/lib/dummy-catalog-data';
+import { GetProductsResponse } from '@/types/products';
 
 const getProductList = async (
   slug: string,
   params: Record<string, string> = {},
-  locale: string = "en",
+  locale: string = 'en',
   request?: any
 ) => {
   const response = await fetcher<GetProductsResponse>(
@@ -15,7 +16,7 @@ const getProductList = async (
     request
   );
 
-  return response;
+  return response.ok ? response : getDummyProductList(slug, params);
 };
 
 export default getProductList;

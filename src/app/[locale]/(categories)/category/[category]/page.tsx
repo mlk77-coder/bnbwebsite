@@ -122,11 +122,11 @@ const Page: FC<PropsType> = async props => {
           />
         </Suspense>
       </SectionWrapper>
-      <RecentlyViewed
+      {/* <RecentlyViewed
         className={cn('mt-16', sectionWrapperClassName)}
         isLoggedIn={isLoggedIn}
         token={session && session.user ? session.user.access_token : userToken}
-      />
+      /> */}
     </PageWrapper>
   );
 };

@@ -1,5 +1,6 @@
-import { fetcher } from "@/lib/fetcher";
-import { CategoryDetail } from "@/types/categories";
+import { fetcher } from '@/lib/fetcher';
+import { getDummyCategoryDetail } from '@/lib/dummy-catalog-data';
+import { CategoryDetail } from '@/types/categories';
 
 export const getCategory = async (
   subSubCategory: string,
@@ -13,5 +14,5 @@ export const getCategory = async (
     false,
     request
   );
-  return response;
+  return response.ok ? response : getDummyCategoryDetail(subSubCategory);
 };

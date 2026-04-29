@@ -1,7 +1,7 @@
 import { SubCategory } from "@/types/categories";
 
 export const getSubCategoryWeight = (subCategory: SubCategory): number => {
-  return subCategory.sub_categories.length || 1; // Assign weight of 1 if no sub-subcategories
+  return subCategory.subcategories.length || 1; // Assign weight of 1 if no sub-subcategories
 };
 
 export const distributeSubCategories = (

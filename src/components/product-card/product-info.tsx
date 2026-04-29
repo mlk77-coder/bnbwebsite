@@ -13,10 +13,10 @@ const ProductInfo: FC<ProductInfoProps> = ({ product }) => {
   const currency = useCurrencyStore(s => s.currency);
   const symbol = useCurrencyStore(s => s.symbol);
 
-  const originalPrice = formatPrice(+product.price * currency, symbol);
+  const originalPrice = formatPrice(product.price * currency, symbol);
   const salePrice =
-    product.has_discount && product.price_after_sale && product.quantity !== 0
-      ? formatPrice(product.price_after_sale * currency, symbol)
+    product.sale_price && product.sale_price < product.price
+      ? formatPrice(product.sale_price * currency, symbol)
       : null;
 
   return (

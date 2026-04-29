@@ -1,22 +1,69 @@
+import { mapProductsResponse } from '@/lib/api-mappers';
 import { fetcher } from '@/lib/fetcher';
-import { getDummyProductList } from '@/lib/dummy-catalog-data';
-import { GetProductsResponse } from '@/types/products';
+import { GetApiProductsResponse } from '@/types/products';
 
-const getProductList = async (
-  slug: string,
+const buildQueryString = (params: Record<string, string> = {}) => {
+  const query = new URLSearchParams(params).toString();
+  return query ? `?${query}` : '';
+};
+
+export const getProducts = async (
   params: Record<string, string> = {},
   locale: string = 'en',
-  request?: any
+  request?: Request
 ) => {
-  const response = await fetcher<GetProductsResponse>(
-    `category/products/${slug}?${new URLSearchParams(params).toString()}`,
+  const query = buildQueryString(params);
+  const path = `products${query}`;
+  const response = await fetcher<GetApiProductsResponse>(
+    path,
     locale,
     undefined,
     false,
     request
   );
 
-  return response.ok ? response : getDummyProductList(slug, params);
+  if (!response.ok) return response;
+
+  return {
+    ...response,
+    data: mapProductsResponse(
+      response.data.data.data,
+      response.data.data.meta,
+      path
+    ),
+  };
+};
+
+const getProductList = async (
+  categoryId: string,
+  params: Record<string, string> = {},
+  locale: string = 'en',
+  request?: Request
+) => {
+  if (!categoryId) {
+    return getProducts(params, locale, request);
+  }
+
+  const query = buildQueryString(params);
+  const path = `categories/${categoryId}/products${query}`;
+  const response = await fetcher<GetApiProductsResponse>(
+    path,
+    locale,
+    undefined,
+    false,
+    request
+  );
+
+  if (!response.ok) return response;
+
+  return {
+    ...response,
+    data: mapProductsResponse(
+      response.data.data.data,
+      response.data.data.meta,
+      path
+    ),
+  };
 };
 
 export default getProductList;

@@ -2,10 +2,17 @@
 
 import { SheetClose } from "@/components/ui/sheet";
 import { Link } from "@/navigation";
-import { useTranslations } from "next-intl";
 
-const MenuBottomLinks = () => {
-  const t = useTranslations();
+type PropsType = {
+  labels: {
+    sizeChart: string;
+    aboutBnbStore: string;
+    faqs: string;
+    returnsAndRefunds: string;
+  };
+};
+
+const MenuBottomLinks = ({ labels }: PropsType) => {
   return (
     <div className="bg-beige/75 !px-6 py-9 flex flex-col justify-start items-start gap-8">
       <Link
@@ -13,7 +20,7 @@ const MenuBottomLinks = () => {
         className="underline underline-offset-1 hover:text-orange"
       >
         <SheetClose asChild>
-          <span>{t("size-chart")}</span>
+          <span>{labels.sizeChart}</span>
         </SheetClose>
       </Link>
       <Link
@@ -21,7 +28,7 @@ const MenuBottomLinks = () => {
         className="underline underline-offset-1 hover:text-orange"
       >
         <SheetClose asChild>
-          <span>{t("about-bnb-store")}</span>
+          <span>{labels.aboutBnbStore}</span>
         </SheetClose>
       </Link>
       {/* <Link
@@ -37,7 +44,7 @@ const MenuBottomLinks = () => {
         className="underline underline-offset-1 hover:text-orange"
       >
         <SheetClose asChild>
-          <span>{t("faqs")}</span>
+          <span>{labels.faqs}</span>
         </SheetClose>
       </Link>
       <Link
@@ -45,7 +52,7 @@ const MenuBottomLinks = () => {
         className="underline underline-offset-1 hover:text-orange"
       >
         <SheetClose asChild>
-          <span>{t("returns-and-refunds")}</span>
+          <span>{labels.returnsAndRefunds}</span>
         </SheetClose>
       </Link>
     </div>

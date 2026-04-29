@@ -17,7 +17,7 @@ import { useLocale } from 'next-intl';
 export type CategoryCircleItem = {
   id: number | string;
   name: string;
-  image: string;
+  image: string | null;
   slug?: string;
   parents_slugs?: string[];
   href?: string;
@@ -44,7 +44,7 @@ function getCategoryPath(item: CategoryCircleItem) {
   if (item.parents_slugs?.length) {
     return `/category/${[...item.parents_slugs].reverse().join('/')}`;
   }
-  return `/category/${item.slug ?? ''}`;
+  return `/category/${item.slug ?? item.id}`;
 }
 
 export function CategoryCirclesCarousel({
@@ -260,7 +260,7 @@ function CategoryCircle({
             >
               <div className='absolute inset-0 z-10 bg-linear-to-t from-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
               <Image
-                src={item.image || '/placeholder-category.jpg'}
+                src={item.image || '/no-product.svg'}
                 alt={item.name}
                 fill
                 sizes='(max-width: 640px) 96px, (max-width: 768px) 96px, (max-width: 1024px) 112px, 128px'

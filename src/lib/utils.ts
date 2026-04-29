@@ -1,6 +1,6 @@
 // Import necessary utility functions and types from axios, clsx, and tailwind-merge.
 import { locales } from "@/i18n";
-import { ProductCategory } from "@/types/products";
+import { ApiProductCategory } from "@/types/products";
 import { isAxiosError } from "axios";
 import { type ClassValue, clsx } from "clsx";
 import parsePhoneNumberFromString from "libphonenumber-js";
@@ -80,17 +80,9 @@ export const actionHandleError = (error: unknown): string => {
 };
 
 export function getCategoryName(
-  category: ProductCategory | null | undefined
+  category: ApiProductCategory | null | undefined
 ): string {
-  if (!category) {
-    return "";
-  }
-  if (!category.category) {
-    // No deeper category, return current name
-    return category.name;
-  }
-  // Recurse into the next level
-  return getCategoryName(category.category);
+  return category?.name || "";
 }
 
 export function splitCountryCode(phoneNumber: string): {

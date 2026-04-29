@@ -1,20 +1,12 @@
+import getCategories from '@/api/categories/get-categories';
+import { getProducts } from '@/api/products/get-products';
 import PageWrapper from '@/components/page-wrapper';
 import SectionWrapper, {
   sectionWrapperClassName,
 } from '@/components/section-wrapper';
-import { fetcher } from '@/lib/fetcher';
 import getSession from '@/lib/get-session';
-import {
-  heroDummyBestSellingProducts,
-  heroDummyCollectionsCategories,
-  heroDummyContent,
-  heroDummyDiscounts,
-  heroDummyFeaturedCategories,
-  heroDummyHighlightedProducts,
-} from '@/lib/hero-section-dummy-data';
-import { dummyHomeCategories } from '@/lib/dummy-catalog-data';
+import { heroDummyContent } from '@/lib/hero-section-dummy-data';
 import { cn } from '@/lib/utils';
-import { GetHomeDataResponse } from '@/types/home';
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { cookies, headers } from 'next/headers';
@@ -82,33 +74,36 @@ const HomePage: FC<PropsType> = async props => {
   const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
     headers: headersList,
   });
-  const response = await fetcher<GetHomeDataResponse>(
-    `home-page-content`,
-    locale,
-    { cache: 'no-store' },
-    false,
-    request
-  );
-
-  const categories = response.ok ? dummyHomeCategories : dummyHomeCategories;
+  const [categories, productsResponse] = await Promise.all([
+    getCategories(locale, request),
+    getProducts({ per_page: '20' }, locale, request),
+  ]);
+  const products = productsResponse.ok ? productsResponse.data.products : [];
+  const homeCategories = categories.map(category => ({
+    id: category.id,
+    name: category.name,
+    slug: String(category.id),
+    image: category.image,
+    parents_slugs: [],
+  }));
 
   return (
     <PageWrapper>
       <h1 className='sr-only'>Welcome to BNB Store</h1>
       <HeroSection
         content={heroDummyContent}
-        bestSellingProducts={heroDummyBestSellingProducts}
-        highlightedProducts={heroDummyHighlightedProducts}
-        discounts={heroDummyDiscounts}
-        collectionsCategories={heroDummyCollectionsCategories}
+        bestSellingProducts={products}
+        highlightedProducts={products}
+        discounts={null}
+        collectionsCategories={homeCategories.slice(0, 4)}
       />
       {/* Categories Carousel - New beautiful circular design */}
       <SectionWrapper className='bg-transparent py-0!'>
-        <CategoriesCarousel categories={categories} />
+        <CategoriesCarousel categories={homeCategories} />
       </SectionWrapper>
 
       {/* Featured Products with category filter */}
-      <FeaturedProducts categories={heroDummyFeaturedCategories} />
+      <FeaturedProducts categories={homeCategories} products={products} />
 
       <RecentlyViewed
         className={cn('mt-16', sectionWrapperClassName)}

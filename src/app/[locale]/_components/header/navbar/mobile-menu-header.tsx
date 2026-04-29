@@ -7,16 +7,16 @@ import { Link } from "@/navigation";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { UserRound } from "lucide-react";
-import { useTranslations } from "next-intl";
 
 const MobileMenuHeader = ({
   session,
   userToken,
+  signInLabel,
 }: {
   session: CustomSession | null;
   userToken: string;
+  signInLabel: string;
 }) => {
-  const t = useTranslations();
   return (
     <div className="pt-3 pb-2 w-full flex justify-center items-center divide-x">
       <div className="w-full flex justify-center items-center">
@@ -36,7 +36,7 @@ const MobileMenuHeader = ({
             href="/login"
           >
             <UserRound className="size-5" />
-            {t("sign-in")}
+            {signInLabel}
           </Link>
         )}
       </div>

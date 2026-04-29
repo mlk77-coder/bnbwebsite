@@ -14,9 +14,9 @@ const MobileSubCategory: FC<PropsType> = ({
 
   return (
     <div className='flex flex-col flex-wrap items-start justify-start gap-4 px-5! py-4 sm:px-8!'>
-      {subCategory.sub_categories?.map((subSubCategory, index) => (
+      {subCategory.subcategories?.map((subSubCategory, index) => (
         <MobileSubSubCategory
-          isLast={subCategory.sub_categories.length - 1 === index}
+          isLast={subCategory.subcategories.length - 1 === index}
           key={subSubCategory.id}
           mainCategorySlug={mainCategorySlug}
           subCategory={subSubCategory}

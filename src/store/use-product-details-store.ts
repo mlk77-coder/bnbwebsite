@@ -1,5 +1,4 @@
-import { Product, productVariant, VariantValue } from "@/types/products";
-import { create } from "zustand";
+import { create } from 'zustand';
 
 type Store = {
   productId: number;
@@ -23,57 +22,36 @@ type Store = {
   quantity: number;
   setQuantity: (quantity: number) => void;
 
-  productVariant:
-    | (Product & {
-        attribute_values: VariantValue[];
-      })
-    | null;
-  setProductVariant: (product: productVariant) => void;
-
-  productGallery: {
-    id: number;
-    url: string;
-  }[];
-  setProductGallery: (gallery: { id: number; url: string }[]) => void;
-
   reset: () => void;
 };
 
-const useProductDetailsStore = create<Store>((set) => ({
+const useProductDetailsStore = create<Store>(set => ({
   productId: -1,
-  setProductId: (id) => set({ productId: id }),
+  setProductId: id => set({ productId: id }),
 
   isProductAvailable: true,
-  setIsProductAvailable: (isProductAvailable) => set({ isProductAvailable }),
+  setIsProductAvailable: isProductAvailable => set({ isProductAvailable }),
 
   productDetail: {
-    name: "",
-    image: "",
+    name: '',
+    image: '',
     price: 0,
   },
 
-  setProductDetail: (product) => set({ productDetail: product }),
-
-  productVariant: {} as productVariant,
-  setProductVariant: (product) => set({ productVariant: product }),
-
-  productGallery: [],
-  setProductGallery: (gallery) => set({ productGallery: gallery }),
+  setProductDetail: product => set({ productDetail: product }),
 
   quantity: 1,
-  setQuantity: (quantity) => set({ quantity: quantity }),
+  setQuantity: quantity => set({ quantity: quantity }),
 
   reset: () =>
-    set((state) => ({
+    set(state => ({
       ...state,
       productDetail: {
-        name: "",
-        image: "",
+        name: '',
+        image: '',
         price: 0,
       },
-      productGallery: [],
       productId: -1,
-      productVariant: {} as productVariant,
       quantity: 1,
       isProductAvailable: true,
     })),

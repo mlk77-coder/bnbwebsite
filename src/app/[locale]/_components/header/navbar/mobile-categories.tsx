@@ -1,34 +1,38 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
-import { Category } from "@/types/categories";
-import { FC, Fragment, useState } from "react";
-import MobileSubCategory from "./mobile-sub-category";
-import SubCategoryLinks from "./sub-category-links";
-import { Link, usePathname } from "@/navigation";
-import { useTranslations } from "next-intl";
-import { SheetClose } from "@/components/ui/sheet";
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
+import { Category } from '@/types/categories';
+import { FC, Fragment, useState } from 'react';
+import MobileSubCategory from './mobile-sub-category';
+import SubCategoryLinks from './sub-category-links';
+import { Link, usePathname } from '@/navigation';
+import { SheetClose } from '@/components/ui/sheet';
 
 type PropsType = {
   categories: Category[];
   sales: Category[];
+  labels: {
+    sale: string;
+    allSale: string;
+    newArrivals: string;
+    allCategoryById: Record<number, string>;
+  };
 };
 
-const MobileCategories: FC<PropsType> = ({ categories, sales }) => {
+const MobileCategories: FC<PropsType> = ({ categories, sales, labels }) => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(-1);
-  const [selectedCategoryName, setSelectedCategoryName] = useState("");
+  const [selectedCategoryName, setSelectedCategoryName] = useState('');
   const pathname = usePathname();
-  const t = useTranslations();
 
   const selectedCategory = categories.find(
-    (category) => category.id === selectedCategoryId
+    category => category.id === selectedCategoryId
   );
 
   const handleClick = (id: number, name: string) => {
     if (selectedCategoryId === id) {
-      setSelectedCategoryName("");
+      setSelectedCategoryName('');
       setSelectedCategoryId(-1);
     } else {
       setSelectedCategoryId(id);
@@ -39,29 +43,32 @@ const MobileCategories: FC<PropsType> = ({ categories, sales }) => {
     <Fragment>
       <div
         className={cn(
-          selectedCategoryId !== -1 ? "pb-3" : "pb-0",
-          "!px-5 pt-5 sm:!px-8 flex flex-wrap justify-center items-center"
+          selectedCategoryId !== -1 ? 'pb-3' : 'pb-0',
+          'flex flex-wrap items-center justify-center px-5! pt-5 sm:px-8!'
         )}
       >
         <Button
-          onClick={() => handleClick(0, "sale")}
+          onClick={() => handleClick(0, 'sale')}
           className={cn(
-            "text-base uppercase px-4 mb-5 h-fit py-0 text-foreground",
-            pathname.includes("sale") ? "text-orange" : ""
+            'text-foreground mb-5 h-fit px-4 py-0 text-base uppercase',
+            pathname.includes('sale') ? 'text-orange' : ''
           )}
-          variant="link"
+          variant='link'
         >
-          {t("sale")}
+          {labels.sale}
         </Button>
-        {categories.map((category) => (
+        {categories.map(category => (
           <Button
             key={category.id}
             onClick={() => handleClick(category.id, category.name)}
             className={cn(
-              "text-base px-4 mb-5 h-fit py-0 text-foreground",
-              pathname.includes(category.slug) && !pathname.includes("sale/") ? "text-orange" : ""
+              'text-foreground mb-5 h-fit px-4 py-0 text-base',
+              pathname.includes(String(category.id)) &&
+                !pathname.includes('sale/')
+                ? 'text-orange'
+                : ''
             )}
-            variant="link"
+            variant='link'
           >
             {category.name}
           </Button>
@@ -70,20 +77,20 @@ const MobileCategories: FC<PropsType> = ({ categories, sales }) => {
       {selectedCategoryId === 0 ? (
         <Fragment>
           <Separator />
-          <div className="py-4 font-bold uppercase text-lg !px-5 sm:!px-8 flex-col flex flex-wrap justify-start items-start gap-4">
+          <div className='flex flex-col flex-wrap items-start justify-start gap-4 px-5! py-4 text-lg font-bold uppercase sm:px-8!'>
             <SheetClose asChild>
-              <Link className="font-medium" href={`/sale`}>
-                {t("all-sale")}
+              <Link className='font-medium' href={`/sale`}>
+                {labels.allSale}
               </Link>
             </SheetClose>
           </div>
-          {sales.map((sale) => (
+          {sales.map(sale => (
             <div
               key={sale.id}
-              className="py-4 font-bold uppercase text-lg !px-5 sm:!px-8 flex-col flex flex-wrap justify-start items-start gap-4"
+              className='flex flex-col flex-wrap items-start justify-start gap-4 px-5! py-4 text-lg font-bold uppercase sm:px-8!'
             >
               <SheetClose asChild>
-                <Link className="font-medium" href={`/sale/${sale.slug}`}>
+                <Link className='font-medium' href={`/sale/${sale.slug}`}>
                   {sale.name}
                 </Link>
               </SheetClose>
@@ -95,12 +102,17 @@ const MobileCategories: FC<PropsType> = ({ categories, sales }) => {
         <Fragment>
           <Separator />
           <SubCategoryLinks
-            name={selectedCategoryName}
             subCategory={selectedCategory}
+            allCategoryLabel={
+              labels.allCategoryById[selectedCategoryId] || selectedCategoryName
+            }
+            newArrivalsLabel={labels.newArrivals}
           />
           <MobileSubCategory
             subCategory={selectedCategory}
-            mainCategorySlug={selectedCategory?.slug || ""}
+            mainCategorySlug={
+              selectedCategory ? String(selectedCategory.id) : ''
+            }
           />
         </Fragment>
       ) : null}

@@ -3,19 +3,22 @@ import { Separator } from "@/components/ui/separator"
 
 export default function ReviewSkeletonLoader() {
   return (
-    <div className="w-full flex flex-col gap-4 justify-start items-start">
-      <Skeleton className="h-8 w-40" />
-      <div className="w-full flex justify-start items-center space-x-8">
-        <div className="flex items-center gap-1">
-          <Skeleton className="h-12 w-16" />
-          <Skeleton className="h-6 w-6" />
+    <div className="flex w-full flex-col items-start justify-start gap-4">
+      <div className="w-full space-y-1">
+        <Skeleton className="h-6 w-28" />
+        <Skeleton className="h-4 w-24" />
+      </div>
+      <div className="grid w-full gap-4 sm:grid-cols-[120px_1fr]">
+        <div className="flex items-center gap-2 sm:flex-col sm:items-start">
+          <Skeleton className="h-10 w-16" />
+          <Skeleton className="h-4 w-20" />
         </div>
-        <div className="flex-grow space-y-2">
+        <div className="w-full space-y-2">
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="flex items-center space-x-1">
-              <Skeleton className="h-4 w-4" />
+            <div key={i} className="grid grid-cols-[18px_1fr_42px] items-center gap-2">
+              <Skeleton className="h-3 w-3" />
               <Skeleton className="h-2 w-full" />
-              <Skeleton className="h-4 w-10" />
+              <Skeleton className="h-3 w-8" />
             </div>
           ))}
         </div>
@@ -23,23 +26,28 @@ export default function ReviewSkeletonLoader() {
       <Separator />
       <div className="space-y-4 w-full">
         <div className="w-full flex justify-between items-center gap-4">
-          <Skeleton className="h-6 w-40" />
+          <Skeleton className="h-5 w-32" />
           <Skeleton className="h-9 w-28" />
         </div>
-        <div className="flex flex-col justify-start items-start gap-4 w-full">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="border-b w-full border-dashed border-gray py-2">
-              <Skeleton className="h-5 w-32 mb-2" />
-              <div className="flex justify-start items-center gap-2 mb-2">
-                <div className="flex justify-start items-center gap-1">
-                  {[1, 2, 3, 4, 5].map((j) => (
-                    <Skeleton key={j} className="h-3 w-3" />
-                  ))}
+        <div className="flex w-full flex-col items-start justify-start gap-4">
+          {[1, 2].map((i) => (
+            <div key={i} className="w-full border-b border-dashed border-border pb-4 last:border-b-0">
+              <div className="flex items-start gap-3">
+                <Skeleton className="size-9 rounded-full" />
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-center justify-between gap-3">
+                    <Skeleton className="h-4 w-28" />
+                    <Skeleton className="h-3 w-24" />
+                  </div>
+                  <div className="flex gap-1">
+                    {[1, 2, 3, 4, 5].map((j) => (
+                      <Skeleton key={j} className="size-3" />
+                    ))}
+                  </div>
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-2/3" />
                 </div>
-                <Skeleton className="h-4 w-24" />
               </div>
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-3/4 mt-1" />
             </div>
           ))}
         </div>

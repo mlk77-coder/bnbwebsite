@@ -30,6 +30,18 @@ export type Pagination = {
   total: number;
 };
 
+export type ApiMetaPagination = {
+  current_page: number;
+  total: number;
+  per_page: number;
+  last_page: number;
+};
+
+export type ApiPaginatedData<T> = {
+  data: T[];
+  meta: ApiMetaPagination;
+};
+
 /**
  * @description Combines ApiResponse with Pagination to represent API responses that include paginated data.
  * @interface ApiResponseWithPagination

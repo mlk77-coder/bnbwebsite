@@ -1,132 +1,94 @@
-import PageWrapper from "@/components/page-wrapper";
-import SectionWrapper from "@/components/section-wrapper";
-import { Badge } from "@/components/ui/badge";
+import PageWrapper from '@/components/page-wrapper';
+import SectionWrapper from '@/components/section-wrapper';
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { cn } from "@/lib/utils";
-import { Link } from "@/navigation";
-import { Heart, Minus, MoveUpRight, Plus, Ruler, Truck } from "lucide-react";
-import ProductImagesSlider from "../_components/product-images-slider";
-import { Skeleton } from "@/components/ui/skeleton";
+} from '@/components/ui/breadcrumb';
+import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
+import ReviewSkeletonLoader from './_components/review-skeleton-loader';
+
+const ProductInfoSkeleton = () => (
+  <div className='space-y-5 md:col-span-5'>
+    <div className='space-y-2'>
+      <Skeleton className='h-7 w-3/4 max-w-md' />
+    </div>
+
+    <div className='flex items-center gap-3'>
+      <Skeleton className='h-9 w-32' />
+      <Skeleton className='h-6 w-14 rounded-full' />
+    </div>
+
+    <div className='space-y-2 max-md:hidden'>
+      <Skeleton className='h-4 w-full' />
+      <Skeleton className='h-4 w-11/12' />
+      <Skeleton className='h-4 w-10/12' />
+      <Skeleton className='h-4 w-2/3' />
+    </div>
+
+    <Separator />
+
+    <div className='flex items-center gap-3'>
+      <Skeleton className='h-5 w-20' />
+      <Skeleton className='size-10' />
+      <Skeleton className='h-6 w-10' />
+      <Skeleton className='size-10' />
+    </div>
+
+    <div className='grid grid-cols-1 gap-3 lg:grid-cols-2'>
+      <Skeleton className='h-11 w-full' />
+      <Skeleton className='h-11 w-full' />
+    </div>
+
+    <div className='border-border border-t pt-5'>
+      <ReviewSkeletonLoader />
+    </div>
+
+    <div className='space-y-2 md:hidden'>
+      <Skeleton className='h-4 w-full' />
+      <Skeleton className='h-4 w-11/12' />
+      <Skeleton className='h-4 w-2/3' />
+    </div>
+  </div>
+);
+
+const ProductGallerySkeleton = () => (
+  <div className='flex flex-col gap-6 md:sticky md:top-20 md:col-span-5'>
+    <div className='space-y-4'>
+      <Skeleton className='relative aspect-square w-full overflow-hidden rounded-xl' />
+      <div className='flex items-center justify-center gap-3'>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <Skeleton key={index} className='size-16 rounded-lg sm:size-20' />
+        ))}
+      </div>
+    </div>
+  </div>
+);
 
 const Loading = () => {
   return (
     <PageWrapper>
-      <SectionWrapper className="size-full space-y-4 md:py-4 lg:py-6 max-w-screen-2xl">
+      <SectionWrapper className='size-full max-w-screen-2xl space-y-4 md:py-4 lg:py-6'>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <Skeleton className="h-6 w-32" />
+              <Skeleton className='h-6 w-32' />
             </BreadcrumbItem>
             <BreadcrumbSeparator>|</BreadcrumbSeparator>
             <BreadcrumbItem>
-              <Skeleton className="h-6 w-28" />
+              <Skeleton className='h-6 w-28' />
             </BreadcrumbItem>
             <BreadcrumbSeparator>|</BreadcrumbSeparator>
             <BreadcrumbItem>
-              <Skeleton className="h-6 w-20" />
+              <Skeleton className='h-6 w-20' />
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <div className="size-full grid grid-cols-1 md:grid-cols-2 items-start gap-20">
-          <div className="space-y-5">
-            <Skeleton className="size-full overflow-hidden relative aspect-square ps-0" />
-            <div className="flex justify-center items-center gap-2">
-              <Skeleton className="size-10"/>
-              <Skeleton  className="size-20"/>
-              <Skeleton  className="size-20"/>
-              <Skeleton  className="size-20"/>
-              <Skeleton  className="size-20"/>
-              <Skeleton  className="size-20"/>
-              <Skeleton  className="size-20"/>
-              <Skeleton className="size-10"/>
-
-            </div>
-          </div>
-          <div className="space-y-5">
-            <div className="space-y-3">
-              <Skeleton className="h-6 w-60" />
-              <Skeleton className="h-3 w-28" />
-            </div>
-            <div className="flex justify-start items-center gap-3">
-              <Skeleton className="h-9 w-24" />
-            </div>
-            <div className="space-y-3">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-11/12" />
-              <Skeleton className="h-4 w-10/12" />
-              <Skeleton className="h-4 w-3/4" />
-            </div>
-            <Separator />
-            <div className="flex flex-col justify-start items-start gap-3">
-              <div className="flex justify-start items-center gap-2">
-                <Skeleton className="h-4 w-32" />
-              </div>
-              <div className="flex justify-start items-center w-full gap-3 flex-wrap">
-                <Skeleton className="rounded-full size-10" />
-                <Skeleton className="rounded-full size-10" />
-                <Skeleton className="rounded-full size-10" />
-                <Skeleton className="rounded-full size-10" />
-                <Skeleton className="rounded-full size-10" />
-              </div>
-            </div>
-            <div className="flex flex-col justify-start items-start gap-5">
-              <div className="flex justify-start items-center">
-                <Skeleton className="h-5 w-20" />
-              </div>
-              <div className="flex justify-start items-center w-full gap-3 flex-wrap">
-                <Skeleton className="size-10" />
-                <Skeleton className="size-10" />
-                <Skeleton className="size-10" />
-                <Skeleton className="size-10" />
-                <Skeleton className="size-10" />
-              </div>
-            </div>
-            <div className="flex justify-start items-center gap-5">
-              <Skeleton className="w-20 h-6" />
-              <div className="flex justify-start items-center w-full gap-3 flex-wrap">
-                <Skeleton className="size-10" />
-                <Skeleton className="size-10" />
-                <Skeleton className="size-10" />
-              </div>
-            </div>
-            <div className="flex justify-center items-center gap-3">
-              <Skeleton className="w-full h-11" />
-              <Skeleton className="w-full h-11" />
-            </div>
-            <Skeleton className="w-9/12 h-4" />
-            <Skeleton className="w-full h-11" />
-            <Skeleton className="w-1/3 h-4" />
-            {/* <div className="w-full space-y-4">
-              <h3 className="font-bold text-primary text-lg">
-                Product Details:
-              </h3>
-              <Separator />
-              <div className="flex flex-col justify-start items-start gap-5">
-                <p className="w-full flex justify-between items-center gap-3">
-                  <span>Weight:</span>
-                  <span>0.14KG</span>
-                </p>
-                <p className="w-full flex justify-between items-center gap-3">
-                  <span>Weight:</span>
-                  <span>0.14KG</span>
-                </p>
-                <p className="w-full flex justify-between items-center gap-3">
-                  <span>Weight:</span>
-                  <span>0.14KG</span>
-                </p>
-              </div>
-            </div> */}
-          </div>
+        <div className='relative grid size-full grid-cols-1 items-start gap-6 md:grid-cols-10 md:gap-12'>
+          <ProductGallerySkeleton />
+          <ProductInfoSkeleton />
         </div>
       </SectionWrapper>
     </PageWrapper>

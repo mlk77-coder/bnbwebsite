@@ -1,5 +1,5 @@
-import axiosInstance from "@/lib/axios";
-import { actionHandleError } from "@/lib/utils";
+import axiosInstance from '@/lib/axios';
+import { actionHandleError } from '@/lib/utils';
 
 export const addReviewAction = async ({
   token,
@@ -12,10 +12,10 @@ export const addReviewAction = async ({
 }) => {
   try {
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
-    await axiosInstance.post(`products/reviews/${slug}`, body, {
+    await axiosInstance.post(`products/${slug}/reviews`, body, {
       headers,
     });
-    return "success";
+    return 'success';
   } catch (error) {
     return actionHandleError(error);
   }

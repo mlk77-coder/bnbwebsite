@@ -31,7 +31,7 @@ function categoryHref(category: HomePageCategory): string {
   if (category.parents_slugs.length > 0) {
     return `/category/${[...category.parents_slugs].reverse().join('/')}`;
   }
-  return `/category/${category.slug}`;
+  return `/category/${category.id}`;
 }
 
 function getIcon(variant: QuadCardVariant) {
@@ -108,7 +108,7 @@ export function QuadCard({
     <motion.div
       whileHover={{ y: -2 }}
       transition={{ type: 'spring', stiffness: 400, damping: 28 }}
-      className='bg-card rounded-xl flex h-full flex-col p-5 shadow-sm transition-shadow duration-300 hover:shadow-md sm:p-6'
+      className='bg-card flex h-full flex-col rounded-xl p-5 shadow-sm transition-shadow duration-300 hover:shadow-md sm:p-6'
     >
       {/* Header */}
       <div className='mb-4 flex gap-3.5'>
@@ -119,7 +119,7 @@ export function QuadCard({
           <Icon className={`size-5 ${iconClass}`} strokeWidth={strokeWidth} />
         </div>
         <div className='min-w-0 flex-1 pt-0.5'>
-          <h3 className='text-lg leading-tight font-bold tracking-tight text-foreground sm:text-xl'>
+          <h3 className='text-foreground text-lg leading-tight font-bold tracking-tight sm:text-xl'>
             {title}
           </h3>
         </div>
@@ -183,13 +183,13 @@ export function QuadCard({
             const { product } = tile;
             const discounted =
               showPrices &&
-              product.has_discount === 1 &&
-              product.price_after_sale != null;
+              product.sale_price != null &&
+              product.sale_price < product.price;
 
             return (
               <Link
                 key={product.id}
-                href={`/product/${product.slug}`}
+                href={`/products/${product.slug}`}
                 className='group relative aspect-square overflow-hidden rounded-xl ring-1 ring-black/6 transition-[box-shadow,transform] duration-300 hover:shadow-md hover:ring-black/10'
               >
                 <Image
@@ -209,7 +209,7 @@ export function QuadCard({
                       {discounted ? (
                         <>
                           <span className='text-sm font-semibold tracking-tight text-red-400 tabular-nums sm:text-[0.95rem]'>
-                            {String(product.price_after_sale)}
+                            {String(product.sale_price)}
                           </span>
                           <span className='text-[10px] text-white/50 tabular-nums line-through decoration-white/35 sm:text-[11px]'>
                             {product.price}

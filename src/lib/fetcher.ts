@@ -1,4 +1,4 @@
-import type { NextApiRequest } from "next";
+import type { NextApiRequest } from 'next';
 
 export interface FetcherSuccess<T> {
   status: number;
@@ -20,7 +20,7 @@ export interface FetcherError {
 export type FetcherResponse<T> = FetcherSuccess<T> | FetcherError;
 
 export function getClientIP(req?: NextApiRequest | Request): string {
-  if (!req) return "";
+  if (!req) return '';
 
   // Handle NextApiRequest
   if ('headers' in req && !('url' in req)) {
@@ -30,8 +30,8 @@ export function getClientIP(req?: NextApiRequest | Request): string {
     const xRealIP = headers['x-real-ip'];
 
     if (xForwardedFor) {
-      const ips = Array.isArray(xForwardedFor) 
-        ? xForwardedFor[0] 
+      const ips = Array.isArray(xForwardedFor)
+        ? xForwardedFor[0]
         : xForwardedFor.split(',')[0].trim();
       return ips;
     }
@@ -39,35 +39,35 @@ export function getClientIP(req?: NextApiRequest | Request): string {
     return (
       (Array.isArray(cfConnectingIP) ? cfConnectingIP[0] : cfConnectingIP) ||
       (Array.isArray(xRealIP) ? xRealIP[0] : xRealIP) ||
-      ""
+      ''
     );
   }
 
   // Handle Request
   if (req instanceof Request) {
-    const xForwardedFor = req.headers.get("x-forwarded-for");
-    const cfConnectingIP = req.headers.get("cf-connecting-ip");
-    const xRealIP = req.headers.get("x-real-ip");
+    const xForwardedFor = req.headers.get('x-forwarded-for');
+    const cfConnectingIP = req.headers.get('cf-connecting-ip');
+    const xRealIP = req.headers.get('x-real-ip');
 
     if (xForwardedFor) {
       return xForwardedFor.split(',')[0].trim();
     }
 
-    return cfConnectingIP || xRealIP || "";
+    return cfConnectingIP || xRealIP || '';
   }
 
-  return "";
+  return '';
 }
 
 export async function fetcher<T>(
   url: string,
-  lang: string = "en",
+  lang: string = 'en',
   options: RequestInit = {},
   localServer: boolean = false,
   req?: NextApiRequest | Request
 ): Promise<FetcherResponse<T>> {
   const defaultHeaders: HeadersInit = {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
     lang,
   };
 
@@ -80,7 +80,7 @@ export async function fetcher<T>(
       ...defaultHeaders,
       ...(options.headers || {}),
       // Only add X-Forwarded-For if we have a client IP
-      ...(clientIP ? { "X-Forwarded-For": clientIP } : {}),
+      ...(clientIP ? { 'X-Forwarded-For': clientIP } : {}),
     },
   };
 
@@ -91,20 +91,21 @@ export async function fetcher<T>(
 
     if (!baseUrl) {
       throw new Error(
-        "Base URL is not defined. Check your environment variables."
+        'Base URL is not defined. Check your environment variables.'
       );
     }
 
-    const pathPrefix = localServer ? "api" : "user";
-    const fullUrl = constructFullUrl(baseUrl, pathPrefix, url);
-    
+    // const pathPrefix = localServer ? "api" : "user";
+    // const fullUrl = constructFullUrl(baseUrl, pathPrefix, url);
+    const fullUrl = constructFullUrl(baseUrl, url);
+
     const response = await fetch(fullUrl, config);
-    const contentType = response.headers.get("content-type");
+    const contentType = response.headers.get('content-type');
 
     if (
       response.ok &&
       contentType &&
-      contentType.includes("application/json")
+      contentType.includes('application/json')
     ) {
       const data = (await response.json()) as T;
       return {
@@ -114,7 +115,7 @@ export async function fetcher<T>(
         data,
       };
     } else {
-      let message = response.statusText || "Request failed";
+      let message = response.statusText || 'Request failed';
       try {
         const text = await response.text();
         if (text) message = text.slice(0, 2000);
@@ -141,9 +142,9 @@ export async function fetcher<T>(
 
 function constructFullUrl(
   baseUrl: string,
-  pathPrefix: string,
+  // pathPrefix: string,
   url: string
 ): string {
-  return `${baseUrl.replace(/\/$/, "")}/${pathPrefix}/${url.replace(/^\//, "")}`;
+  // return `${baseUrl.replace(/\/$/, '')}/${pathPrefix}/${url.replace(/^\//, '')}`;
+  return `${baseUrl.replace(/\/$/, '')}/${url.replace(/^\//, '')}`;
 }
-

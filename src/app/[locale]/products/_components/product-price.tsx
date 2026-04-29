@@ -1,13 +1,12 @@
-"use client";
+'use client';
 
-import { Badge } from "@/components/ui/badge";
-import { formatPrice } from "@/lib/utils";
-import useProductDetailsStore from "@/store/use-product-details-store";
-import { ProductDetails, Product } from "@/types/products";
-import { FC, useEffect, useState } from "react";
-import { isWithinInterval, subDays } from "date-fns";
-import { useTranslations } from "next-intl";
-import useCurrencyStore from "@/store/use-currency-store";
+import { Badge } from '@/components/ui/badge';
+import { formatPrice } from '@/lib/utils';
+import { ProductDetails } from '@/types/products';
+import { FC } from 'react';
+import { isWithinInterval, subDays } from 'date-fns';
+import { useTranslations } from 'next-intl';
+import useCurrencyStore from '@/store/use-currency-store';
 
 type PropsType = {
   defaultProduct: ProductDetails;
@@ -15,21 +14,8 @@ type PropsType = {
 
 const ProductPrice: FC<PropsType> = ({ defaultProduct }) => {
   const t = useTranslations();
-  const currency = useCurrencyStore((state) => state.currency);
-  const symbol = useCurrencyStore((state) => state.symbol);
-  const product = useProductDetailsStore(
-    (state) => state.productVariant
-  ) as ProductDetails | null;
-  const [currentProduct, setCurrentProduct] =
-    useState<ProductDetails>(defaultProduct);
-
-  useEffect(() => {
-    if (product && "price" in product) {
-      setCurrentProduct(product);
-    } else {
-      setCurrentProduct(defaultProduct);
-    }
-  }, [product, defaultProduct]);
+  const currency = useCurrencyStore(state => state.currency);
+  const symbol = useCurrencyStore(state => state.symbol);
 
   const isNewProduct = (dateString: string) => {
     const productDate = new Date(dateString);
@@ -37,45 +23,37 @@ const ProductPrice: FC<PropsType> = ({ defaultProduct }) => {
     return isWithinInterval(productDate, { start: weekAgo, end: new Date() });
   };
 
-  const renderPrice = (price: number, priceAfterSale?: number) => (
-    <div className="flex justify-start items-center gap-2">
-      {priceAfterSale ? (
+  const renderPrice = (price: number, salePrice?: number | null) => (
+    <div className='flex items-center justify-start gap-2'>
+      {salePrice && salePrice < price ? (
         <>
-          <p className="text-3xl font-bold text-primary line-through">
+          <p className='text-primary text-3xl font-bold line-through'>
             {formatPrice(price * currency, symbol)}
           </p>
-          <p className="text-3xl font-bold text-orange">
-            {formatPrice(priceAfterSale * currency, symbol)}
+          <p className='text-orange text-3xl font-bold'>
+            {formatPrice(salePrice * currency, symbol)}
           </p>
         </>
       ) : (
-        <p className="text-3xl font-bold text-primary">
+        <p className='text-primary text-3xl font-bold'>
           {formatPrice(price * currency, symbol)}
         </p>
       )}
     </div>
   );
 
-  if (!currentProduct) {
-    return null;
-  }
-
   return (
-    <div className="flex justify-start items-center gap-3">
-      {renderPrice(
-        +currentProduct.price,
-        currentProduct.has_discount
-          ? +currentProduct.price_after_sale!
-          : undefined
-      )}
+    <div className='flex items-center justify-start gap-3'>
+      {renderPrice(defaultProduct.price, defaultProduct.sale_price)}
 
-      {currentProduct.has_discount ? (
-        <Badge variant="destructive" className="capitalize">
-          {t("sale")}
+      {defaultProduct.sale_price &&
+      defaultProduct.sale_price < defaultProduct.price ? (
+        <Badge variant='destructive' className='capitalize'>
+          {t('sale')}
         </Badge>
-      ) : isNewProduct(currentProduct.created_at) ? (
-        <Badge variant="secondary" className="capitalize">
-          {t("new-in")}
+      ) : isNewProduct(defaultProduct.created_at) ? (
+        <Badge variant='secondary' className='capitalize'>
+          {t('new-in')}
         </Badge>
       ) : null}
     </div>

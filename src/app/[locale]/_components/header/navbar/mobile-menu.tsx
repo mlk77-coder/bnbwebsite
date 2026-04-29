@@ -20,7 +20,6 @@ import MenuBottomLinks from "./menu-bottom-links";
 import MobileCategories from "./mobile-categories";
 import MobileMenuHeader from "./mobile-menu-header";
 import { CustomSession } from "@/lib/auth-options";
-import { useTranslations } from "next-intl";
 
 type PropsType = {
   categories: Category[];
@@ -29,6 +28,31 @@ type PropsType = {
   userToken: string;
   isLoggedIn: boolean;
   session: CustomSession | null;
+  labels?: {
+    openMenu: string;
+    signIn: string;
+    sale: string;
+    allSale: string;
+    newArrivals: string;
+    sizeChart: string;
+    aboutBnbStore: string;
+    faqs: string;
+    returnsAndRefunds: string;
+    allCategoryById: Record<number, string>;
+  };
+};
+
+const fallbackLabels = {
+  openMenu: "Open menu",
+  signIn: "Sign in",
+  sale: "Sale",
+  allSale: "All sale",
+  newArrivals: "New arrivals",
+  sizeChart: "Size chart",
+  aboutBnbStore: "About BNB Store",
+  faqs: "FAQs",
+  returnsAndRefunds: "Returns and refunds",
+  allCategoryById: {},
 };
 
 const MobileMenu: FC<PropsType> = ({
@@ -38,8 +62,10 @@ const MobileMenu: FC<PropsType> = ({
   isLoggedIn,
   session,
   sales,
+  labels,
 }) => {
-  const t = useTranslations();
+  const menuLabels = labels ?? fallbackLabels;
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -47,7 +73,7 @@ const MobileMenu: FC<PropsType> = ({
           className="lg:hidden group relative hover:bg-gray-100/80 transition-all duration-300"
           variant="ghost"
           size="icon"
-          aria-label={t("open-menu")}
+          aria-label={menuLabels.openMenu}
         >
           <Menu className="w-5 h-5 text-gray-700 group-hover:text-gray-900 transition-colors" />
         </Button>
@@ -92,21 +118,25 @@ const MobileMenu: FC<PropsType> = ({
 
         {/* User Header Section */}
         <div className="px-4 py-4 bg-linear-to-br from-primary/5 to-transparent">
-          <MobileMenuHeader session={session} userToken={userToken} />
+          <MobileMenuHeader
+            session={session}
+            userToken={userToken}
+            signInLabel={menuLabels.signIn}
+          />
         </div>
 
         <Separator className="opacity-50" />
 
         {/* Categories Section */}
         <div className="py-2">
-          <MobileCategories categories={categories} sales={sales} />
+          <MobileCategories categories={categories} sales={sales} labels={menuLabels} />
         </div>
 
         <Separator className="opacity-50" />
 
         {/* Bottom Links */}
         <div className="py-4 px-4">
-          <MenuBottomLinks />
+          <MenuBottomLinks labels={menuLabels} />
         </div>
       </SheetContent>
     </Sheet>

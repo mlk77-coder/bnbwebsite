@@ -8,9 +8,6 @@ import Image from "next/image";
 const ProductPreview = () => {
   const productDetail = useProductDetailsStore((state) => state.productDetail);
   const quantity = useProductDetailsStore((state) => state.quantity);
-  const productVariant = useProductDetailsStore(
-    (state) => state.productVariant
-  );
   const currency = useCurrencyStore((state) => state.currency);
   const symbol = useCurrencyStore((state) => state.symbol);
   return (
@@ -27,20 +24,8 @@ const ProductPreview = () => {
           {productDetail.name}
         </span>
         <span className="ltr:tracking-wide">Quantity: {quantity}</span>
-        {productVariant && "attribute_values" in productVariant
-          ? productVariant.attribute_values.map((value, index) => {
-              return (
-                <span key={index}>
-                  {value.attribute_name}:{value.value}
-                </span>
-              );
-            })
-          : null}
         <span className="font-bold">
-          {formatPrice(
-            +(productVariant?.price || productDetail.price) * currency,
-            symbol
-          )}
+          {formatPrice(productDetail.price * currency, symbol)}
         </span>
       </span>
     </div>

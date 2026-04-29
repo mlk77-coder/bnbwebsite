@@ -7,7 +7,7 @@ import SectionWrapper, {
   sectionWrapperClassName,
 } from '@/components/section-wrapper';
 import { cn } from '@/lib/utils';
-import type { FeaturedCategory } from '@/lib/hero-section-dummy-data';
+import type { HomePageCategory } from '@/types/home';
 import type { ProductCard as ProductCardType } from '@/types/products';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
@@ -17,20 +17,21 @@ const PAGE_SIZE = 20;
 
 export function FeaturedProducts({
   categories,
+  products,
 }: {
-  categories: FeaturedCategory[];
+  categories: HomePageCategory[];
+  products: ProductCardType[];
 }) {
   const t = useTranslations();
   const [activeId, setActiveId] = useState<number | 'all'>('all');
   const [page, setPage] = useState(1);
 
-  const allProducts: ProductCardType[] = categories.flatMap(c => c.products);
-  const products =
+  const filteredProducts =
     activeId === 'all'
-      ? allProducts
-      : (categories.find(c => c.id === activeId)?.products ?? []);
-  const visible = products.slice(0, page * PAGE_SIZE);
-  const hasMore = visible.length < products.length;
+      ? products
+      : products.filter(product => product.category_id === activeId);
+  const visible = filteredProducts.slice(0, page * PAGE_SIZE);
+  const hasMore = visible.length < filteredProducts.length;
 
   const selectTab = (id: number | 'all') => {
     setActiveId(id);

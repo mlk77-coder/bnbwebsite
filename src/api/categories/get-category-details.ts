@@ -1,18 +1,23 @@
 import { fetcher } from '@/lib/fetcher';
-import { getDummyCategoryDetail } from '@/lib/dummy-catalog-data';
-import { CategoryDetail } from '@/types/categories';
+import { ApiCategory } from '@/types/categories';
 
 export const getCategory = async (
   subSubCategory: string,
   locale: string,
-  request?: any
+  request?: Request
 ) => {
-  const response = await fetcher<CategoryDetail>(
+  const response = await fetcher<{ success: boolean; data: ApiCategory }>(
     `categories/${subSubCategory}`,
     locale,
     undefined,
     false,
     request
   );
-  return response.ok ? response : getDummyCategoryDetail(subSubCategory);
+
+  if (!response.ok) return response;
+
+  return {
+    ...response,
+    data: response.data.data,
+  };
 };

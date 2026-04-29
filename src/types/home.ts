@@ -1,5 +1,5 @@
-import { ApiResponse } from ".";
-import { ProductCard } from "./products";
+import { ApiResponse } from '.';
+import { ProductCard } from './products';
 
 export type Media = {
   id: number;
@@ -35,7 +35,7 @@ export type HomePageCategory = {
   id: number;
   name: string;
   slug: string;
-  image: string;
+  image: string | null;
   parents_slugs: string[];
 };
 

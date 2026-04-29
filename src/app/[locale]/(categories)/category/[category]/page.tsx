@@ -31,10 +31,10 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
   try {
     const data = await getCategory(category, locale);
     if (data.ok) {
-      const { category: categoryData } = data.data;
+      const categoryData = data.data;
 
       // Check if there are no products and add 'noindex' if true
-      const noindex = !data.data.products || data.data.products.length === 0;
+      const noindex = data.data.products_count === 0;
 
       return {
         title: categoryData.name,
@@ -58,10 +58,10 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
         openGraph: {
           url: `${process.env.NEXT_PUBLIC_LOCAL_URL}/${locale}/category/${categoryData.slug}`,
           title: categoryData.name,
-          description: categoryData.description,
+          description: categoryData.description || undefined,
           siteName: 'BNB Store',
           locale,
-          images: [categoryData.image || ''],
+          images: categoryData.image ? [categoryData.image] : [],
         },
       };
     } else {
@@ -97,18 +97,19 @@ const Page: FC<PropsType> = async props => {
   const data = await getCategory(category, locale, request);
   if (!data.ok) return <>error</>;
   if (data.status === 404) return notFound();
-  const { category: categoryData, sub_categories: subCategories } = data.data;
+  const categoryData = data.data;
+  const subCategories = categoryData.subcategories;
   return (
     <PageWrapper>
       <SectionWrapper className='space-y-8! md:py-4 lg:py-8'>
         <CustomBreadcrumb activeLink={categoryData.name} links={[]} />
-        {subCategories.length > 1 ? (
+        {subCategories.length > 0 ? (
           <CategoryCirclesCarousel
             items={subCategories.map(c => ({
               id: c.id,
               name: c.name,
               image: c.image,
-              href: `/category/${category}/${c.slug}`,
+              href: `/category/${category}/${c.id}`,
             }))}
             title={t('hero-shop-by-category')}
             description={t('explore-our-selection-description')}
@@ -117,8 +118,9 @@ const Page: FC<PropsType> = async props => {
         ) : null}
         <Suspense fallback={<>loading.....</>}>
           <SubCategoryProducts
-            category={category}
+            category={String(categoryData.id)}
             searchParams={searchParams}
+            fallbackCategories={subCategories}
           />
         </Suspense>
       </SectionWrapper>

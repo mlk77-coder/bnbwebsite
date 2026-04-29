@@ -201,7 +201,7 @@ const SearchHeader: FC<SearchHeaderProps> = ({ isMobile = false }) => {
                         {categories.map(category => (
                           <li key={category.id}>
                             <Link
-                              href={`/category/${category.slug}`}
+                              href={`/category/${category.id}`}
                               onClick={() => setIsOpen(false)}
                               className='flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-gray-50'
                             >
@@ -366,9 +366,7 @@ const SearchHeader: FC<SearchHeaderProps> = ({ isMobile = false }) => {
                     <div className='grid grid-cols-1 gap-1'>
                       {categories.slice(0, 5).map(category => {
                         const parent = category.parents_slugs;
-                        const categoryPath = parent
-                          ? `/category/${parent.slice().reverse().join('/')}`
-                          : `/category/${category.slug}`;
+                        const categoryPath = `/category/${category.id}`;
                         return (
                           <Link
                             key={category.id}

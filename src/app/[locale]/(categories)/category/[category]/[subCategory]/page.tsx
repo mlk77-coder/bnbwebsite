@@ -34,9 +34,12 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
     const data = await getCategory(subCategory, locale);
 
     if (data.ok) {
-      const { category: categoryData } = data.data;
+      const categoryData = data.data;
+      const parentCategory = categoryData.parent;
       return {
-        title: `${data.data.category.parent_category.name} | ${categoryData.name}`,
+        title: parentCategory
+          ? `${parentCategory.name} | ${categoryData.name}`
+          : categoryData.name,
         description: categoryData.description,
         robots: {
           index: true,
@@ -50,17 +53,17 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
         alternates: {
           canonical: `${process.env.NEXT_PUBLIC_LOCAL_URL}/${locale}/category/${categoryData.slug}`,
           languages: {
-            en: `${process.env.NEXT_PUBLIC_LOCAL_URL}/en/category/${categoryData.parent_category.slug}/${categoryData.slug}`,
-            ar: `${process.env.NEXT_PUBLIC_LOCAL_URL}/ar/category/${categoryData.parent_category.slug}/${categoryData.slug}`,
+            en: `${process.env.NEXT_PUBLIC_LOCAL_URL}/en/category/${parentCategory?.slug || categoryData.slug}/${categoryData.slug}`,
+            ar: `${process.env.NEXT_PUBLIC_LOCAL_URL}/ar/category/${parentCategory?.slug || categoryData.slug}/${categoryData.slug}`,
           },
         },
         openGraph: {
-          url: `${process.env.NEXT_PUBLIC_LOCAL_URL}/en/category/${categoryData.parent_category.slug}/${categoryData.slug}`,
+          url: `${process.env.NEXT_PUBLIC_LOCAL_URL}/en/category/${parentCategory?.slug || categoryData.slug}/${categoryData.slug}`,
           title: categoryData.name,
-          description: categoryData.description,
+          description: categoryData.description || undefined,
           siteName: 'BNB Store',
           locale,
-          images: [categoryData.image || ''],
+          images: categoryData.image ? [categoryData.image] : [],
         },
       };
     } else {
@@ -101,7 +104,8 @@ const Page: FC<PropsType> = async props => {
 
     if (data.status === 404) return notFound();
 
-    const { category: categoryData, sub_categories } = data.data;
+    const categoryData = data.data;
+    const subcategories = categoryData.subcategories;
     return (
       <PageWrapper>
         <SectionWrapper className='space-y-8! md:py-4 lg:py-8'>
@@ -109,14 +113,14 @@ const Page: FC<PropsType> = async props => {
             activeLink={categoryData.name}
             links={[
               {
-                name: categoryData.parent_category.name,
+                name: categoryData.parent?.name || categoryData.name,
                 slug: `/category/${category}`,
               },
             ]}
           />
-          {sub_categories.length > 1 ? (
+          {subcategories.length > 0 ? (
             <CategoryCirclesCarousel
-              items={sub_categories.map(c => ({
+              items={subcategories.map(c => ({
                 id: c.id,
                 name: c.name,
                 image: c.image,
@@ -128,8 +132,9 @@ const Page: FC<PropsType> = async props => {
             />
           ) : null}
           <SubCategoryProducts
-            category={subCategory}
+            category={String(categoryData.id)}
             searchParams={searchParams}
+            fallbackCategories={subcategories}
           />
         </SectionWrapper>
         {/* <RecentlyViewed

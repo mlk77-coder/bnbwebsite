@@ -41,16 +41,16 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
         description: 'The category you are looking for does not exist.',
       };
 
-    const { category } = data.data;
+    const category = data.data;
     return {
       title: category?.name,
       description: category?.description,
       openGraph: {
         title: category.name,
-        description: category.description,
+        description: category.description || undefined,
         siteName: 'BNB Store',
         locale,
-        images: [category.image || ''],
+        images: category.image ? [category.image] : [],
       },
       robots: {
         index: true,
@@ -73,21 +73,21 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
 const getBreadcrumbLinks = (category: CategoryMainInfo) => {
   const links = [];
   const buildSlug = (cat: CategorySlugs): string => {
-    if (!cat.parent_category) {
+    if (!cat.parent) {
       return cat.slug;
     }
-    return `${buildSlug(cat.parent_category)}/${cat.slug}`;
+    return `${buildSlug(cat.parent)}/${cat.slug}`;
   };
 
   let currentCategory: CategorySlugs | null = category;
 
   // نبدأ بالتنقل في الشجرة، لكن نستثني العنصر الذي بدأنا به
-  while (currentCategory?.parent_category) {
+  while (currentCategory?.parent) {
     links.unshift({
       name: currentCategory.name,
       slug: `/category/${buildSlug(currentCategory)}`,
     });
-    currentCategory = currentCategory.parent_category;
+    currentCategory = currentCategory.parent;
   }
 
   // إضافة الجذر إذا كان موجودًا
@@ -112,7 +112,7 @@ export const getAllSlugs = (category: CategorySlugs | null): string[] => {
 
   while (currentCategory) {
     slugs.unshift(currentCategory.slug);
-    currentCategory = currentCategory.parent_category;
+    currentCategory = currentCategory.parent || null;
   }
 
   return slugs;
@@ -143,7 +143,8 @@ const Page: FC<PropsType> = async props => {
     const [data] = await Promise.all([categoryDetail]);
 
     if (!data.ok || data.status === 404) return notFound();
-    const { category: categoryData } = data.data;
+    const categoryData = data.data;
+    const subCategories = categoryData.subcategories;
     return (
       <PageWrapper>
         <SectionWrapper className='space-y-8! md:py-4 lg:py-8'>
@@ -153,8 +154,9 @@ const Page: FC<PropsType> = async props => {
           />
           <Suspense fallback={<>loading.....</>}>
             <SubCategoryProducts
-              category={subSubCategory[subSubCategory.length - 1]}
+              category={String(categoryData.id)}
               searchParams={searchParams}
+              fallbackCategories={subCategories}
             />
           </Suspense>
         </SectionWrapper>

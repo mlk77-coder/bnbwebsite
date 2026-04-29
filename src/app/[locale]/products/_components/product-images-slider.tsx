@@ -6,20 +6,19 @@ import {
   CarouselApi,
   CarouselContent,
 } from "@/components/ui/carousel";
-import useProductDetailsStore from "@/store/use-product-details-store";
 import MediaSlide from "./media-slide";
 import PhotoProvider from "./photo-provider";
 import ThumbnailCarousel from "./thumbnail-carousel";
 import { useMediaQuery } from "@/app/hooks/use-media-query";
 
 type ProductImagesSliderProps = {
-  gallery: string[];
+  images: string[];
   name: string;
   mainImage: string;
 };
 
 const ProductImagesSlider: React.FC<ProductImagesSliderProps> = ({
-  gallery,
+  images,
   mainImage,
   name,
 }) => {
@@ -27,13 +26,7 @@ const ProductImagesSlider: React.FC<ProductImagesSliderProps> = ({
   const [thumbnailApi, setThumbnailApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const productGallery = useProductDetailsStore(
-    (state) => state.productGallery
-  );
-  const media =
-    productGallery.length === 0
-      ? gallery
-      : productGallery.map((img) => img.url);
+  const media = images.length > 0 ? images : [mainImage];
 
   const syncSliders = useCallback((api: CarouselApi, index: number) => {
     if (!api) return;

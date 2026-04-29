@@ -1,7 +1,7 @@
-import { getProductDetails } from "@/api/products/get-product-details";
-import { cleanDescription } from "@/lib/utils";
-import { htmlToText } from "html-to-text";
-import { Metadata } from "next";
+import { getProductDetails } from '@/api/products/get-product-details';
+import { cleanDescription } from '@/lib/utils';
+import { htmlToText } from 'html-to-text';
+import { Metadata } from 'next';
 
 type PropsType = {
   locale: string;
@@ -15,18 +15,17 @@ export default async function ProductPageMetaData(
   const response = await getProductDetails(slug);
   if (!response.ok) return {};
 
-  const data = response.data;
-  const product = data.product;
+  const product = response.data;
 
   return {
     title: product.name,
-    description: htmlToText(cleanDescription(product.description)),
+    description: htmlToText(cleanDescription(product.description || '')),
     robots: {
       index: true,
       follow: true,
-      "max-snippet": -1,
-      "max-image-preview": "standard",
-      "max-video-preview": -1,
+      'max-snippet': -1,
+      'max-image-preview': 'standard',
+      'max-video-preview': -1,
       notranslate: false,
       noimageindex: false,
     },
@@ -40,18 +39,18 @@ export default async function ProductPageMetaData(
     openGraph: {
       url: `${process.env.NEXT_PUBLIC_LOCAL_URL}/${locale}/products/${slug}`,
       title: product.name,
-      description: htmlToText(cleanDescription(product.description)),
-      siteName: "BNB Store",
+      description: htmlToText(cleanDescription(product.description || '')),
+      siteName: 'BNB Store',
       locale,
-      images: [product.image || ""],
+      images: [product.image || ''],
     },
     other: {
-      "og:type": "product",
-      "product:price:amount": product.price,
-      "product:price:currency": "USD",
-      "product:condition": "new",
-      "product:category": product?.category?.name || "",
-      "og:availability": product.quantity > 0 ? "instock" : "oos",
+      'og:type': 'product',
+      'product:price:amount': String(product.price),
+      'product:price:currency': 'USD',
+      'product:condition': 'new',
+      'product:category': product?.category?.name || '',
+      'og:availability': product.is_available ? 'instock' : 'oos',
     },
   };
 }

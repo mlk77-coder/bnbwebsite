@@ -1,16 +1,15 @@
-import getProductList from "@/api/products/get-products";
-import CustomBreadcrumb from "@/components/custom-breadcrumb";
-import PageWrapper from "@/components/page-wrapper";
+import getProductList from '@/api/products/get-products';
+import CustomBreadcrumb from '@/components/custom-breadcrumb';
+import PageWrapper from '@/components/page-wrapper';
 import SectionWrapper, {
   sectionWrapperClassName,
-} from "@/components/section-wrapper";
-import { getTranslations } from "next-intl/server";
-import { FC } from "react";
-import InifinteProducts from "../../products/_components/inifinte-products";
-import ProductsFilters from "../../products/_components/products-filters";
-import RecentlyViewed from "../../_components/recently-viewed";
-import { cookies, headers } from "next/headers";
-import getSession from "@/lib/get-session";
+} from '@/components/section-wrapper';
+import { getTranslations } from 'next-intl/server';
+import { FC } from 'react';
+import InifinteProducts from '../../products/_components/inifinte-products';
+import RecentlyViewed from '../../_components/recently-viewed';
+import { cookies, headers } from 'next/headers';
+import getSession from '@/lib/get-session';
 
 type PropsType = {
   params: Promise<{
@@ -24,14 +23,11 @@ const Page: FC<PropsType> = async props => {
   const searchParams = await props.searchParams;
   const params = await props.params;
 
-  const {
-    locale,
-    id
-  } = params;
+  const { locale, id } = params;
 
   const cookieStore = await cookies();
   const session = await getSession();
-  const userToken = cookieStore.get("x-user-session")?.value || "";
+  const userToken = cookieStore.get('x-user-session')?.value || '';
   const isLoggedIn = Boolean(session && session.user);
   const t = await getTranslations();
   const headersList = await headers();
@@ -39,7 +35,7 @@ const Page: FC<PropsType> = async props => {
     headers: headersList,
   });
   const response = await getProductList(
-    "",
+    '',
     {
       ...searchParams,
       discount_id: id,
@@ -52,19 +48,15 @@ const Page: FC<PropsType> = async props => {
   try {
     return (
       <PageWrapper>
-        <SectionWrapper className="px-2.5 md:px-4 lg:px-6 xl:px-7 py-4 md:py-4 lg:py-8 max-w-screen-xl space-y-8">
-          <CustomBreadcrumb activeLink={"SALE"} links={[]} />
+        <SectionWrapper className='max-w-7xl space-y-8 px-2.5 py-4 md:px-4 md:py-4 lg:px-6 lg:py-8 xl:px-7'>
+          <CustomBreadcrumb activeLink={'SALE'} links={[]} />
 
-          <div className="flex flex-col-reverse sm:flex-row justify-between items-start gap-5">
-            <p className="flex justify-start items-start w-full">
-              {t("product-count", { count: productList.pagination.total })}
+          <div className='flex flex-col-reverse items-start justify-between gap-5 sm:flex-row'>
+            <p className='flex w-full items-start justify-start'>
+              {t('product-count', { count: productList.pagination.total })}
             </p>
-            <ProductsFilters
-              priceRange={productList.range_price}
-              attributes={productList.attributes}
-            />
           </div>
-          <InifinteProducts initialData={productList} isSales={id} slug={""} />
+          <InifinteProducts initialData={productList} isSales={id} slug={''} />
         </SectionWrapper>
         <RecentlyViewed
           className={sectionWrapperClassName}

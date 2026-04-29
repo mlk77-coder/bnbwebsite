@@ -1,4 +1,4 @@
-import createNextIntlPlugin from "next-intl/plugin";
+import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin();
 
@@ -8,25 +8,15 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "ice-cube-back.r-link.io",
-        pathname: "/**",
+        protocol: 'https',
+        hostname: 'api.bnb-sy.com',
+        pathname: '/**',
       },
+
       {
-        protocol: "http",
-        hostname: "192.168.132.150",
-        port:"8000",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "back.icecube-stores.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-        pathname: "/**",
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
       },
     ],
   },

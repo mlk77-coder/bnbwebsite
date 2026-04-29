@@ -7,7 +7,7 @@ import AuthProvider from '@/providers/auth-provuder';
 import ReactQueryProvider from '@/providers/react-query-provider';
 import { Session } from 'next-auth';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTranslations } from 'next-intl/server';
+import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import { FC } from 'react';
 import AdsDialog from './ads-dialog';
 import Footer from './footer/footer';
@@ -23,16 +23,18 @@ const HtmlBody: FC<PropsType> = async ({ children }) => {
   const sessionApi = getSession();
   const dataApi = getCurrency();
   const contactUsApi = cachedGetSocialLinks();
-  const [messages, session, data, contactUs, t] = await Promise.all([
+  const localeApi = getLocale();
+  const [messages, session, data, contactUs, t, locale] = await Promise.all([
     messagesApi,
     sessionApi,
     dataApi,
     contactUsApi,
     trans,
+    localeApi,
   ]);
   const socialLinks = contactUs.data?.information || [];
   return (
-    <NextIntlClientProvider messages={messages}>
+    <NextIntlClientProvider locale={locale} messages={messages}>
       <ReactQueryProvider>
         <AuthProvider session={session as Session}>
           <SetCurrency

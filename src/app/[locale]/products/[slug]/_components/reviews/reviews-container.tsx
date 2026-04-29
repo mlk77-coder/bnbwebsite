@@ -1,39 +1,47 @@
-"use client";
-import { Separator } from "@/components/ui/separator";
-import axiosInstance from "@/lib/axios";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { Star } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { FC, useState } from "react";
-import AddReview from "./add-reviews";
-import { GetReviewsResponse } from "@/types/reviews";
-import { format } from "date-fns";
-import { Pagination } from "@/components/pagination";
-import ReviewRatingSummary from "./review-rating-summary";
-import ReviewSkeletonLoader from "../review-skeleton-loader";
+'use client';
+import { Separator } from '@/components/ui/separator';
+import axiosInstance from '@/lib/axios';
+import { mapReviewsResponse } from '@/lib/api-mappers';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { Star, UserRound } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { FC, useState } from 'react';
+import AddReview from './add-reviews';
+import { GetApiReviewsResponse } from '@/types/reviews';
+import { format } from 'date-fns';
+import { Pagination } from '@/components/pagination';
+import ReviewRatingSummary from './review-rating-summary';
+import ReviewSkeletonLoader from '../review-skeleton-loader';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 type PropsType = {
-  slug: string;
+  productId: number;
+  averageRating?: number;
+  reviewsCount?: number;
   token: string;
 };
 
-const ReviewsContainer: FC<PropsType> = ({ slug, token }) => {
+const ReviewsContainer: FC<PropsType> = ({
+  productId,
+  averageRating,
+  reviewsCount,
+  token,
+}) => {
   const t = useTranslations();
   const [page, setPage] = useState(1);
-  const itemsPerPage = 3; // You can adjust this value as needed
+  const itemsPerPage = 5;
 
   const {
     data: reviews,
     isPending,
     isError,
   } = useQuery({
-    queryKey: ["reviews", slug, page],
+    queryKey: ['reviews', productId, page],
     staleTime: Infinity,
     queryFn: async () => {
-      const { data } = await axiosInstance.get<GetReviewsResponse>(
-        `/products/reviews/${slug}?count=${itemsPerPage}&page=${page}`
-      );
-      return data;
+      const path = `/products/${productId}/reviews?per_page=${itemsPerPage}&page=${page}`;
+      const { data } = await axiosInstance.get<GetApiReviewsResponse>(path);
+      return mapReviewsResponse(data.data.data, data.data.meta, path);
     },
     placeholderData: keepPreviousData,
   });
@@ -41,10 +49,7 @@ const ReviewsContainer: FC<PropsType> = ({ slug, token }) => {
   if (isPending) return <ReviewSkeletonLoader />;
   if (isError) return <div>Error loading reviews</div>;
 
-  const totalReviews = reviews.reviews_rate_count.reduce(
-    (acc, curr) => acc + curr.count,
-    0
-  );
+  const totalReviews = reviewsCount ?? reviews.pagination.total;
   const totalPages = Math.ceil(totalReviews / itemsPerPage);
 
   const handlePageChange = (newPage: number) => {
@@ -52,50 +57,91 @@ const ReviewsContainer: FC<PropsType> = ({ slug, token }) => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-4 justify-start items-start">
-      <h2 className="text-2xl capitalize">{t("reviews.title")}</h2>
-      <ReviewRatingSummary reviewData={reviews} />
-      <Separator />
-      <div className="space-y-4 w-full">
-        <div className="w-full flex justify-between items-center gap-4">
-          <h3>
-            {t("reviews.all-reviews")} {totalReviews}
-          </h3>
-          <AddReview slug={slug} token={token} />
+    <section className='border-border w-full border-t pt-5'>
+      <div className='space-y-5'>
+        <div className='flex w-full items-start justify-between gap-4'>
+          <div>
+            <h2 className='text-foreground text-xl font-semibold capitalize'>
+              {t('reviews.title')}
+            </h2>
+            <p className='text-muted-foreground text-sm'>
+              {t('reviews.all-reviews')} {totalReviews}
+            </p>
+          </div>
+          <AddReview slug={String(productId)} token={token} />
         </div>
-        <div className="flex flex-col justify-start items-start gap-1">
+
+        <ReviewRatingSummary
+          reviewData={reviews}
+          averageRating={averageRating}
+          totalReviews={totalReviews}
+        />
+
+        <Separator />
+
+        <div className='space-y-3'>
           {reviews.reviews.length > 0 ? (
-            reviews.reviews.map((review) => (
+            reviews.reviews.map(review => (
               <div
                 key={review.id}
-                className="border-b w-full border-dashed border-gray py-2"
+                className='border-border border-b border-dashed pb-4 last:border-b-0'
               >
-                <h4 className="capitalize">{review.name}</h4>
-                <div className="flex justify-start items-center gap-2">
-                  <div className="flex justify-start items-center">
-                    {Array(review.rate)
-                      .fill("")
-                      .map((_, index) => (
+                <div className='flex items-start gap-3'>
+                  <Avatar className='border-border/70 size-9 border'>
+                    {review.avatar ? (
+                      <AvatarImage alt={review.name} src={review.avatar} />
+                    ) : null}
+                    <AvatarFallback className='bg-primary/10 text-primary'>
+                      {review.name ? (
+                        review.name.slice(0, 1).toUpperCase()
+                      ) : (
+                        <UserRound className='size-4' />
+                      )}
+                    </AvatarFallback>
+                  </Avatar>
+
+                  <div className='min-w-0 flex-1 space-y-1.5'>
+                    <div className='flex flex-wrap items-center justify-between gap-2'>
+                      <h4 className='text-foreground text-sm font-medium capitalize'>
+                        {review.name}
+                      </h4>
+                      <span className='text-muted-foreground text-xs'>
+                        {format(
+                          new Date(review.created_at),
+                          'dd/MM/yyyy hh:mm aa'
+                        )}
+                      </span>
+                    </div>
+
+                    <div className='flex items-center gap-1'>
+                      {Array.from({ length: 5 }).map((_, index) => (
                         <Star
                           key={index}
-                          className="size-3 fill-yellow-500 text-yellow-500"
+                          className={
+                            index < review.rate
+                              ? 'size-3.5 fill-amber-400 text-amber-400'
+                              : 'text-muted fill-muted size-3.5'
+                          }
                         />
                       ))}
+                    </div>
+
+                    <p className='text-muted-foreground text-sm leading-relaxed'>
+                      {review.comment}
+                    </p>
                   </div>
-                  {format(new Date(review.created_at), "dd/MM/yyyy hh:mm aa")}
                 </div>
-                <p>{review.comment}</p>
               </div>
             ))
           ) : (
-            <p className="text-center bg-gray/20 py-2 px-4 rounded-lg w-full">
-              {t("empty-reviews")}
+            <p className='bg-muted/60 text-muted-foreground w-full rounded-xl px-4 py-5 text-center text-sm'>
+              {t('empty-reviews')}
             </p>
           )}
         </div>
 
         {totalPages > 1 && reviews.reviews.length > 0 && (
-          <div dir="ltr" className="mt-4">
+          <div dir='ltr' className='mt-4'>
             <Pagination
               currentPage={page}
               totalPages={totalPages}
@@ -104,7 +150,7 @@ const ReviewsContainer: FC<PropsType> = ({ slug, token }) => {
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

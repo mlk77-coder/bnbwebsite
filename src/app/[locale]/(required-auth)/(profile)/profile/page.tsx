@@ -1,10 +1,8 @@
 import { cachedGetProfile } from "@/api/profile/get-profile";
 import getSession from "@/lib/get-session";
 import { notFound } from "next/navigation";
-import { FC, Fragment } from "react";
+import { FC } from "react";
 import SettingsForm from "./_components/settings-form";
-import { Separator } from "@/components/ui/separator";
-import ChangePasswordForm from "./_components/change-password-form";
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { headers } from "next/headers";
@@ -48,11 +46,9 @@ const Page: FC<PropsType> = async props => {
   return (
     <div className="space-y-6">
       <SettingsForm
-        userDetails={profileResponse.data.profile}
+        userDetails={profileResponse.data.data}
         session={session}
       />
-      <Separator />
-      <ChangePasswordForm session={session} />
     </div>
   );
 };

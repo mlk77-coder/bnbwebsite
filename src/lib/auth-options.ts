@@ -1,9 +1,6 @@
-import { LoginResponse, User } from "@/types/auth";
+import { User, VerifyOtpResponse } from "@/types/auth";
 import { AuthOptions, ISODateString } from "next-auth";
-import AppleProvider from "next-auth/providers/apple";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
-import generateAppleClientSecret from "./appleClientSecret";
 import { fetcher, FetcherResponse } from "./fetcher";
 
 export interface CustomSession {
@@ -13,7 +10,7 @@ export interface CustomSession {
 
 export const authOptions = {
   callbacks: {
-    async jwt({ token, user, trigger, session, account }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) token.user = user;
       if (trigger === "update") {
         const updatedUser = token.user as User;
@@ -21,43 +18,6 @@ export const authOptions = {
         updatedUser.email = session?.email || updatedUser.email;
         updatedUser.image = session?.image || updatedUser.image;
         updatedUser.phone = session?.phone || updatedUser.phone;
-      }
-      if (account) {
-        if (account.provider === "google") {
-          const googleToken = account.access_token;
-          try {
-            const response = await fetcher<LoginResponse>(
-              "/login/google",
-              "en",
-              {
-                method: "POST",
-                body: JSON.stringify({ token: googleToken }),
-              },
-            );
-            if (response.ok && response.data) {
-              token.user = response.data.data;
-            }
-          } catch (error) {
-            console.error("Error verifying Google token:", error);
-          }
-        } else if (account.provider === "apple") {
-          const idToken = account.id_token;
-          try {
-            const response = await fetcher<LoginResponse>(
-              "/login/apple",
-              "en",
-              {
-                method: "POST",
-                body: JSON.stringify({ token: idToken }),
-              },
-            );
-            if (response.ok && response.data) {
-              token.user = response.data.data;
-            }
-          } catch (error) {
-            console.error("Error verifying Apple token:", error);
-          }
-        }
       }
       return token;
     },
@@ -95,29 +55,33 @@ export const authOptions = {
     CredentialsProvider({
       type: "credentials",
       credentials: {
-        email: { label: "Email", type: "text" },
-        s_id: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
+        phone: { label: "Phone", type: "text" },
+        otp: { label: "OTP", type: "text" },
       },
       async authorize(credentials, req) {
-        const email = credentials?.email || "";
-        const password = credentials?.password || "";
-        const s_id = credentials?.s_id || "";
+        const phone = credentials?.phone || "";
+        const otp = credentials?.otp || "";
         try {
-          const response = await fetcher<LoginResponse>(
-            "/login",
+          const response = await fetcher<VerifyOtpResponse>(
+            "/auth/verify-otp",
             "en",
             {
               method: "POST",
-              body: JSON.stringify({ email, password, s_id }),
+              body: JSON.stringify({ phone, otp }),
             },
             false,
             req as Request,
           );
 
           if (response.ok && response.data) {
-            const user = response.data.data;
-            return { ...user, id: "" };
+            const { user, token, token_type } = response.data.data;
+            return {
+              ...user,
+              id: String(user.id),
+              access_token: token,
+              token_type,
+              image: user.avatar,
+            };
           } else {
             return null;
           }
@@ -130,9 +94,8 @@ export const authOptions = {
             const fetcherError = error as FetcherResponse<unknown>;
             switch (fetcherError.status) {
               case 400:
-                throw new Error("Email or password is incorrect");
-              case 434:
-                throw new Error("434");
+              case 422:
+                throw new Error("Invalid verification code");
               default:
                 throw new Error("Something went wrong!");
             }
@@ -141,20 +104,5 @@ export const authOptions = {
         }
       },
     }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-    // AppleProvider({
-    //   clientId: process.env.APPLE_CLIENT_ID!,
-    //   clientSecret: generateAppleClientSecret(),
-    //   authorization: {
-    //     params: {
-    //       scope: "name email",
-    //       response_mode: "form_post",
-    //       response_type: "code",
-    //     },
-    //   },
-    // }),
   ],
 } satisfies AuthOptions;

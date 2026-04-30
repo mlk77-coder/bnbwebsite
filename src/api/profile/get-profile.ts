@@ -1,5 +1,4 @@
 import { fetcher } from "@/lib/fetcher";
-import { ApiResponse } from "@/types";
 import { GetProfileResponse } from "@/types/profile";
 import { cache } from "react";
 
@@ -9,7 +8,7 @@ export const getProfile = async (
   request: any
 ) => {
   const response = await fetcher<GetProfileResponse>(
-    "profile",
+    "auth/profile",
     locale,
     {
       headers: {

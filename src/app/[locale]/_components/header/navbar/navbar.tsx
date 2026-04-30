@@ -1,5 +1,6 @@
 import getCart from '@/api/cart/get-cart';
 import getCategories from '@/api/categories/get-categories';
+import { getProfile } from '@/api/profile/get-profile';
 // import getSaleCategories from '@/api/sale/get-sale-categories';
 import getSession from '@/lib/get-session';
 import { getLocale, getTranslations } from 'next-intl/server';
@@ -58,7 +59,13 @@ const Navbar = async () => {
   const user_token = cookieStore.get('x-user-session')?.value || '';
   const isLoggedIn = Boolean(session && session.user);
   const token = isLoggedIn ? session?.user?.access_token || '' : user_token;
-  const response = await getCart(token, locale, isLoggedIn, request);
+  const [response, profileResponse] = await Promise.all([
+    getCart(token, locale, isLoggedIn, request),
+    isLoggedIn && token
+      ? getProfile(locale, token, request)
+      : Promise.resolve(null),
+  ]);
+  const profile = profileResponse?.ok ? profileResponse.data.data : null;
   return (
     <header className='font-body sticky inset-s-0 top-0 z-50 w-full'>
       {/* Main Header with Glassmorphism Effect */}
@@ -93,7 +100,13 @@ const Navbar = async () => {
               </div>
 
               {session?.user ? (
-                <UserMenu session={session} userToken={user_token} />
+                <UserMenu
+                  session={session}
+                  userToken={user_token}
+                  profileAvatar={profile?.avatar || undefined}
+                  profileName={profile?.name || undefined}
+                  profileEmail={profile?.email || undefined}
+                />
               ) : (
                 <LoginButton />
               )}

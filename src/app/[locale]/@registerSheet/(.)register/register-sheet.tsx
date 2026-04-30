@@ -1,45 +1,33 @@
 "use client";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { usePathname, useRouter } from "@/navigation";
-import { useLocale } from "next-intl";
 import { useEffect, useState } from "react";
 
 const RegisterSheet = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const locale = useLocale();
   const [isMount, setIsMount] = useState(pathname.includes("/register"));
 
   useEffect(() => {
     setIsMount(pathname.includes("/register"));
   }, [pathname]);
+
   return (
-    <Sheet
-      defaultOpen={isMount}
+    <Dialog
       open={isMount}
-      onOpenChange={() => {
-        router.back();
+      onOpenChange={(open) => {
+        if (!open) router.back();
       }}
     >
-      <SheetContent
-        side={locale === "ar" ? "left" : "right"}
-        className="overflow-y-auto"
-      >
-        <SheetHeader>
-          <SheetHeader className="sr-only">
-            <SheetTitle className="text-3xl">sign in</SheetTitle>
-            <SheetDescription>sign in to your account</SheetDescription>
-          </SheetHeader>
-          {children}
-        </SheetHeader>
-      </SheetContent>
-    </Sheet>
+      <DialogContent className="overflow-y-auto border-0 bg-transparent p-0 shadow-none sm:max-w-lg">
+        <DialogTitle className="sr-only">sign up</DialogTitle>
+        {children}
+      </DialogContent>
+    </Dialog>
   );
 };
 

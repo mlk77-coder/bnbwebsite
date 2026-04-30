@@ -14,12 +14,14 @@ type PropsType = {
   inDropdown?: boolean;
   userToken: string;
   session: CustomSession;
+  onRequestConfirm?: () => void;
 };
 
 const LogoutButton: FC<PropsType> = ({
   inDropdown = true,
   session,
   userToken,
+  onRequestConfirm,
 }) => {
   const t = useTranslations();
   const locale = useLocale();
@@ -27,21 +29,34 @@ const LogoutButton: FC<PropsType> = ({
 
   const handleLogout = async () => {
     try {
-      await axiosInstance.get(`logout?s_id=${userToken}`, {
-        headers: {
-          Authorization: `Bearer ${session.user?.access_token || ""}`,
-        },
-      });
+      if (session.user?.access_token) {
+        await axiosInstance.post(
+          "/auth/logout",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${session.user.access_token}`,
+            },
+          }
+        );
+      }
       await signOut();
     } catch (error) {
-      toast.error("Something went wrong, please try again");
+      toast.error(t("auth.something-went-wrong-please-try-again"));
     }
   };
 
   if (inDropdown)
     return (
-      <DropdownMenuItem 
-        onClick={handleLogout}
+      <DropdownMenuItem
+        onSelect={(e) => {
+          if (onRequestConfirm) {
+            e.preventDefault();
+            onRequestConfirm();
+            return;
+          }
+          handleLogout();
+        }}
         className={cn(
           "cursor-pointer p-2.5 rounded-lg transition-all duration-200",
           "hover:bg-red-50 focus:bg-red-50",
@@ -55,18 +70,23 @@ const LogoutButton: FC<PropsType> = ({
           <span className="flex-1 text-sm font-medium text-red-600">
             {t("sign-out")}
           </span>
-          <ChevronRight className={cn(
-            "w-4 h-4 text-red-400",
-            isRTL && "rotate-180"
-          )} />
+          <ChevronRight
+            className={cn("w-4 h-4 text-red-400", isRTL && "rotate-180")}
+          />
         </div>
       </DropdownMenuItem>
     );
 
   return (
     <button
-      onClick={handleLogout}
-      className="block pb-3 text-start focus-visible:outline-none focus-visible:border-none before:transition-all before:duration-300 relative before:absolute before:bottom-1/4 before:start-0 before:end-0 before:h-0.5 before:w-0 hover:before:w-full focus:before:w-full focus-visible:before:w-full before:bg-red-500"
+      onClick={() => {
+        if (onRequestConfirm) {
+          onRequestConfirm();
+          return;
+        }
+        handleLogout();
+      }}
+      className="relative block pb-3 text-start before:absolute before:bottom-1/4 before:inset-e-0 before:inset-s-0 before:h-0.5 before:w-0 before:bg-red-500 before:transition-all before:duration-300 hover:before:w-full focus:before:w-full focus-visible:before:w-full focus-visible:border-none focus-visible:outline-none"
     >
       {t("sign-out")}
     </button>

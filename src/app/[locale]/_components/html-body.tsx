@@ -9,7 +9,6 @@ import { Session } from 'next-auth';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import { FC } from 'react';
-import AdsDialog from './ads-dialog';
 import Footer from './footer/footer';
 import Navbar from './header/navbar/navbar';
 
@@ -48,7 +47,6 @@ const HtmlBody: FC<PropsType> = async ({ children }) => {
           <main className='relative flex size-full min-h-[calc(100vh-6rem)] flex-1 flex-col items-start justify-start'>
             {children}
           </main>
-          <AdsDialog />
           <Footer socialLinks={socialLinks} />
           <Toaster
             richColors

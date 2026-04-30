@@ -1,6 +1,4 @@
 import redirectHard from "@/app/actions/redirect-hard-action";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { Link } from "@/navigation";
 import { useTranslations } from "next-intl";
 import { FC } from "react";
@@ -20,16 +18,13 @@ const AlreadyHaveAnAccount: FC<PropsType> = ({ hardLink }) => {
   const t = useTranslations();
 
   return (
-    <p>
+    <p className="text-muted-foreground pt-2 text-center text-sm">
       {t.rich("auth.already-have-an-account", {
         login: (chunks) => {
           if (hardLink)
             return (
               <a
-                className={cn(
-                  buttonVariants({ variant: "link" }),
-                  "text-base text-orange py-0 h-fit px-0.5"
-                )}
+                className="text-primary font-semibold underline-offset-4 transition-colors hover:underline"
                 onClick={handleRedirect}
                 href="/login"
               >
@@ -38,10 +33,7 @@ const AlreadyHaveAnAccount: FC<PropsType> = ({ hardLink }) => {
             );
           return (
             <Link
-              className={cn(
-                buttonVariants({ variant: "link" }),
-                "text-base text-orange py-0 h-fit px-0.5"
-              )}
+              className="text-primary font-semibold underline-offset-4 transition-colors hover:underline"
               scroll={false}
               href="/login"
               replace

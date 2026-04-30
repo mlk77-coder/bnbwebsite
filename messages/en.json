@@ -25,7 +25,22 @@
     "reset-password": "Reset password",
     "reset-password-desc": "Recover your account password easily and securely to continue accessing your account without any issues.",
     "check-code-description": "A verification code has been sent to your email, please enter it to continue. If you didn’t receive the email, you can request a new one.",
-    "check-code": "Verification code"
+    "check-code": "Verification code",
+    "otp-secure-login": "OTP Secure Login",
+    "otp-secure-signup": "OTP Secure Signup",
+    "otp-secure-verification": "Secure OTP Verification",
+    "otp-will-be-sent": "We'll send a verification code to this number",
+    "didnt-receive-code": "Didn't receive the code?",
+    "resend-in": "Resend in {seconds}s",
+    "resend-code": "Resend code",
+    "verification-code-sent-success": "Verification code sent successfully",
+    "otp-sent-successfully": "OTP sent successfully",
+    "account-created-otp-sent-successfully": "Account created. OTP sent successfully",
+    "logged-in-successfully": "Logged in successfully",
+    "invalid-verification-code": "Invalid verification code",
+    "something-went-wrong-please-try-again": "Something went wrong, please try again",
+    "logout-confirm-title": "Confirm logout",
+    "logout-confirm-description": "Are you sure you want to sign out from your account?"
   },
   "form": {
     "fields": {
@@ -391,7 +406,6 @@
   "new-arrivals-description": "Stay ahead of the trend with our latest arrivals, Discover the newest styles, colors, and designs added to our collection.",
   "best-sellers-description": "Shop our best-selling products, loved by customers like you.",
   "all-sale": "all sale",
-  "advertisement": "Advertisement",
   "Trendy": "Trendy",
   "Trendy-d": "Discover the latest handpicked products in the Trendy section! A special selection of trendy items recommended by store owners to highlight top deals.",
   "order-status": "Order status",

@@ -25,7 +25,22 @@
     "reset-password": "إعادة تعيين كلمة المرور",
     "reset-password-desc": "استعد كلمة المرور الخاصة بحسابك بسهولة وأمان لتتمكن من متابعة استخدام حسابك دون مشاكل.",
     "check-code-description": "تم إرسال رمز التحقق إلى بريدك الإلكتروني، يرجى إدخاله للمتابعة. إذا لم تتلق رسالة البريد الإلكتروني، فيمكنك طلب رمز جديد..",
-    "check-code": "رمز التحقق"
+    "check-code": "رمز التحقق",
+    "otp-secure-login": "تسجيل دخول آمن عبر OTP",
+    "otp-secure-signup": "إنشاء حساب آمن عبر OTP",
+    "otp-secure-verification": "تحقق آمن عبر OTP",
+    "otp-will-be-sent": "سنرسل رمز تحقق إلى هذا الرقم",
+    "didnt-receive-code": "لم يصلك الرمز؟",
+    "resend-in": "إعادة الإرسال خلال {seconds}ث",
+    "resend-code": "إعادة إرسال الرمز",
+    "verification-code-sent-success": "تم إرسال رمز التحقق بنجاح",
+    "otp-sent-successfully": "تم إرسال رمز OTP بنجاح",
+    "account-created-otp-sent-successfully": "تم إنشاء الحساب وإرسال رمز OTP بنجاح",
+    "logged-in-successfully": "تم تسجيل الدخول بنجاح",
+    "invalid-verification-code": "رمز التحقق غير صحيح",
+    "something-went-wrong-please-try-again": "حدث خطأ ما، يرجى المحاولة مرة أخرى",
+    "logout-confirm-title": "تأكيد تسجيل الخروج",
+    "logout-confirm-description": "هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟"
   },
   "form": {
     "fields": {
@@ -388,7 +403,6 @@
   "new-arrivals-description": "ابق على إطلاع بأحدث التنزيلات مع منتجاتنا الجديدة، واكتشف أحدث الأنماط والألوان والتصميمات المضافة إلى مجموعتنا بعناية.",
   "best-sellers-description": "تسوق من بين منتجاتنا الأكثر مبيعًا، والتي يحبها العملاء مثلك.",
   "all-sale": "جميع التخفيضات",
-  "advertisement": "إعلان",
   "Trendy": "رائج",
   "Trendy-d": "اكتشف أحدث المنتجات المختارة خصيصًا لك في قسم Trendy! مجموعة مميزة من العناصر العصرية التي يوصي بها أصحاب المتجر لإبراز أفضل العروض.",
   "order-status": "حالة الطلب",

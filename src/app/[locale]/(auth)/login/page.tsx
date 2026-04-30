@@ -1,10 +1,10 @@
-import PageWrapper from "@/components/page-wrapper";
-import SectionWrapper from "@/components/section-wrapper";
-import { FC } from "react";
-import LoginPage from "./_components/login-page";
-import { cookies } from "next/headers";
-import { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import PageWrapper from '@/components/page-wrapper';
+import SectionWrapper from '@/components/section-wrapper';
+import { FC } from 'react';
+import LoginPage from './_components/login-page';
+import { cookies } from 'next/headers';
+import { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 
 type PropsType = {
   params: Promise<{ locale: string }>;
@@ -15,25 +15,25 @@ export async function generateMetadata({
 }: PropsType): Promise<Metadata> {
   const t = await getTranslations();
   return {
-    title: t("auth.sign-in"),
+    title: t('auth.sign-in'),
     description: t(
-      "log-in-to-your-account-to-manage-orders-view-purchase-history-and-enjoy-a-seamless-and-secure-shopping-experience"
+      'log-in-to-your-account-to-manage-orders-view-purchase-history-and-enjoy-a-seamless-and-secure-shopping-experience'
     ),
     openGraph: {
-      type: "website",
-      title: "BNB Store",
+      type: 'website',
+      title: 'BNB Store',
       description: t(
-        "log-in-to-your-account-to-manage-orders-view-purchase-history-and-enjoy-a-seamless-and-secure-shopping-experience"
+        'log-in-to-your-account-to-manage-orders-view-purchase-history-and-enjoy-a-seamless-and-secure-shopping-experience'
       ),
-      siteName: "BNB Store",
-      locale: "en",
+      siteName: 'BNB Store',
+      locale: 'en',
       url: process.env.NEXT_PUBLIC_LOCAL_URL,
       images: [
         {
           url: `${process.env.NEXT_PUBLIC_LOCAL_URL}/og.png`,
           width: 1200,
           height: 630,
-          alt: "BNB Store Logo",
+          alt: 'BNB Store Logo',
         },
       ],
     },
@@ -46,32 +46,32 @@ export async function generateMetadata({
     },
 
     twitter: {
-      card: "summary_large_image",
-      title: "BNB Store",
+      card: 'summary_large_image',
+      title: 'BNB Store',
       description: t(
-        "log-in-to-your-account-to-manage-orders-view-purchase-history-and-enjoy-a-seamless-and-secure-shopping-experience"
+        'log-in-to-your-account-to-manage-orders-view-purchase-history-and-enjoy-a-seamless-and-secure-shopping-experience'
       ),
       images: [`${process.env.NEXT_PUBLIC_LOCAL_URL}/logo-light.png`],
-      creator: "@Ibrahim",
-      site: "@Ibrahim",
+      creator: '@Ibrahim',
+      site: '@Ibrahim',
     },
     icons: {
-      icon: "/favicon/favicon.ico",
-      apple: "/favicon/apple-touch-icon.png",
-      shortcut: "/favicon/apple-touch-icon.png",
+      icon: '/favicon/favicon.ico',
+      apple: '/favicon/apple-touch-icon.png',
+      shortcut: '/favicon/apple-touch-icon.png',
     },
     other: {
-      rating: "General",
+      rating: 'General',
     },
   };
 }
 
 const Page: FC<PropsType> = async () => {
   const cookieStore = await cookies();
-  const userToken = cookieStore.get("x-user-session")?.value || "";
+  const userToken = cookieStore.get('x-user-session')?.value || '';
   return (
-    <PageWrapper className="flex-1 pb-8">
-      <SectionWrapper className="max-w-screen-lg">
+    <PageWrapper className='flex-1 pb-8'>
+      <SectionWrapper className='max-w-5xl'>
         <LoginPage userToken={userToken} hardLink={true} />
       </SectionWrapper>
     </PageWrapper>

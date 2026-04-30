@@ -1,15 +1,15 @@
 import { ApiResponse } from ".";
 
 export type Profile = {
+  id: number;
   name: string;
-  email: string;
+  email: string | null;
   phone: string;
-  birthdate: null | string;
-  gender: null | string;
-  image: null | string;
-  subscribed_to_emails: boolean;
+  avatar: string | null;
+  phone_verified_at: string | null;
+  created_at: string;
 };
 
 export interface GetProfileResponse extends ApiResponse {
-  profile: Profile;
+  data: Profile;
 }

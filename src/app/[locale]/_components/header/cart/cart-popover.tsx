@@ -30,12 +30,9 @@ const CartPopover: FC<PropsType> = ({
   insideSheet = false,
 }) => {
   const t = useTranslations();
-  if (!cartResponse.ok) {
-    return null;
-  }
-
-  const cart = cartResponse.data.cart;
-  const itemCount = cart.products.reduce((a, b) => a + b.quantity, 0);
+  const cart = cartResponse.data?.cart;
+  const products = cart?.products ?? [];
+  const itemCount = products.reduce((a, b) => a + b.quantity, 0);
   const hasItems = itemCount > 0;
 
   return (
@@ -64,7 +61,7 @@ const CartPopover: FC<PropsType> = ({
               <span className="absolute inset-0 rounded-full bg-primary/10 scale-0 group-hover:scale-150 opacity-0 group-hover:opacity-100 transition-all duration-500" />
             </div>
             <CartCountBadge
-              key={cart.id}
+              key={cart?.id ?? "empty-cart"}
               initialCount={itemCount}
             />
           </Button>
@@ -76,7 +73,7 @@ const CartPopover: FC<PropsType> = ({
         className="w-80 sm:w-96 max-h-[calc(100vh-10rem)] p-0 overflow-hidden rounded-2xl shadow-2xl shadow-gray-200/50 border border-gray-100"
       >
         {/* Cart Header */}
-        <div className="px-4 py-3 bg-gradient-to-r from-primary/5 to-transparent border-b border-gray-100">
+        <div className="bg-linear-to-r from-primary/5 to-transparent border-b border-gray-100 px-4 py-3">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
               <ShoppingCart className="w-4 h-4 text-primary" />
@@ -92,7 +89,7 @@ const CartPopover: FC<PropsType> = ({
 
         {/* Cart Content */}
         <div className="overflow-y-auto custom-scrollbar max-h-[calc(100vh-16rem)]">
-          {cartResponse.ok ? (
+          {cart ? (
             <CartPopoverContent
               cart={cart}
               userToken={userToken}

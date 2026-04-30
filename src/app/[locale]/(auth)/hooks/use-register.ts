@@ -1,33 +1,33 @@
-import { registerAction } from "@/app/actions/auth-actions";
-import { RegisterSchema } from "@/schemas/auth.schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { registerWithOtpAction } from '@/app/actions/auth-actions';
+import { RegisterSchema } from '@/schemas/auth.schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 const useRegister = () => {
+  const t = useTranslations();
   const [openVerifyDialog, setOpenVerifyDialog] = useState(false);
+  const [verificationPhone, setVerificationPhone] = useState('');
   const form = useForm<RegisterSchema>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
-      email: "",
-      password: "",
-      name: "",
+      email: '',
+      name: '',
       phone: {
-        code: "",
-        number: "",
+        code: '',
+        number: '',
       },
-      password_confirmation: "",
       accepted_privacy: false,
-      subscribed_to_emails: true,
     },
   });
   const { mutate, isPending } = useMutation({
-    mutationFn: registerAction,
+    mutationFn: registerWithOtpAction,
     onSuccess(response) {
-      if (response === "success") {
-        toast.success("account created successfully");
+      if (response === 'success') {
+        toast.success(t('auth.account-created-otp-sent-successfully'));
         setOpenVerifyDialog(true);
       } else {
         toast.error(response);
@@ -35,17 +35,13 @@ const useRegister = () => {
     },
   });
   const onSubmit = (data: RegisterSchema) => {
-    const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("email", data.email);
-    formData.append(
-      "subscribed_to_emails",
-      data.subscribed_to_emails ? "1" : "0"
-    );
-    formData.append("password", data.password);
-    formData.append("password_confirmation", data.password_confirmation);
-    formData.append("phone", `${data.phone.code}${data.phone.number}`);
-    mutate(formData);
+    const phone = `+${data.phone.code}${data.phone.number}`;
+    setVerificationPhone(phone);
+    mutate({
+      name: data.name,
+      email: data.email,
+      phone,
+    });
   };
 
   return {
@@ -54,6 +50,7 @@ const useRegister = () => {
     isPending,
     openVerifyDialog,
     setOpenVerifyDialog,
+    verificationPhone,
   };
 };
 

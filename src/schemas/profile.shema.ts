@@ -1,28 +1,31 @@
-import parsePhoneNumberFromString from "libphonenumber-js/mobile";
 import { z } from "zod";
+import parsePhoneNumberFromString from "libphonenumber-js/mobile";
 
 export const UpdateProfileSchema = z.object({
-  name: z.string().min(1, "error-message.name"), // الاسم مطلوب
-  email: z.string().email("error-message.email-invalid"), // يجب أن يكون بريد إلكتروني صالح
+  name: z.string().min(1, "error-message.name"),
+  email: z
+    .string()
+    .min(1, "error-message.email")
+    .email("error-message.email-invalid"),
   phone: z
     .object({
-      number: z.string(), // جزء رقم الهاتف
-      code: z.string(), // جزء رمز الدولة
+      number: z.string(),
+      code: z.string(),
     })
     .refine(
-      (data) => {
-        if (data.number.length === 0) return true;
-        const fullNumber = `+${data.code}${data.number}`;
-        const phoneNumber = parsePhoneNumberFromString(fullNumber);
+      (data) => data.number.length !== 0 && data.code.length !== 0,
+      "error-message.phone"
+    )
+    .refine((data) => {
+      const fullNumber = `+${data.code}${data.number}`;
+      const phoneNumber = parsePhoneNumberFromString(fullNumber);
 
-        if (phoneNumber && phoneNumber.isValid()) {
-          const phoneType = phoneNumber.getType();
-          return phoneType === "MOBILE" || phoneType === "FIXED_LINE_OR_MOBILE";
-        }
-        return false;
-      },
-      "error-message.phone-invalid" // يجب أن يكون رقم هاتف محمول صالحًا
-    ),
+      if (phoneNumber && phoneNumber.isValid()) {
+        const phoneType = phoneNumber.getType();
+        return phoneType === "MOBILE" || phoneType === "FIXED_LINE_OR_MOBILE";
+      }
+      return false;
+    }, "error-message.phone-invalid"),
   image: z
     .instanceof(File)
     .refine((file) => {
@@ -35,12 +38,6 @@ export const UpdateProfileSchema = z.object({
       if (!file.name) return true;
       return file.size <= 2 * 1024 * 1024;
     }, "error-message.image-invalid-size"),
-  gender: z.string(),
-  birthdate: z.date().refine(
-    (date) => date <= new Date(),
-    "error-message.birthdate-future" // يجب أن يكون تاريخ الميلاد ليس في المستقبل
-  ),
-  subscribed_to_emails: z.boolean(),
 });
 
 export type UpdateProfileSchema = z.infer<typeof UpdateProfileSchema>;
@@ -49,12 +46,12 @@ export const ChangePasswordSchema = z
   .object({
     current_password: z
       .string()
-      .min(1, "error-message.current_password") // Password is required
-      .min(8, "error-message.password-invalid"), // Must be at least 8 characters long
+      .min(1, "error-message.current_password")
+      .min(8, "error-message.password-invalid"),
     new_password: z
       .string()
-      .min(1, "error-message.password") // Password is required
-      .min(8, "error-message.password-invalid"), // Must be at least 8 characters long
+      .min(1, "error-message.password")
+      .min(8, "error-message.password-invalid"),
     new_password_confirmation: z
       .string()
       .min(1, "error-message.confirm-password"),

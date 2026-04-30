@@ -32,7 +32,10 @@ export function QuickAddButton({ productId, outOfStock }: Props) {
       setState('done');
       setTimeout(() => setState('idle'), 2200);
     } catch (err) {
-      if (axios.isAxiosError(err) && err.response?.status === 400) {
+      if (
+        axios.isAxiosError(err) &&
+        (err.response?.status === 400 || err.response?.status === 401)
+      ) {
         toast.error(t('auth.sign-in'), {
           description: 'Sign in to add items to your cart',
           action: {

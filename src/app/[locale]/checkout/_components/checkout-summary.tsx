@@ -35,13 +35,13 @@ const CheckoutSummary: FC<PropsType> = async ({ cart, token, isLoggedIn }) => {
       <div className="space-y-4 px-4">
         <p>
           {t("product-count", {
-            count: cart.products.reduce(
-              (acc, product) => acc + product.quantity,
+            count: cart.items.reduce(
+              (acc, item) => acc + item.quantity,
               0
             ),
           })}
         </p>
-        {cart.products.map((product, index) => (
+        {cart.items.map((item, index) => (
           <div
             key={index}
             className="w-full flex flex-col justify-start items-start relative"
@@ -49,34 +49,23 @@ const CheckoutSummary: FC<PropsType> = async ({ cart, token, isLoggedIn }) => {
             <div className="w-full grid grid-cols-[auto_1fr] justify-between gap-4">
               <Image
                 className="size-20 shrink-0 object-cover"
-                src={product.image ?? ""}
+                src={item.product.image ?? "/no-product.svg"}
                 width={300}
                 height={300}
-                alt={product.name}
+                alt={item.product.name}
               />
               <div className="size-full gap-2 flex flex-col justify-between items-start">
                 <div className="flex w-full justify-between items-start gap-2">
                   <h2
-                    title={product.name}
+                    title={item.product.name}
                     className="ltr:tracking-wide max-w-[70%] text-sm"
                   >
-                    {`${product.quantity} X`} <span>{product.name}</span>
+                    {`${item.quantity} X`} <span>{item.product.name}</span>
                   </h2>
                   <CheckoutProductPrice
-                    price={+product.price}
-                    quantity={product.quantity}
+                    price={item.product.sale_price ?? item.product.price}
+                    quantity={item.quantity}
                   />
-                </div>
-                <div className="w-full max-sm:space-y-2 h-full">
-                  <div className="size-full justify-start items-start flex flex-col text-xs md:text-sm capitalize">
-                    {Object.entries(product.attribute_values || {}).map(
-                      ([key, value], index) => (
-                        <span key={index}>
-                          {key}: {value}
-                        </span>
-                      )
-                    )}
-                  </div>
                 </div>
               </div>
             </div>
@@ -85,13 +74,13 @@ const CheckoutSummary: FC<PropsType> = async ({ cart, token, isLoggedIn }) => {
       </div>
       <Separator />
       <div className="space-y-2 px-4">
-        <CheckoutSubtotalLabel invoice_value={cart.invoice_value} />
+        <CheckoutSubtotalLabel invoice_value={cart.summary.subtotal} />
         <CheckoutDeliveryLabel />
         <PromoCodeForm />
       </div>
       <Separator />
-      <CheckoutTotalLabel invoice_value={cart.invoice_value} />
-      <PayOrGetShipping id={cart.id} isLoggedIn={isLoggedIn} token={token} />
+      <CheckoutTotalLabel invoice_value={cart.summary.subtotal} />
+      <PayOrGetShipping id={0} isLoggedIn={isLoggedIn} token={token} />
     </div>
   );
 };

@@ -45,14 +45,17 @@ const InifinteWithList: FC<PropsType> = ({ token, initialData }) => {
 
   return (
     <Fragment>
-      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {data.length === 0 ? (
-          <p className="bg-gray/20 rounded-lg col-span-2 w-fit py-2 px-4 lg:col-span-3 xl:col-span-4">
+          <p className="col-span-full rounded-3xl border border-primary/10 bg-secondary/40 px-4 py-8 text-center text-sm text-muted-foreground">
             {t("wishlist-empty")}
           </p>
         ) : (
           data.map((item) => (
-            <div key={item.id} className="relative">
+            <div
+              key={item.id}
+              className="relative rounded-3xl border border-primary/10 bg-white p-2 shadow-sm shadow-primary/5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/10"
+            >
               <ProductCard product={toProductCard(item)} showWishlistHeart={false} />
               <RemoveFromWishlist
                 productId={item.product.id}

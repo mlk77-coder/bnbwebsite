@@ -12,23 +12,15 @@ import AddToCartSuccessDialog from './add-to-cart-success-dialog';
 import { ProductDetails } from '@/types/products';
 
 type PropsType = {
-  userToken: string;
-  slug: string;
   product: ProductDetails;
 };
 
-const AddToCartButton: FC<PropsType> = ({ userToken, slug, product }) => {
+const AddToCartButton: FC<PropsType> = ({ product }) => {
   const [errorMessage, setErrorMessage] = useState('');
-  const [quantityInCart, setQuantityInCart] = useState(
-    product.quantity_in_cart
-  );
   const queryClient = useQueryClient();
   const quantity = useProductDetailsStore(state => state.quantity);
   const incrementProductsCount = useCartCountStore(
     state => state.incrementProductsCount
-  );
-  const isProductAvailable = useProductDetailsStore(
-    state => state.isProductAvailable
   );
   const setProductDetail = useProductDetailsStore(
     state => state.setProductDetail
@@ -48,12 +40,11 @@ const AddToCartButton: FC<PropsType> = ({ userToken, slug, product }) => {
   const t = useTranslations();
   const { mutate, isPending, isError, reset, isSuccess } = useMutation({
     mutationFn: async (body: unknown) => {
-      await axios.post(`/api/cart?user_token=${userToken}`, body);
+      await axios.post('/api/cart', body);
     },
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
       incrementProductsCount(quantity);
-      setQuantityInCart(prev => prev + quantity);
     },
     onError: error => {
       if (isAxiosError(error) && error.response?.data?.message) {
@@ -74,17 +65,17 @@ const AddToCartButton: FC<PropsType> = ({ userToken, slug, product }) => {
   return (
     <Fragment>
       <Button
-        disabled={!isProductAvailable || isPending}
+        disabled={!product.is_available || isPending}
         onClick={() =>
           mutate({
             quantity,
-            slug,
+            product_id: product.id,
           })
         }
         size='lg'
         className='w-full uppercase'
       >
-        {isProductAvailable
+        {product.is_available
           ? t('cart.add-to-cart-button')
           : t('this-item-is-out-of-stock')}
       </Button>

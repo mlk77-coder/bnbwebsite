@@ -1,30 +1,42 @@
 export type CartProduct = {
   id: number;
-  quantity: number;
   name: string;
-  weight: string;
-  price: string;
-  slug: string;
-  product_quantity: number;
-  category_id: number;
-  category_name: string;
-  image: string;
-  has_discount: 0 | 1;
-  price_after_sale: null | number;
-  note: null | string;
-  variant_id: number | null;
-  attribute_values?: Record<string, string>;
-  created_at: string;
+  price: number;
+  sale_price: number | null;
+  image: string | null;
+  is_available: boolean;
+  stock_quantity: number;
+};
+
+export type CartItem = {
+  id: number;
+  product: CartProduct;
+  quantity: number;
+  subtotal: number;
+};
+
+export type CartSummary = {
+  subtotal: number;
+  tax: number;
+  shipping: number;
+  total: number;
 };
 
 export type Cart = {
-  id: number;
-  invoice_value: number;
-  total: number;
-  created_at: string;
-  products: CartProduct[];
+  items: CartItem[];
+  summary: CartSummary;
+};
+
+export type AddToCartBody = {
+  product_id: number;
+  quantity: number;
+};
+
+export type UpdateCartItemBody = {
+  quantity: number;
 };
 
 export interface GetCartResponse {
-  cart: Cart;
+  success: boolean;
+  data: Cart;
 }

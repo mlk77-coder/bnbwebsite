@@ -1,13 +1,19 @@
 import { create } from "zustand";
 
 type Store = {
-  invoice_value: number;
+  subtotal: number;
+  tax: number;
+  shipping: number;
   total: number;
-  setPrice: ({
-    invoice_value,
+  setCartSummary: ({
+    subtotal,
+    tax,
+    shipping,
     total,
   }: {
-    invoice_value: number;
+    subtotal: number;
+    tax: number;
+    shipping: number;
     total: number;
   }) => void;
 
@@ -15,18 +21,24 @@ type Store = {
 };
 
 const useCartShoppingStore = create<Store>((set) => ({
-  invoice_value: 0,
+  subtotal: 0,
+  tax: 0,
+  shipping: 0,
   total: 0,
-  setPrice: ({ invoice_value, total }) =>
+  setCartSummary: ({ subtotal, tax, shipping, total }) =>
     set((state) => ({
       ...state,
-      invoice_value,
+      subtotal,
+      tax,
+      shipping,
       total,
     })),
 
   reset: () =>
     set(() => ({
-      invoice_value: 0,
+      subtotal: 0,
+      tax: 0,
+      shipping: 0,
       total: 0,
     })),
 }));

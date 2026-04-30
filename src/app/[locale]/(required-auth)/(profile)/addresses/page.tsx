@@ -9,6 +9,7 @@ import EditAddress from "./_components/edit-address";
 import RemoveAddress from "./_components/remove-address";
 import { Metadata } from "next";
 import { headers } from "next/headers";
+import { Home } from "lucide-react";
 
 type PropsType = {
   params: Promise<{
@@ -51,19 +52,38 @@ const AddressesPage: FC<PropsType> = async props => {
   const addresses = addressesResponse.data.locations;
 
   return (
-    <div className="space-y-5">
-      <h2 className="text-2xl font-bold ">{t("address.title")}</h2>
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="space-y-6">
+      <div className="flex flex-col gap-3 rounded-3xl bg-secondary/40 p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <Home className="size-5" />
+          </span>
+          <div>
+            <h2 className="text-2xl font-bold text-primary">
+              {t("address.title")}
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              {t("addresses-count", { count: addresses.length })}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {addresses.map((address) => (
           <div
             key={address.id}
-            className="w-full border min-h-44 capitalize space-y-1 p-4 shadow rounded"
+            className="group relative min-h-44 w-full overflow-hidden rounded-3xl border border-primary/10 bg-white p-4 capitalize shadow-sm shadow-primary/5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-xl hover:shadow-primary/10"
           >
-            <p className="font-medium text-xl pb-2">{address?.name}</p>
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-linear-to-b from-primary/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+            <p className="relative pb-2 text-xl font-bold text-primary">
+              {address?.name}
+            </p>
             <Separator />
-            <p className="pt-2">{`${address?.country} ${address?.city?.name}`}</p>
-            <p className="pt-2">{`${address?.street}`}</p>
-            <div className="flex justify-start items-center gap-4">
+            <div className="relative space-y-2 pt-3 text-sm text-muted-foreground">
+              <p>{`${address?.country} ${address?.city?.name}`}</p>
+              <p>{`${address?.street}`}</p>
+            </div>
+            <div className="relative mt-4 flex items-center justify-start gap-4">
               <EditAddress address={address} session={session} />
               <RemoveAddress
                 id={address.id}

@@ -21,14 +21,16 @@ const AddNewAddress: FC<PropsType> = ({ session }) => {
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          className="size-full min-h-44 border-border rounded capitalize shadow flex-col"
+          className="size-full min-h-44 flex-col rounded-3xl border-dashed border-primary/25 bg-primary/5 capitalize text-primary shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
           variant="outline"
         >
-          <Plus className="size-10" />
-          <span className="capitalize">{t("add-new-adress")}</span>
+          <span className="mb-2 flex size-12 items-center justify-center rounded-2xl bg-white shadow-sm">
+            <Plus className="size-6" />
+          </span>
+          <span className="font-semibold capitalize">{t("add-new-adress")}</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="overflow-y-auto">
+      <DialogContent className="overflow-y-auto rounded-3xl">
         <DialogHeader>
           <DialogTitle>{t("address.add.title")}</DialogTitle>
           <DialogDescription>{t("address.add.description")}</DialogDescription>

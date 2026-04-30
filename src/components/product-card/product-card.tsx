@@ -42,7 +42,7 @@ const ProductCard: FC<PropsType> = ({
 
         {/* Quick-add to cart */}
         <QuickAddButton
-          slug={product.slug}
+          productId={product.id}
           outOfStock={!product.is_available}
         />
       </div>

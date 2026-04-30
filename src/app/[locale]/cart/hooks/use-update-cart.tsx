@@ -4,12 +4,11 @@ import useCartShoppingStore from "@/store/use-cart-shopping-store";
 import { Cart } from "@/types/cart";
 import { useQuery } from "@tanstack/react-query";
 import { useLocale } from "next-intl";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const useUpdateCart = (cart: Cart, userToken: string, isLoggedIn: boolean) => {
   const locale = useLocale();
-  const [hasFetched, setHasFetched] = useState(false);
-  const setPrice = useCartShoppingStore((state) => state.setPrice);
+  const setCartSummary = useCartShoppingStore((state) => state.setCartSummary);
   const setProductsCount = useCartCountStore((state) => state.setProductsCount);
 
   const query = useQuery({
@@ -19,32 +18,29 @@ const useUpdateCart = (cart: Cart, userToken: string, isLoggedIn: boolean) => {
       const response = await getCart(userToken, locale, isLoggedIn);
       if (!response.ok)
         return {
-          created_at: "",
-          id: 0,
-          invoice_value: 0,
-          total: 0,
-          products: [],
+          items: [],
+          summary: {
+            subtotal: 0,
+            tax: 0,
+            shipping: 0,
+            total: 0,
+          },
         };
-      return response.data.cart;
+      return response.data.data;
     },
   });
 
   useEffect(() => {
     if (query.data) {
-      setPrice({
-        invoice_value: query.data.invoice_value,
-        total: query.data.total,
+      setCartSummary({
+        subtotal: query.data.summary.subtotal,
+        tax: query.data.summary.tax,
+        shipping: query.data.summary.shipping,
+        total: query.data.summary.total,
       });
-      setProductsCount(query.data.products.reduce((a, b) => a + b.quantity, 0));
+      setProductsCount(query.data.items.reduce((a, b) => a + b.quantity, 0));
     }
-  }, [query.data]);
-
-  // Effect to set hasFetched to true after the first render
-  useEffect(() => {
-    if (!hasFetched) {
-      setHasFetched(true);
-    }
-  }, [hasFetched]);
+  }, [query.data, setCartSummary, setProductsCount]);
 
   return query;
 };

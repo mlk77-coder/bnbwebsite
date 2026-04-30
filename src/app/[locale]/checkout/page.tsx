@@ -37,7 +37,7 @@ const CheckoutPage: FC<PropsType> = async props => {
     const response = await getCart(token, locale, isLoggedIn, request);
 
     if (!response.ok) return <>error</>;
-    if (response.data.cart.products.length === 0) return <NotFoundUi />;
+    if (response.data.data.items.length === 0) return <NotFoundUi />;
     return (
       <CheckoutFormProvider session={session}>
         <PageWrapper>
@@ -55,7 +55,7 @@ const CheckoutPage: FC<PropsType> = async props => {
               <CheckoutForm session={session} />
             </div>
             <CheckoutSummary
-              cart={response.data.cart}
+              cart={response.data.data}
               isLoggedIn={isLoggedIn}
               token={token}
             />

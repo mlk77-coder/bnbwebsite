@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import Loader from "@/components/ui/loader";
 import {
   Dialog,
   DialogContent,
@@ -13,23 +14,23 @@ import {
 import { CircleAlert, X } from "lucide-react";
 import { FC } from "react";
 import useRemoveProductFromCart from "../hooks/use-remove-product-from-cart";
-import { CartProduct } from "@/types/cart";
+import { CartItem } from "@/types/cart";
 import { useTranslations } from "next-intl";
 
 type PropsType = {
-  product: CartProduct;
-  userToken: string;
+  item: CartItem;
 };
-const RemoveProductFromCart: FC<PropsType> = ({ product, userToken }) => {
-  const { variant_id, slug, quantity, name } = product;
+const RemoveProductFromCart: FC<PropsType> = ({ item }) => {
+  const { quantity } = item;
+  const { name } = item.product;
   const { isOpenDialog, setIsOpenDialog, mutate, isPending } =
-    useRemoveProductFromCart(variant_id, slug, quantity, userToken);
+    useRemoveProductFromCart(item.id, quantity);
   const t = useTranslations();
   return (
     <Dialog open={isOpenDialog} onOpenChange={setIsOpenDialog}>
       <DialogTrigger asChild>
         <Button
-          className="absolute border-foreground/80 size-6 rounded bg-transparent top-4 end-4"
+          className="absolute top-4 inset-e-4 z-10 size-8 rounded-full border-primary/10 bg-white/90 text-muted-foreground shadow-sm backdrop-blur transition-colors hover:bg-red-50 hover:text-red-500"
           variant="outline"
           size="icon"
         >
@@ -54,11 +55,17 @@ const RemoveProductFromCart: FC<PropsType> = ({ product, userToken }) => {
             onClick={() => mutate()}
             disabled={isPending}
             size="lg"
-            className="sm:w-28 text-base"
+            className="sm:w-28 text-base gap-2"
           >
+            {isPending ? <Loader size="xs" /> : null}
             {t("ok")}
           </Button>
-          <Button variant="outline" size="lg" className="sm:w-28 text-base">
+          <Button
+            variant="outline"
+            size="lg"
+            className="sm:w-28 text-base"
+            onClick={() => setIsOpenDialog(false)}
+          >
             {t("global.cancel")}
           </Button>
         </DialogFooter>

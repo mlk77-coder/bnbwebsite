@@ -1,25 +1,23 @@
-import axiosInstance from "@/lib/axios";
 import { fetcher } from "@/lib/fetcher";
+import { AddToCartBody, GetCartResponse } from "@/types/cart";
 
 const addToCart = async (
-  slug: string,
-  body: unknown,
+  body: AddToCartBody,
   token: string = "",
   isLoggedIn: boolean = false,
-  request: any
+  locale: string = "en",
+  request?: Request
 ) => {
-  const url = `cart/products/${slug}/add`;
-  const fullUrl = isLoggedIn ? url : `${url}?s_id=${token}`;
-  const auth = (
-    isLoggedIn ? { headers: { authorization: `Bearer ${token}` } } : {}
-  ) as HeadersInit;
-  const response = await fetcher(
-    fullUrl,
-    "en",
+  const authHeaders: HeadersInit = isLoggedIn
+    ? { authorization: `Bearer ${token}` }
+    : {};
+  const response = await fetcher<GetCartResponse>(
+    "cart",
+    locale,
     {
       method: "POST",
       body: JSON.stringify(body),
-      headers: auth,
+      headers: authHeaders,
     },
     false,
     request

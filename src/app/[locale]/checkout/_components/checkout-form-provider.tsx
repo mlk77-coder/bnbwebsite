@@ -18,8 +18,8 @@ const CheckoutFormProvider: FC<PropsType> = ({ children, session }) => {
     resolver: zodResolver(CheckoutSchema),
     defaultValues: {
       description: "",
-      email: session && session.user ? session.user.email : "",
-      name: session && session.user ? session.user.name : "",
+      email: session?.user?.email || "",
+      name: session?.user?.name || "",
       phone:
         session && session.user
           ? splitCountryCode(session.user.phone)

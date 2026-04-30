@@ -89,8 +89,6 @@ const Page: FC<PropsType> = async props => {
             </div>
             <div className='flex w-full flex-col items-center justify-center gap-3 lg:flex-row'>
               <AddToCartButton
-                userToken={userToken}
-                slug={product.slug}
                 product={product}
               />
               <WishToggleButton session={session} id={product.id} />

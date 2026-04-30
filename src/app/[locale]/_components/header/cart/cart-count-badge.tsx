@@ -15,10 +15,8 @@ const CartCountBadge: FC<PropsType> = ({ initialCount }) => {
   const [prevCount, setPrevCount] = useState(initialCount);
 
   useEffect(() => {
-    if (productsCount > 0) return;
     setProductsCount(initialCount);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [initialCount, setProductsCount]);
 
   // Animation when count changes
   useEffect(() => {

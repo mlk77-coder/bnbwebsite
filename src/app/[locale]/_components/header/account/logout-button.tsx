@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { CustomSession } from "@/lib/auth-options";
-import axiosInstance from "@/lib/axios";
-import { LogOut, ChevronRight } from "lucide-react";
-import { signOut } from "next-auth/react";
-import { useTranslations, useLocale } from "next-intl";
-import { FC } from "react";
-import { toast } from "sonner";
-import { cn } from "@/lib/utils";
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { CustomSession } from '@/lib/auth-options';
+import axiosInstance from '@/lib/axios';
+import { LogOut, ChevronRight } from 'lucide-react';
+import { signOut } from 'next-auth/react';
+import { useTranslations, useLocale } from 'next-intl';
+import { FC } from 'react';
+import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
 
 type PropsType = {
   inDropdown?: boolean;
@@ -25,13 +25,13 @@ const LogoutButton: FC<PropsType> = ({
 }) => {
   const t = useTranslations();
   const locale = useLocale();
-  const isRTL = locale === "ar";
+  const isRTL = locale === 'ar';
 
   const handleLogout = async () => {
     try {
       if (session.user?.access_token) {
         await axiosInstance.post(
-          "/auth/logout",
+          '/auth/logout',
           {},
           {
             headers: {
@@ -42,14 +42,14 @@ const LogoutButton: FC<PropsType> = ({
       }
       await signOut();
     } catch (error) {
-      toast.error(t("auth.something-went-wrong-please-try-again"));
+      toast.error(t('auth.something-went-wrong-please-try-again'));
     }
   };
 
   if (inDropdown)
     return (
       <DropdownMenuItem
-        onSelect={(e) => {
+        onSelect={e => {
           if (onRequestConfirm) {
             e.preventDefault();
             onRequestConfirm();
@@ -58,20 +58,23 @@ const LogoutButton: FC<PropsType> = ({
           handleLogout();
         }}
         className={cn(
-          "cursor-pointer p-2.5 rounded-lg transition-all duration-200",
-          "hover:bg-red-50 focus:bg-red-50",
-          "group/item"
+          'cursor-pointer rounded-2xl border border-red-100/60 bg-red-50/60 p-2.5 transition-all duration-200',
+          'hover:bg-red-50 focus:bg-red-50',
+          'group/item'
         )}
       >
-        <div className="flex items-center gap-3 w-full">
-          <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center group-hover/item:bg-red-200 transition-colors">
-            <LogOut className="w-4 h-4 text-red-600" />
+        <div className='flex w-full items-center gap-3'>
+          <div className='flex h-10 w-10 items-center justify-center rounded-2xl bg-red-100 transition-colors group-hover/item:bg-red-200'>
+            <LogOut className='h-4 w-4 text-red-600' />
           </div>
-          <span className="flex-1 text-sm font-medium text-red-600">
-            {t("sign-out")}
+          <span className='flex-1 text-sm font-semibold text-red-600'>
+            {t('sign-out')}
           </span>
           <ChevronRight
-            className={cn("w-4 h-4 text-red-400", isRTL && "rotate-180")}
+            className={cn(
+              'h-4 w-4 text-red-400 transition-transform group-hover/item:translate-x-0.5',
+              isRTL && 'rotate-180'
+            )}
           />
         </div>
       </DropdownMenuItem>
@@ -86,9 +89,9 @@ const LogoutButton: FC<PropsType> = ({
         }
         handleLogout();
       }}
-      className="relative block pb-3 text-start before:absolute before:bottom-1/4 before:inset-e-0 before:inset-s-0 before:h-0.5 before:w-0 before:bg-red-500 before:transition-all before:duration-300 hover:before:w-full focus:before:w-full focus-visible:before:w-full focus-visible:border-none focus-visible:outline-none"
+      className='flex-1 text-start text-sm font-semibold text-red-600 focus-visible:outline-none'
     >
-      {t("sign-out")}
+      {t('sign-out')}
     </button>
   );
 };

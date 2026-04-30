@@ -5,10 +5,9 @@ const getCart = async (
   token: string = "",
   locale: string = "en",
   isLoggedIn = false,
-  request?: any
+  request?: Request
 ) => {
   const url = `cart`;
-  const fullUrl = isLoggedIn ? url : `${url}?s_id=${token}`;
   const auth = (
     isLoggedIn
       ? { headers: { authorization: `Bearer ${token}` }, cache: "no-cache" }
@@ -16,7 +15,7 @@ const getCart = async (
   ) as RequestInit;
 
   const response = await fetcher<GetCartResponse>(
-    fullUrl,
+    url,
     locale,
     auth,
     false,

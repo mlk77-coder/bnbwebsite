@@ -8,17 +8,8 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import { CustomSession } from '@/lib/auth-options';
 import { Link } from '@/navigation';
 import {
@@ -28,6 +19,8 @@ import {
   Clock,
   Settings,
   ChevronRight,
+  ShieldCheck,
+  Sparkles,
 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { FC, useState } from 'react';
@@ -37,6 +30,7 @@ import { cn } from '@/lib/utils';
 import axiosInstance from '@/lib/axios';
 import { signOut } from 'next-auth/react';
 import { toast } from 'sonner';
+import LogoutConfirmDialog from '@/components/logout-confirm-dialog';
 
 type PropsType = {
   session: CustomSession;
@@ -107,19 +101,19 @@ const UserMenu: FC<PropsType> = ({
               size={label ? 'default' : 'icon'}
               variant='ghost'
               className={cn(
-                'group relative transition-all duration-300 hover:bg-gray-100/80',
-                !label && 'rounded-lg!',
+                'group hover:bg-primary/5 relative transition-all duration-300',
+                !label && 'rounded-full!',
                 label ? 'gap-2 px-3' : '',
                 className
               )}
             >
               <span className='sr-only'>{t('menu')}</span>
               <div className='relative'>
-                <Avatar className='group-hover:ring-primary/20 h-8 w-8 rounded-lg! ring-2 ring-transparent transition-all duration-300'>
+                <Avatar className='ring-primary/10 group-hover:ring-primary/30 h-9 w-9 rounded-full! ring-2 transition-all duration-300'>
                   <AvatarImage
                     src={profileAvatar || session.user?.image || ''}
                   />
-                  <AvatarFallback className='bg-primary/10 text-primary rounded-lg!'>
+                  <AvatarFallback className='bg-primary/10 text-primary rounded-full!'>
                     <User className='h-4 w-4' />
                   </AvatarFallback>
                 </Avatar>
@@ -137,54 +131,66 @@ const UserMenu: FC<PropsType> = ({
 
         <DropdownMenuContent
           align={locale === 'en' ? 'end' : 'start'}
-          className='w-64 p-2'
+          className='border-primary/10 shadow-primary/15 w-80 overflow-hidden rounded-3xl border bg-white p-0 shadow-2xl'
           sideOffset={8}
         >
-          {/* User Info Header */}
-          <DropdownMenuLabel className='from-primary/5 mb-2 rounded-xl bg-linear-to-br to-transparent p-3'>
-            <div className='flex items-center gap-3'>
-              <Avatar className='ring-primary/20 h-12 w-12 ring-2'>
-                <AvatarImage src={profileAvatar || session.user?.image || ''} />
-                <AvatarFallback className='bg-primary/10 text-primary'>
-                  <User className='h-5 w-5' />
-                </AvatarFallback>
-              </Avatar>
-              <div className='min-w-0 flex-1'>
-                <p className='truncate font-semibold text-gray-900 capitalize'>
-                  {profileName || session.user?.name || t('guest')}
-                </p>
-                <p className='truncate text-xs text-gray-500'>
+          <DropdownMenuLabel className='border-primary/10 from-primary/10 via-primary/5 relative overflow-hidden border-b bg-linear-to-br to-transparent p-5'>
+            <div className='bg-primary/10 absolute -inset-e-8 -top-8 size-28 rounded-full blur-2xl' />
+            <div className='relative flex items-center gap-4'>
+              <div className='relative'>
+                <Avatar className='ring-primary/20 shadow-primary/10 h-16 w-16 rounded-2xl shadow-lg ring-2'>
+                  <AvatarImage
+                    src={profileAvatar || session.user?.image || ''}
+                  />
+                  <AvatarFallback className='bg-primary/10 text-primary rounded-2xl'>
+                    <User className='h-6 w-6' />
+                  </AvatarFallback>
+                </Avatar>
+                <span className='absolute -inset-e-1 -bottom-1 flex size-5 items-center justify-center rounded-full border-2 border-white bg-green-500'>
+                  <span className='size-2 rounded-full bg-white' />
+                </span>
+              </div>
+              <div className='min-w-0 flex-1 space-y-1'>
+                <div className='flex items-center gap-2'>
+                  <p className='truncate text-base font-bold text-gray-950 capitalize'>
+                    {profileName || session.user?.name || t('guest')}
+                  </p>
+                  <Sparkles className='text-primary size-4 shrink-0' />
+                </div>
+                <p className='text-muted-foreground truncate text-xs font-medium'>
                   {profileEmail || session.user?.email}
                 </p>
+                <span className='text-primary inline-flex items-center gap-1.5 rounded-full bg-white/80 px-2.5 py-1 text-[11px] font-semibold shadow-sm'>
+                  <ShieldCheck className='size-3' />
+                  {t('account-settings')}
+                </span>
               </div>
             </div>
           </DropdownMenuLabel>
 
-          <DropdownMenuSeparator className='my-2' />
-
           {/* Menu Items */}
-          <DropdownMenuGroup dir={dir} className='space-y-1'>
+          <DropdownMenuGroup dir={dir} className='space-y-1 p-3'>
             {menuItems.map(item => {
               const Icon = item.icon;
               return (
                 <Link key={item.href} href={item.href}>
                   <DropdownMenuItem
                     className={cn(
-                      'cursor-pointer rounded-lg p-2.5 transition-all duration-200',
-                      'hover:bg-gray-50 focus:bg-gray-50',
+                      'cursor-pointer rounded-2xl border border-transparent p-2.5 transition-all duration-200',
+                      'hover:border-primary/10 hover:bg-primary/5 focus:border-primary/10 focus:bg-primary/5',
                       'group/item'
                     )}
                   >
                     <div className='flex w-full items-center gap-3'>
-                      <div className='group-hover/item:bg-primary/10 flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100 transition-colors'>
-                        <Icon className='group-hover/item:text-primary h-4 w-4 text-gray-600 transition-colors' />
+                      <div className='bg-secondary/70 text-muted-foreground group-hover/item:bg-primary/10 group-hover/item:text-primary flex h-10 w-10 items-center justify-center rounded-2xl transition-colors'>
+                        <Icon className='h-4 w-4 transition-colors' />
                       </div>
-                      <span className='flex-1 text-sm font-medium text-gray-700 capitalize'>
+                      <span className='group-hover/item:text-primary flex-1 text-sm font-semibold text-gray-700 capitalize transition-colors'>
                         {t(item.labelKey)}
                       </span>
                       <ChevronRight
                         className={cn(
-                          'h-4 w-4 text-gray-400 transition-transform duration-200',
+                          'group-hover/item:text-primary h-4 w-4 text-gray-400 transition-transform duration-200',
                           isRTL ? 'rotate-180' : '',
                           'group-hover/item:translate-x-0.5'
                         )}
@@ -196,43 +202,22 @@ const UserMenu: FC<PropsType> = ({
             })}
           </DropdownMenuGroup>
 
-          <DropdownMenuSeparator className='my-2' />
-
           {/* Logout Button */}
-          <LogoutButton
-            userToken={userToken}
-            session={session}
-            onRequestConfirm={requestLogoutConfirm}
-          />
+          <div className='border-primary/10 border-t p-3'>
+            <LogoutButton
+              userToken={userToken}
+              session={session}
+              onRequestConfirm={requestLogoutConfirm}
+            />
+          </div>
         </DropdownMenuContent>
       </DropdownMenu>
-      <Dialog open={openLogoutConfirm} onOpenChange={setOpenLogoutConfirm}>
-        <DialogContent className='rounded-xl sm:max-w-md'>
-          <DialogHeader>
-            <DialogTitle>{t('auth.logout-confirm-title')}</DialogTitle>
-            <DialogDescription>
-              {t('auth.logout-confirm-description')}
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className='gap-2'>
-            <Button
-              type='button'
-              variant='outline'
-              onClick={() => setOpenLogoutConfirm(false)}
-            >
-              {t('global.cancel')}
-            </Button>
-            <Button
-              type='button'
-              variant='destructive'
-              onClick={handleLogout}
-              disabled={isLogoutPending}
-            >
-              {t('sign-out')}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <LogoutConfirmDialog
+        open={openLogoutConfirm}
+        onOpenChange={setOpenLogoutConfirm}
+        onConfirm={handleLogout}
+        isPending={isLogoutPending}
+      />
     </>
   );
 };

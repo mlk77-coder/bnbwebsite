@@ -23,29 +23,37 @@ const SettingsForm: FC<PropsType> = ({ userDetails, session }) => {
 
   return (
     <Form {...form}>
-      <form className="w-full space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
-        <ChooseUserImageInput
-          placeholderImage={userDetails?.avatar || ""}
-        />
-        <div className="grid w-full grid-cols-1 gap-y-6 md:max-w-md">
-          <FormInput
-            className="border-border"
-            control={form.control}
-            name="name"
-            label={t("form.fields.name")}
-          />
-          <FormInput
-            className="border-border"
-            control={form.control}
-            name="email"
-            inputMode="email"
-            label={t("form.fields.email")}
-          />
-          <PhoneNumberInputForm borderColor="border" />
+      <form className="w-full space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="grid gap-6 rounded-3xl border border-primary/10 bg-white p-4 shadow-sm shadow-primary/5 lg:grid-cols-[260px_1fr] lg:p-6">
+          <div className="rounded-3xl bg-secondary/40 p-4">
+            <ChooseUserImageInput
+              placeholderImage={userDetails?.avatar || ""}
+            />
+          </div>
+          <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2">
+            <FormInput
+              className="border-border bg-white"
+              control={form.control}
+              name="name"
+              label={t("form.fields.name")}
+            />
+            <FormInput
+              className="border-border bg-white"
+              control={form.control}
+              name="email"
+              inputMode="email"
+              label={t("form.fields.email")}
+            />
+            <div className="md:col-span-2">
+              <PhoneNumberInputForm borderColor="border" />
+            </div>
+          </div>
         </div>
-        <Button disabled={isPending} className="uppercase">
-          <SubmitButton isPending={isPending} text={t("update-details")} />
-        </Button>
+        <div className="flex justify-end">
+          <Button disabled={isPending} className="rounded-full px-8 uppercase">
+            <SubmitButton isPending={isPending} text={t("update-details")} />
+          </Button>
+        </div>
       </form>
     </Form>
   );

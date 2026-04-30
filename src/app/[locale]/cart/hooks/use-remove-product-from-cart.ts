@@ -4,11 +4,22 @@ import axios, { isAxiosError } from "axios";
 import { useState } from "react";
 import { toast } from "sonner";
 
+const getToastMessage = (message: unknown) => {
+  if (typeof message === "string") return message;
+  if (
+    message &&
+    typeof message === "object" &&
+    "message" in message &&
+    typeof message.message === "string"
+  ) {
+    return message.message;
+  }
+  return "Something went wrong, please try again";
+};
+
 const useRemoveProductFromCart = (
-  id: number | null,
-  slug: string,
-  quantity: number,
-  userToken: string
+  cartItemId: number,
+  quantity: number
 ) => {
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const queryClient = useQueryClient();
@@ -18,13 +29,7 @@ const useRemoveProductFromCart = (
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const response = await axios.delete("/api/cart", {
-        params: {
-          slug,
-          user_token: userToken,
-          variant_id: id,
-        },
-      });
+      const response = await axios.delete(`/api/cart/${cartItemId}`);
       return response;
     },
     onSuccess: () => {
@@ -33,7 +38,7 @@ const useRemoveProductFromCart = (
     },
     onError: (error) => {
       if (isAxiosError(error) && error?.response?.data?.message)
-        toast.error(error.response.data.message);
+        toast.error(getToastMessage(error.response.data.message));
       else if (error instanceof Error) toast.error(error.message);
       else toast.error("Something went wrong, please try again");
     },

@@ -1,8 +1,7 @@
 import { FetcherResponse } from "@/lib/fetcher";
-import { Cart, GetCartResponse } from "@/types/cart";
+import { GetCartResponse } from "@/types/cart";
 import { FC } from "react";
 import CartProductsList from "./cart-product-list";
-import { getTranslations } from "next-intl/server";
 
 type PropsType = {
   cartResponse: FetcherResponse<GetCartResponse>;
@@ -15,13 +14,12 @@ const CartProducts: FC<PropsType> = async ({
   userToken,
   isLoggedIn,
 }) => {
-  const t = await getTranslations();
   if (!cartResponse.ok) return null;
-  const cart = cartResponse.data;
+  const cart = cartResponse.data.data;
   return (
     <div className="space-y-6">
       <CartProductsList
-        cart={cart.cart}
+        cart={cart}
         isLoggedIn={isLoggedIn}
         userToken={userToken}
       />

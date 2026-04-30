@@ -43,7 +43,7 @@ const PaymentButton: FC<PropsType> = ({ id, isLoggedIn, token }) => {
       formData.append("city_id", data.city_id)
       formData.append("state", data.street)
       formData.append("phone", `+${data.phone.code}${data.phone.number}`)
-      formData.append("cart_id", id.toString())
+      if (id) formData.append("cart_id", id.toString())
       if (!isLoggedIn) formData.append("s_id", token)
       if (coupon) formData.append("coupon_id", coupon.id.toString())
       if (data.description) formData.append("description", data.description)

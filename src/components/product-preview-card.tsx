@@ -1,12 +1,21 @@
 import { cn, formatPrice } from "@/lib/utils";
 import { Link } from "@/navigation";
 import useCurrencyStore from "@/store/use-currency-store";
-import { CartProduct } from "@/types/cart";
 import Image from "next/image";
 import { FC } from "react";
 
+type PreviewProduct = {
+  product_id?: number;
+  id?: number;
+  name: string;
+  image: string | null;
+  price: number;
+  sale_price: number | null;
+  quantity: number;
+};
+
 type PropsType = {
-  product: CartProduct;
+  product: PreviewProduct;
   size?: "sm" | "lg";
 };
 
@@ -17,7 +26,7 @@ const ProductPreviewCard: FC<PropsType> = ({ product, size = "sm" }) => {
   return (
     <div className="flex justify-start items-start gap-5">
       <Image
-        src={image ?? ""}
+        src={image ?? "/no-product.svg"}
         alt={name}
         width={250}
         height={250}
@@ -28,7 +37,7 @@ const ProductPreviewCard: FC<PropsType> = ({ product, size = "sm" }) => {
       />
       <span className="w-full flex ltr:tracking-wide text-sm flex-col justify-start items-start">
         <Link
-          href={`/products/${product.product_id}`}
+          href={`/products/${product.product_id ?? product.id}`}
           title={name}
           className={cn(
             "w-full font-medium",

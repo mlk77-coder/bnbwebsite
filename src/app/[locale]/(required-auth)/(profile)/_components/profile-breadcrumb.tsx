@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import CustomBreadcrumb from "@/components/custom-breadcrumb";
-import { usePathname } from "@/navigation";
-import { profileLinks } from "../_constant/profile-links";
-import { notFound } from "next/navigation";
-import { useTranslations } from "next-intl";
+import CustomBreadcrumb from '@/components/custom-breadcrumb';
+import { usePathname } from '@/navigation';
+import { profileLinks } from '../_constant/profile-links';
+import { useTranslations } from 'next-intl';
 
 const ProfileBreadcrumb = () => {
   const pathname = usePathname();
-  const activeLink = profileLinks.find((link) => link.href === pathname);
+  const normalizedPathname = pathname.replace(/^\/(ar|en)(?=\/|$)/, '') || '/profile';
+  const activeLink = profileLinks.find(link => link.href === normalizedPathname);
   const t = useTranslations();
-  if (!activeLink) return notFound();
+  if (!activeLink) return null;
   return (
     <CustomBreadcrumb
-      activeLink={t(activeLink?.label) || ""}
-      links={[{ name: t('my-account'), slug: "/profile" }]}
+      activeLink={t(activeLink?.label) || ''}
+      links={[{ name: t('my-account'), slug: '/profile' }]}
     />
   );
 };

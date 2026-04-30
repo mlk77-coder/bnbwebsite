@@ -1,9 +1,8 @@
-import PageWrapper from "@/components/page-wrapper";
-import SectionWrapper from "@/components/section-wrapper";
-import { Separator } from "@/components/ui/separator";
-import ProfileBreadcrumb from "./_components/profile-breadcrumb";
-import ProfileNavbar from "./_components/profile-navbar";
-import { getTranslations } from "next-intl/server";
+import PageWrapper from '@/components/page-wrapper';
+import SectionWrapper from '@/components/section-wrapper';
+import { getTranslations } from 'next-intl/server';
+import ProfileBreadcrumb from './_components/profile-breadcrumb';
+import ProfileNavbar from './_components/profile-navbar';
 
 const ProfileLayout = async ({
   children,
@@ -12,15 +11,14 @@ const ProfileLayout = async ({
 }>) => {
   const t = await getTranslations();
   return (
-    <PageWrapper>
-      <SectionWrapper className="space-y-4">
+    <PageWrapper className='from-secondary/50 bg-linear-to-b via-white to-white'>
+      <SectionWrapper className='space-y-6'>
         <ProfileBreadcrumb />
-        <h1 className="text-4xl !mt-10">{t('my-account')}</h1>
-        <Separator />
-        <div className="w-full lg:grid lg:grid-cols-12">
+        <div className='grid w-full gap-5 lg:grid-cols-[280px_1fr]'>
           <ProfileNavbar />
-          <Separator className="lg:hidden" />
-          <div className="lg:col-span-10 max-lg:mt-5">{children}</div>
+          <div className='border-primary/10 shadow-primary/5 min-w-0 rounded-3xl border bg-white p-4 shadow-xl sm:p-6'>
+            {children}
+          </div>
         </div>
       </SectionWrapper>
     </PageWrapper>

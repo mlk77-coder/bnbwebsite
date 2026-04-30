@@ -59,8 +59,8 @@ const InifinteOrders: FC<PropsType> = ({ token, initialData }) => {
     <Fragment>
       <div className="w-full space-y-5">
         {data.pages[0].orders.length === 0 ? (
-          <div className="size-full flex justify-center items-center">
-            <p className="text-xl md:text-4xl font-bold">
+          <div className="flex size-full items-center justify-center rounded-3xl border border-primary/10 bg-secondary/40 px-4 py-10 text-center">
+            <p className="text-lg font-bold text-primary md:text-2xl">
               {t("you-don-t-have-any-orders-yet")}
             </p>
           </div>
@@ -70,32 +70,36 @@ const InifinteOrders: FC<PropsType> = ({ token, initialData }) => {
               <Link
                 href={`/orders/${product.id}`}
                 key={product.id}
-                className="cursor-pointer flex justify-start items-start gap-2"
+                className="group grid cursor-pointer grid-cols-[auto_1fr] gap-4 rounded-3xl border border-primary/10 bg-white p-3 shadow-sm shadow-primary/5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-xl hover:shadow-primary/10 sm:p-4"
               >
                 <Image
-                  src={product.image ?? ""}
+                  src={product.image ?? "/no-product.svg"}
                   alt="men"
                   width={100}
                   height={100}
-                  className="size-28 shrink-0 object-cover"
+                  className="size-24 shrink-0 rounded-2xl object-cover sm:size-28"
                 />
-                <span className="size-full flex flex-col justify-start items-start">
-                  <span className="w-full">
-                    <span className="sm:text-xl font-bold">
+                <span className="flex size-full min-w-0 flex-col items-start justify-start gap-1">
+                  <span className="flex w-full items-start justify-between gap-3">
+                    <span className="truncate font-bold text-primary sm:text-xl">
                       {product.order_id}
                     </span>
+                    <Badge className="shrink-0 rounded-full" variant="secondary">
+                      {product.status}
+                    </Badge>
                   </span>
-                  <span className="text-orange">
+                  <span className="text-sm font-medium text-orange">
                     {format(new Date(product.created_at), "PP")}
                   </span>
-                  <span>{formatPrice(product.total * currency, symbol)}</span>
-                  <span className="underline underline-offset-4 text-primary">
+                  <span className="text-sm font-semibold">
+                    {formatPrice(product.total * currency, symbol)}
+                  </span>
+                  <span className="rounded-full bg-primary/5 px-3 py-1 text-xs font-medium text-primary">
                     {t("product-count", {
                       count: product.order_products_count,
                     })}
                   </span>
                 </span>
-                <Badge variant="secondary">{product.status}</Badge>
               </Link>
             ))
           )
@@ -106,7 +110,7 @@ const InifinteOrders: FC<PropsType> = ({ token, initialData }) => {
           <Button
             variant="outline"
             size="lg"
-            className="hover:bg-gray-900 hover:text-background"
+            className="rounded-full border-primary/20 px-8 hover:bg-primary hover:text-primary-foreground"
             onClick={handleLoadMore}
             disabled={isFetchingNextPage || (!hasNextPage && hasFetched)}
           >

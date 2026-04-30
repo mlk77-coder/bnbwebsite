@@ -1,26 +1,50 @@
 import { GetFavoriteIdsOptions } from "@/app/[locale]/(auth)/hooks/use-get-favorite-ids";
-import { toggleWishListAction } from "@/app/actions/wishlist-actions";
+import {
+  addToWishListAction,
+  removeFromWishListAction,
+} from "@/app/actions/wishlist-actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 const useToggleWishList = (token: string, id: number) => {
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
-    mutationFn: toggleWishListAction,
+    mutationFn: async ({
+      productId,
+      isInWishlist,
+      token,
+    }: {
+      productId: number;
+      isInWishlist: boolean;
+      token: string;
+    }) => {
+      if (isInWishlist) {
+        return removeFromWishListAction({ productId, token });
+      }
+      return addToWishListAction({ productId, token });
+    },
     onSuccess: (response, variable) => {
-      const { id } = variable;
+      const { productId } = variable;
       if (response === "success") {
         const key = GetFavoriteIdsOptions(token).queryKey;
-        const wishlist = queryClient.getQueryData(key);
+        const wishlist = queryClient.getQueryData<{
+          productIds: number[];
+          wishlistItemIdByProductId: Record<number, number>;
+        }>(key);
+
         if (wishlist) {
-          if (wishlist.includes(id)) {
-            queryClient.setQueryData(
-              key,
-              wishlist.filter((item) => item !== id)
-            );
+          if (variable.isInWishlist) {
+            queryClient.setQueryData(key, {
+              productIds: wishlist.productIds.filter(item => item !== productId),
+              wishlistItemIdByProductId: Object.fromEntries(
+                Object.entries(wishlist.wishlistItemIdByProductId).filter(
+                  ([key]) => Number(key) !== productId
+                )
+              ),
+            });
             toast.success("This product has been removed from wishlist");
           } else {
-            queryClient.setQueryData(key, [...wishlist, id]);
+            queryClient.invalidateQueries({ queryKey: key });
             toast.success("This product has been added to wishlist");
           }
         }
@@ -30,7 +54,12 @@ const useToggleWishList = (token: string, id: number) => {
     },
   });
   const handleToggleWishList = () => {
-    mutate({ id, token });
+    const wishlist = queryClient.getQueryData<{
+      productIds: number[];
+      wishlistItemIdByProductId: Record<number, number>;
+    }>(GetFavoriteIdsOptions(token).queryKey);
+    const isInWishlist = wishlist?.productIds.includes(id) ?? false;
+    mutate({ productId: id, isInWishlist, token });
   };
 
   return {

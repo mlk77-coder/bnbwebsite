@@ -1,6 +1,5 @@
 "use client";
 import { addReviewAction } from "@/app/actions/reviews-action";
-import FormInput from "@/components/form-input";
 import FormTextArea from "@/components/form-text-area";
 import SubmitButton from "@/components/submit-button";
 import { Button } from "@/components/ui/button";
@@ -24,6 +23,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
+import { usePathname, useRouter } from "@/navigation";
 import { useTranslations } from "next-intl";
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -37,8 +37,7 @@ type PropsType = {
 };
 
 const schema = z.object({
-  rate: z.number().min(1, "form.validation.rate"),
-  name: z.string().min(1, "form.validation.name"),
+  rating: z.number().min(1, "form.validation.rate"),
   comment: z.string().min(1, "form.validation.comment"),
 });
 
@@ -46,13 +45,14 @@ type schema = z.infer<typeof schema>;
 
 const AddReview: FC<PropsType> = ({ slug, token }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const t = useTranslations()
+  const t = useTranslations();
+  const router = useRouter();
+  const pathname = usePathname();
   const queryClient = useQueryClient();
   const form = useForm<schema>({
     resolver: zodResolver(schema),
     defaultValues: {
-      rate: 0,
-      name: token ? "123" : "",
+      rating: 0,
       comment: "",
     },
   });
@@ -63,25 +63,39 @@ const AddReview: FC<PropsType> = ({ slug, token }) => {
         setIsOpen(false);
         form.reset();
         toast.success("Review added successfully");
-        queryClient.invalidateQueries({ queryKey: ["reviews", slug] });
+        queryClient.invalidateQueries({ queryKey: ["reviews"] });
+      } else {
+        toast.error(response);
       }
     },
   });
+
+  const handleOpen = () => {
+    if (!token) {
+      const callbackUrl = encodeURIComponent(pathname || "/");
+      router.push(`/login?callbackUrl=${callbackUrl}`);
+      return;
+    }
+    setIsOpen(true);
+  };
+
   const onSubmit = (data: schema) => {
-    const body = new FormData();
-    body.append("rate", data.rate.toString());
-    body.append("comment", data.comment);
-    if (!token) body.append("name", data.name);
+    const body = {
+      rating: data.rating,
+      comment: data.comment,
+    };
     mutateAsync({ body, token, slug });
   };
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button className="rtl:flex-row-reverse" variant="link">
-          <Plus className="size-4 me-1 rtl:ms-1" />
-          {t('add-review')}
-        </Button>
-      </DialogTrigger>
+      <Button
+        className="rtl:flex-row-reverse"
+        variant="link"
+        onClick={handleOpen}
+      >
+        <Plus className="size-4 me-1 rtl:ms-1" />
+        {t("add-review")}
+      </Button>
       <DialogContent className="max-w-screen-sm">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl">
@@ -94,7 +108,7 @@ const AddReview: FC<PropsType> = ({ slug, token }) => {
             <div className="space-y-2">
               <FormField
                 control={form.control}
-                name="rate"
+                name="rating"
                 render={({ field }) => (
                   <FormItem className="w-full flex flex-col justify-start items-start">
                     <FormLabel className="capitalize">
@@ -106,7 +120,7 @@ const AddReview: FC<PropsType> = ({ slug, token }) => {
                         starDimension="25px"
                         starRatedColor="#eab308"
                         starHoverColor="#eab308"
-                        changeRating={field.onChange}
+                        changeRating={rating => field.onChange(rating)}
                         numberOfStars={5}
                         name="rating"
                       />
@@ -115,15 +129,6 @@ const AddReview: FC<PropsType> = ({ slug, token }) => {
                   </FormItem>
                 )}
               />
-              {token ? null : (
-                <div className="flex justify-center items-start gap-2">
-                  <FormInput
-                    control={form.control}
-                    name="name"
-                    label={t("form.fields.name")}
-                  />
-                </div>
-              )}
               <FormTextArea
                 control={form.control}
                 name="comment"

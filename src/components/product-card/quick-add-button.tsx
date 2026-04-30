@@ -11,11 +11,11 @@ import { toast } from 'sonner';
 type State = 'idle' | 'loading' | 'done';
 
 type Props = {
-  slug: string;
+  productId: number;
   outOfStock?: boolean;
 };
 
-export function QuickAddButton({ slug, outOfStock }: Props) {
+export function QuickAddButton({ productId, outOfStock }: Props) {
   const [state, setState] = useState<State>('idle');
   const increment = useCartCountStore(s => s.incrementProductsCount);
   const t = useTranslations();
@@ -27,7 +27,7 @@ export function QuickAddButton({ slug, outOfStock }: Props) {
 
     setState('loading');
     try {
-      await axios.post('/api/cart', { slug, quantity: 1 });
+      await axios.post('/api/cart', { product_id: productId, quantity: 1 });
       increment(1);
       setState('done');
       setTimeout(() => setState('idle'), 2200);
@@ -84,7 +84,7 @@ export function QuickAddButton({ slug, outOfStock }: Props) {
         disabled={!!outOfStock || state === 'loading'}
         aria-label={t('cart.add-to-cart-button')}
         className={cn(
-          'absolute end-2 bottom-2 z-10 sm:hidden',
+          'absolute inset-e-2 bottom-2 z-10 sm:hidden',
           'flex size-8 items-center justify-center rounded-full shadow-md',
           'transition-colors duration-200',
           state === 'done'

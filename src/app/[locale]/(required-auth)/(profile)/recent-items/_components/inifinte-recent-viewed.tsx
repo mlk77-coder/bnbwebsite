@@ -1,6 +1,8 @@
 "use client";
-import { getWishlist } from "@/api/favorite/get-favorite";
-import { GetRecentlyViewedResponse } from "@/api/recently-viewed/get-recently-viewed";
+import {
+  getRecentlyViewed,
+  GetRecentlyViewedResponse,
+} from "@/api/recently-viewed/get-recently-viewed";
 import ProductCard from "@/components/product-card/product-card";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/ui/loader";
@@ -20,7 +22,7 @@ const InifinteRecentViewed: FC<PropsType> = ({ token, initialData }) => {
     useInfiniteQuery({
       queryKey: ["user-recently-viewed", token],
       queryFn: async ({ pageParam = 1 }) => {
-        const response = await getWishlist(locale, token, pageParam);
+        const response = await getRecentlyViewed(locale, token, pageParam, true);
         if (response.ok) return response.data;
         else return initialData;
       },

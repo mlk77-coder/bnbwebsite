@@ -58,7 +58,7 @@ const WishToggleButton: FC<PropsType> = ({ session, id }) => {
   if (isPending) return <WishlistButton disabled />;
   if (isError) return <WishlistButton disabled />;
 
-  if (!data.includes(id))
+  if (!data.productIds.includes(id))
     return (
       <Button
         disabled={isPendingWishList}

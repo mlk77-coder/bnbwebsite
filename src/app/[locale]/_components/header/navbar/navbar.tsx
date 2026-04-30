@@ -20,7 +20,7 @@ import { Category } from '@/types/categories';
 const toClientCategory = (category: Category): Category => ({
   ...category,
   parent: null,
-  subcategories: category.subcategories.map(toClientCategory),
+  subcategories: (category.subcategories ?? []).map(toClientCategory),
 });
 
 const Navbar = async () => {

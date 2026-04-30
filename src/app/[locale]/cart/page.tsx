@@ -59,12 +59,9 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const Page: FC<PropsType> = async props => {
+const Page: FC<PropsType> = async (props) => {
   const params = await props.params;
-
-  const {
-    locale
-  } = params;
+  const { locale } = params;
 
   const cookieStore = await cookies();
   const t = await getTranslations();
@@ -73,21 +70,29 @@ const Page: FC<PropsType> = async props => {
   const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
     headers: headersList,
   });
+
   const user_token = cookieStore.get("x-user-session")?.value || "";
   const isLoggedIn = Boolean(session && session.user);
   const token = isLoggedIn ? session?.user?.access_token || "" : user_token;
+
+  // Fetch cart data from new API
   const response = await getCart(token, locale, isLoggedIn, request);
+
+  // Check if cart has items
+  const cartItems = response.data?.data?.items || [];
+  const hasItems = cartItems.length > 0;
+
   return (
     <PageWrapper>
       <SectionWrapper
         className={cn(
           "max-w-screen-2xl w-full relative border-t flex-col md:flex-row flex justify-start gap-4 items-start flex-1",
           {
-            "items-center": response.data?.cart.products.length === 0,
+            "items-center": !hasItems,
           }
         )}
       >
-        {response.data?.cart.products.length === 0 ? (
+        {!hasItems ? (
           <div className="w-full flex flex-col capitalize items-center text-xl rounded p-4 gap-5">
             <Image
               src="/empty-cart.svg"
@@ -101,7 +106,7 @@ const Page: FC<PropsType> = async props => {
             <Link
               href="/"
               className={cn(
-                " flex gap-1.5 text-primary items-center relative before:content-[''] before:absolute before:-bottom-0.5 before:w-full before:h-px before:bg-primary hover:before:hidden"
+                "flex gap-1.5 text-primary items-center relative before:content-[''] before:absolute before:-bottom-0.5 before:w-full before:h-px before:bg-primary hover:before:hidden"
               )}
             >
               <Undo2Icon size={16} />
@@ -121,10 +126,11 @@ const Page: FC<PropsType> = async props => {
           </Fragment>
         )}
       </SectionWrapper>
+
       <RecentlyViewed
         className={cn(sectionWrapperClassName)}
         isLoggedIn={isLoggedIn}
-        token={session && session.user ? session.user.access_token : user_token}
+        token={session?.user?.access_token || user_token}
       />
     </PageWrapper>
   );

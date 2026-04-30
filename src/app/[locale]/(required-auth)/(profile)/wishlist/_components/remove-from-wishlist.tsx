@@ -1,6 +1,6 @@
 "use client";
 
-import { toggleWishListAction } from "@/app/actions/wishlist-actions";
+import { removeFromWishListAction } from "@/app/actions/wishlist-actions";
 import SubmitButton from "@/components/submit-button";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,35 +12,37 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CircleAlert, HeartIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { FC, useState } from "react";
 import { toast } from "sonner";
 
 type PropsType = {
-  id: number;
+  productId: number;
   name: string;
   token: string;
 };
 
-const RemoveFromWishlist: FC<PropsType> = ({ id, name, token }) => {
+const RemoveFromWishlist: FC<PropsType> = ({ productId, name, token }) => {
   const [isOpen, setIsOpen] = useState(false);
   const t = useTranslations();
+  const queryClient = useQueryClient();
   const { isPending, mutate } = useMutation({
-    mutationFn: toggleWishListAction,
+    mutationFn: removeFromWishListAction,
     onSuccess: (response) => {
       if (response === "success") {
         toast.success("This product has been removed form wishlist");
         setIsOpen(false);
-        window.location.reload();
+        queryClient.invalidateQueries({ queryKey: ["user-wishlist", token] });
+        queryClient.invalidateQueries({ queryKey: ["favorite-ids", token] });
       } else toast.error(response);
     },
   });
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon" className="absolute end-0 top-0">
+        <Button variant="ghost" size="icon" className="absolute inset-e-0 top-0">
           <span className="sr-only">Remove product {name} from wishlist</span>
           <HeartIcon strokeWidth={1.2} className="fill-red-500 text-red-500" />
         </Button>
@@ -58,7 +60,11 @@ const RemoveFromWishlist: FC<PropsType> = ({ id, name, token }) => {
           })}
         </p>
         <DialogFooter className="max-md:gap-2 justify-center">
-          <Button className="w-full" onClick={() => mutate({ id, token })} disabled={isPending}>
+          <Button
+            className="w-full"
+            onClick={() => mutate({ productId, token })}
+            disabled={isPending}
+          >
             <SubmitButton isPending={isPending} text={t("global.remove")} />
           </Button>
           <DialogClose asChild>

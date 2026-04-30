@@ -1,7 +1,6 @@
 "use client";
 
 import { deleteAddressAction } from "@/app/actions/address-action";
-import { toggleWishListAction } from "@/app/actions/wishlist-actions";
 import SubmitButton from "@/components/submit-button";
 import { Button } from "@/components/ui/button";
 import {

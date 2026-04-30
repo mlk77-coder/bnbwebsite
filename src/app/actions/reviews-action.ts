@@ -7,11 +7,16 @@ export const addReviewAction = async ({
   slug,
 }: {
   token: string;
-  body: FormData;
+  body: {
+    rating: number;
+    comment: string;
+  };
   slug: string;
 }) => {
   try {
-    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+    if (!token) return 'Unauthorized';
+
+    const headers = { Authorization: `Bearer ${token}` };
     await axiosInstance.post(`products/${slug}/reviews`, body, {
       headers,
     });

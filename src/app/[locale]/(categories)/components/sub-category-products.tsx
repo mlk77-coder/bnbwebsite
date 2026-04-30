@@ -46,7 +46,6 @@ const SubCategoryProducts: FC<PropsType> = async ({
     const fallbackSections = shouldLoadFallbackProducts
       ? await Promise.all(
           fallbackCategories
-            .filter(category => (category.products_count || 0) > 0)
             .slice(0, MAX_FALLBACK_CATEGORY_REQUESTS)
             .map(async fallbackCategory => {
               const productsResponse = await getProductList(
@@ -78,36 +77,23 @@ const SubCategoryProducts: FC<PropsType> = async ({
         (sum, section) => sum + (section?.total || 0),
         0
       );
+      const mergedProducts = visibleFallbackSections
+        .flatMap(section => section?.products || [])
+        .filter(
+          (product, index, array) =>
+            array.findIndex(item => item.id === product.id) === index
+        );
 
       return (
-        <div className='space-y-10'>
+        <div className='space-y-5'>
           <p className='flex w-full items-start justify-start'>
             {t('product-count', { count: total })}
           </p>
-          {visibleFallbackSections.map(section =>
-            section ? (
-              <section key={section.category.id} className='space-y-4'>
-                <div className='flex items-center justify-between gap-4'>
-                  <h2 className='text-lg font-semibold sm:text-xl'>
-                    {section.category.name}
-                  </h2>
-                  {section.total > section.products.length ? (
-                    <Link
-                      href={`/category/${section.category.id}`}
-                      className='text-primary text-sm font-medium underline-offset-4 hover:underline'
-                    >
-                      {t('view-all-products')}
-                    </Link>
-                  ) : null}
-                </div>
-                <div className='grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-5'>
-                  {section.products.map(product => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-                </div>
-              </section>
-            ) : null
-          )}
+          <div className='grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-5'>
+            {mergedProducts.map(product => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
         </div>
       );
     }

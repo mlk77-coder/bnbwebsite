@@ -1,4 +1,4 @@
-import { getWishlist } from "@/api/favorite/get-favorite";
+import { getWishlist } from "@/api/wishlist/get-wishlist";
 import getSession from "@/lib/get-session";
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
@@ -40,7 +40,6 @@ const WishListPage: FC<PropsType> = async props => {
   const wishListResponse = await getWishlist(
     locale,
     session.user.access_token,
-    1,
     request
   );
 
@@ -49,7 +48,7 @@ const WishListPage: FC<PropsType> = async props => {
     <div className="space-y-5">
       <h2 className="text-2xl font-bold ">{t("wishlist")}</h2>
       <InifinteWithList
-        initialData={wishListResponse.data}
+        initialData={wishListResponse.data.data}
         token={session?.user?.access_token || ""}
       />
     </div>

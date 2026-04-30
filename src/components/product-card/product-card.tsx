@@ -15,9 +15,14 @@ import { WishlistHeart } from './wishlist-heart';
 type PropsType = {
   product: ProductCardType;
   insideSheet?: boolean;
+  showWishlistHeart?: boolean;
 };
 
-const ProductCard: FC<PropsType> = ({ product, insideSheet }) => {
+const ProductCard: FC<PropsType> = ({
+  product,
+  insideSheet,
+  showWishlistHeart = true,
+}) => {
   const locale = useLocale();
   const dir = getLangDir(locale);
 
@@ -33,7 +38,7 @@ const ProductCard: FC<PropsType> = ({ product, insideSheet }) => {
         </Wrapper>
 
         {/* Floating wishlist heart */}
-        <WishlistHeart id={product.id} />
+        {showWishlistHeart ? <WishlistHeart id={product.id} /> : null}
 
         {/* Quick-add to cart */}
         <QuickAddButton

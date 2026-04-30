@@ -11,7 +11,7 @@ type PropsType = {
 };
 
 const ProductPreviewCard: FC<PropsType> = ({ product, size = "sm" }) => {
-  const { image, name, quantity, attribute_values } = product;
+  const { image, name, quantity } = product;
   const currency = useCurrencyStore((state) => state.currency);
   const symbol = useCurrencyStore((state) => state.symbol);
   return (
@@ -28,7 +28,7 @@ const ProductPreviewCard: FC<PropsType> = ({ product, size = "sm" }) => {
       />
       <span className="w-full flex ltr:tracking-wide text-sm flex-col justify-start items-start">
         <Link
-          href={`/products/${product.slug}`}
+          href={`/products/${product.product_id}`}
           title={name}
           className={cn(
             "w-full font-medium",
@@ -37,28 +37,16 @@ const ProductPreviewCard: FC<PropsType> = ({ product, size = "sm" }) => {
         >
           {name}
         </Link>
-        <span
-          className={cn("w-full grid", size === "sm" ? "text-sm" : "text-base")}
-          style={{
-            gridTemplateRows: "repeat(2, auto)",
-            gridAutoFlow: "column",
-          }}
-        >
-          {attribute_values
-            ? Object.entries(attribute_values).map(([key, value], index) => (
-                <span key={index}>
-                  {key}: {value}
-                </span>
-              ))
-            : null}
-        </span>
         <span className="font-bold">
           <div className="flex justify-start items-center gap-2">
             <p className="font-bold" dir="ltr">
               {quantity} X{" "}
-              {product.has_discount && product.price_after_sale
-                ? formatPrice(product.price_after_sale * currency, symbol)
-                : formatPrice(+product.price * currency, symbol)}
+              {formatPrice(
+                (product.sale_price && product.sale_price < product.price
+                  ? product.sale_price
+                  : product.price) * currency,
+                symbol
+              )}
             </p>
           </div>
         </span>

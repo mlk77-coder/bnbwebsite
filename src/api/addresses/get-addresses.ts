@@ -8,7 +8,7 @@ export const getAddresses = async (
   request?: any
 ) => {
   const response = await fetcher<GetAddressesResponse>(
-    `locations`,
+    `addresses`,
     locale,
     {
       headers: {

@@ -1,15 +1,16 @@
 import axiosInstance from "@/lib/axios";
 import { actionHandleError } from "@/lib/utils";
+import { AddressMutationPayload } from "@/types/address";
 
 export const addAddressAction = async ({
   token,
   body,
 }: {
   token: string;
-  body: FormData;
+  body: AddressMutationPayload;
 }) => {
   try {
-    await axiosInstance.post(`locations`, body, {
+    await axiosInstance.post(`addresses`, body, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -28,7 +29,7 @@ export const deleteAddressAction = async ({
   id: number;
 }) => {
   try {
-    await axiosInstance.delete(`locations/${id}`, {
+    await axiosInstance.delete(`addresses/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -46,14 +47,37 @@ export const editAddressAction = async ({
 }: {
   token: string;
   id: number;
-  body: FormData;
+  body: AddressMutationPayload;
 }) => {
   try {
-    await axiosInstance.post(`locations/${id}`, body, {
+    await axiosInstance.put(`addresses/${id}`, body, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+    return "success";
+  } catch (error) {
+    return actionHandleError(error);
+  }
+};
+
+export const setDefaultAddressAction = async ({
+  token,
+  id,
+}: {
+  token: string;
+  id: number;
+}) => {
+  try {
+    await axiosInstance.post(
+      `addresses/${id}/set-default`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return "success";
   } catch (error) {
     return actionHandleError(error);

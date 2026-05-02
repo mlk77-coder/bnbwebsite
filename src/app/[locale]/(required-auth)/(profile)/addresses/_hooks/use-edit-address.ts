@@ -1,42 +1,81 @@
-import { editAddressAction } from "@/app/actions/address-action";
-import { AddAddressSchema } from "@/schemas/addresses.schema";
-import { Address } from "@/types/address";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { editAddressAction } from '@/app/actions/address-action';
+import { invalidateAddressRelatedQueries } from '@/lib/address-query-keys';
+import { toAddressPayload } from '@/lib/address-utils';
+import { splitCountryCode } from '@/lib/utils';
+import {
+  AddAddressSchema as addAddressZodSchema,
+  type AddAddressSchema,
+} from '@/schemas/addresses.schema';
+import type { Address, AddressMutationPayload } from '@/types/address';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
-const useEditAddress = (token: string, address: Address) => {
+type EditVariables = {
+  token: string;
+  id: number;
+  body: AddressMutationPayload;
+  formSnapshot: AddAddressSchema;
+};
+
+type Options = {
+  onMutationSuccess?: () => void;
+};
+
+const valuesFromAddress = (address: Address): AddAddressSchema => ({
+  type: address.type || 'home',
+  address_name: address.address_name || '',
+  city: address.city || '',
+  area: address.area || '',
+  street_address: address.street_address || '',
+  building_number: address.building_number || '',
+  details: address.details || '',
+  phone: address.phone
+    ? splitCountryCode(address.phone)
+    : {
+        code: '963',
+        number: '',
+      },
+  is_default: address.is_default || false,
+  latitude: address.latitude?.toString() || '33.518538',
+  longitude: address.longitude?.toString() || '36.279089',
+});
+
+const useEditAddress = (token: string, address: Address, options?: Options) => {
+  const queryClient = useQueryClient();
+  const syncedValues = useMemo(() => valuesFromAddress(address), [address]);
+
   const form = useForm<AddAddressSchema>({
-    resolver: zodResolver(AddAddressSchema),
-    defaultValues: {
-      address: address.street || "",
-      city: address.city.id.toString() || "",
-      country: address.country_id.toString() || "",
-      name: address.name || "",
-    },
+    resolver: zodResolver(addAddressZodSchema),
+    values: syncedValues,
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: editAddressAction,
-    onSuccess: async (data) => {
-      if (data === "success") {
-        toast.success("Address updated successfully");
-        window.location.reload();
-        form.reset();
+    mutationFn: (vars: EditVariables) =>
+      editAddressAction({
+        token: vars.token,
+        id: vars.id,
+        body: vars.body,
+      }),
+    onSuccess: (data, vars) => {
+      if (data === 'success') {
+        toast.success('Address updated successfully');
+        invalidateAddressRelatedQueries(queryClient);
+        form.reset(vars.formSnapshot);
+        options?.onMutationSuccess?.();
       } else toast.error(data);
     },
   });
 
   const onSubmit = (data: AddAddressSchema) => {
-    const formData = new FormData();
-
-    formData.append("_method", "put");
-    formData.append("city_id", data.city);
-    formData.append("country", data.country);
-    formData.append("street", data.address);
-    formData.append("name", data.name);
-    mutate({ body: formData, token, id: address.id });
+    mutate({
+      token,
+      id: address.id,
+      body: toAddressPayload(data),
+      formSnapshot: data,
+    });
   };
   return { form, isPending, onSubmit };
 };

@@ -1,8 +1,9 @@
 "use client";
 
-import CitiesSelectForm from "@/components/cities-select-form";
-import CountriesSelectForm from "@/components/countries-select-form";
+import AddressLocationPicker from "@/components/address-location-picker";
+import FormCheckbox from "@/components/form-checkbox";
 import FormInput from "@/components/form-input";
+import PhoneNumberInputForm from "@/components/phone-number-input-form";
 import SubmitButton from "@/components/submit-button";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -14,11 +15,13 @@ import useAddAddress from "../_hooks/use-add-address";
 
 type PropsType = {
   session: CustomSession;
+  onMutationSuccess?: () => void;
 };
-const AddAddressForm: FC<PropsType> = ({ session }) => {
+const AddAddressForm: FC<PropsType> = ({ session, onMutationSuccess }) => {
   const t = useTranslations();
   const { form, isPending, onSubmit } = useAddAddress(
-    session?.user?.access_token || ""
+    session?.user?.access_token || "",
+    { onMutationSuccess }
   );
 
   return (
@@ -29,17 +32,52 @@ const AddAddressForm: FC<PropsType> = ({ session }) => {
       >
         <FormInput
           control={form.control}
-          name="name"
+          name="address_name"
           className="border-border"
           label={t("address-name")}
         />
-        <CountriesSelectForm />
-        <CitiesSelectForm />
         <FormInput
           control={form.control}
-          name="address"
+          name="type"
+          className="border-border"
+          label={t("address-fields.type")}
+        />
+        <FormInput
+          control={form.control}
+          name="city"
+          className="border-border"
+          label={t("form.city")}
+        />
+        <FormInput
+          control={form.control}
+          name="area"
+          className="border-border"
+          label={t("address-fields.area")}
+        />
+        <FormInput
+          control={form.control}
+          name="street_address"
           className="border-border"
           label={t("address-label")}
+        />
+        <FormInput
+          control={form.control}
+          name="building_number"
+          className="border-border"
+          label={t("address-fields.building-number")}
+        />
+        <FormInput
+          control={form.control}
+          name="details"
+          className="border-border"
+          label={t("address-fields.details")}
+        />
+        <PhoneNumberInputForm borderColor="border" />
+        <AddressLocationPicker form={form} />
+        <FormCheckbox
+          control={form.control}
+          name="is_default"
+          label={t("address-fields.set-as-default")}
         />
         <SheetFooter className="gap-2 capitalize">
           <Button disabled={isPending}>

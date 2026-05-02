@@ -1,13 +1,13 @@
 "use client";
 
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { useTranslations } from "next-intl";
 import { FC, useState } from "react";
 import CheckoutAddAddressForm from "./checkout-add-address-form";
@@ -23,20 +23,20 @@ const SelectAddress: FC<PropsType> = ({ session, children, checkoutForm }) => {
   const [isOpen, setIsOpen] = useState(false);
   const t = useTranslations();
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>{t("address.add.title")}</DialogTitle>
-          <DialogDescription>{t("address.add.description")}</DialogDescription>
-        </DialogHeader>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <SheetTrigger asChild>{children}</SheetTrigger>
+      <SheetContent className="overflow-y-auto">
+        <SheetHeader>
+          <SheetTitle>{t("address.add.title")}</SheetTitle>
+          <SheetDescription>{t("address.add.description")}</SheetDescription>
+        </SheetHeader>
         <CheckoutAddAddressForm
           setOpen={setIsOpen}
           checkoutForm={checkoutForm}
           session={session}
         />
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
   );
 };
 

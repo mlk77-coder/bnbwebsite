@@ -1,41 +1,60 @@
-import { Button } from "@/components/ui/button";
+'use client';
+
+import { Button } from '@/components/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { CustomSession } from "@/lib/auth-options";
-import { getTranslations } from "next-intl/server";
-import { FC } from "react";
-import EditAddressForm from "./edit-address-form";
-import { Address } from "@/types/address";
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import { CustomSession } from '@/lib/auth-options';
+import { Address } from '@/types/address';
+import { Edit3 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { FC, useState } from 'react';
+import EditAddressForm from './edit-address-form';
 
 type PropsType = {
   session: CustomSession;
   address: Address;
 };
-const EditAddress: FC<PropsType> = async ({ session, address }) => {
-  const t = await getTranslations();
+
+const EditAddress: FC<PropsType> = ({ session, address }) => {
+  const t = useTranslations();
+  const [open, setOpen] = useState(false);
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button className="px-0 underline" variant="link">
-          {t("global.edit")}
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <Button
+          className='border-primary/10 text-primary hover:bg-primary/10 hover:text-primary size-9 rounded-full'
+          size='icon'
+          title={t('global.edit')}
+          variant='outline'
+        >
+          <Edit3 className='size-4' />
+
+          <span className='sr-only'>{t('global.edit')}</span>
         </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{t("address.edit.title")}</DialogTitle>
-          <DialogDescription className="sr-only">
-            {t("address.edit.title")}
-          </DialogDescription>
-        </DialogHeader>
-        <EditAddressForm address={address} session={session} />
-      </DialogContent>
-    </Dialog>
+      </SheetTrigger>
+
+      <SheetContent className='max-w-2xl! overflow-y-auto'>
+        <SheetHeader>
+          <SheetTitle>{t('address.edit.title')}</SheetTitle>
+
+          <SheetDescription className='sr-only'>
+            {t('address.edit.title')}
+          </SheetDescription>
+        </SheetHeader>
+
+        <EditAddressForm
+          address={address}
+          session={session}
+          onMutationSuccess={() => setOpen(false)}
+        />
+      </SheetContent>
+    </Sheet>
   );
 };
 

@@ -1,6 +1,8 @@
 "use client";
 
 import { getAddresses } from "@/api/addresses/get-addresses";
+import { getCitiesOptions } from "@/app/hooks/use-get-cities";
+import { getCountriesOptions } from "@/app/hooks/use-get-countries";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -22,8 +24,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  formatAddressStreet,
+  normalizeAddressText,
+} from "@/lib/address-utils";
 import useCheckoutStore from "@/store/use-checkout-store";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Check, ChevronsUpDown, Loader2, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { FC, useState } from "react";
@@ -38,15 +44,17 @@ const SelectAddressFormInput: FC<PropsType> = ({ token }) => {
   const [open, setOpen] = useState(false);
   const form = useFormContext();
   const t = useTranslations();
+  const queryClient = useQueryClient();
   const setShipping = useCheckoutStore((state) => state.setShipping);
   const { data, isPending, isError } = useQuery({
     queryKey: ["address", token],
     queryFn: async () => {
       const response = await getAddresses("en", token);
       if (!response.ok) throw new Error("Failed to fetch addresses");
-      return response.data.locations;
+      return response.data.data;
     },
   });
+  const { data: countries = [] } = useQuery(getCountriesOptions("en"));
 
   return (
     <FormField
@@ -97,25 +105,38 @@ const SelectAddressFormInput: FC<PropsType> = ({ token }) => {
                       {data?.map((address) => (
                         <CommandItem
                           key={address.id}
-                          onSelect={() => {
+                          onSelect={async () => {
                             const currentCountry = form.getValues("country");
                             const currentStreet = form.getValues("street");
                             const currentCityId = form.getValues("city_id");
+                            const street = formatAddressStreet(address);
+                            const country = countries.find(
+                              (country) =>
+                                normalizeAddressText(country.name) ===
+                                normalizeAddressText(address.country)
+                            );
+                            const cities = country
+                              ? await queryClient.fetchQuery(
+                                  getCitiesOptions(country.id, "en")
+                                )
+                              : [];
+                            const city = cities.find(
+                              (city) =>
+                                normalizeAddressText(city.name) ===
+                                normalizeAddressText(address.city)
+                            );
 
                             if (
-                              currentCountry !== address.name ||
-                              currentStreet !== address.street ||
-                              currentCityId !== address.city.id.toString()
+                              currentCountry !== address.address_name ||
+                              currentStreet !== street ||
+                              currentCityId !== city?.id.toString()
                             ) {
-                              form.setValue("street", address.street);
-                              form.setValue(
-                                "city_id",
-                                address.city.id.toString()
-                              );
-                              form.setValue("country", address.name);
+                              form.setValue("street", street);
+                              form.setValue("city_id", city?.id.toString() || "");
+                              form.setValue("country", address.address_name);
                               form.setValue(
                                 "countryId",
-                                address.country_id.toString()
+                                country?.id.toString() || ""
                               );
                               setShipping(-1);
                             }
@@ -124,12 +145,12 @@ const SelectAddressFormInput: FC<PropsType> = ({ token }) => {
                         >
                           <Check
                             className={`mr-2 h-4 w-4 ${
-                              field.value?.id === address.id
+                              field.value === formatAddressStreet(address)
                                 ? "opacity-100"
                                 : "opacity-0"
                             }`}
                           />
-                          {address.name}
+                          {address.address_name}
                         </CommandItem>
                       ))}
                     </CommandGroup>

@@ -28,6 +28,7 @@ const CheckoutFormProvider: FC<PropsType> = ({ children, session }) => {
               number: "",
             },
       country: "",
+      countryId: "",
       city_id: "",
       street: "",
     },

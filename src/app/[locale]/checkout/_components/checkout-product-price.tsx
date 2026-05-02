@@ -12,7 +12,11 @@ const CheckoutProductPrice = ({
 }) => {
   const currency = useCurrencyStore((state) => state.currency);
   const symbol = useCurrencyStore((state) => state.symbol);
-  return <p>{formatPrice(+price * quantity * currency, symbol)}</p>;
+  return (
+    <p className="text-base font-semibold text-foreground tabular-nums">
+      {formatPrice(+price * quantity * currency, symbol)}
+    </p>
+  );
 };
 
 export default CheckoutProductPrice;

@@ -10,26 +10,16 @@ import { Form } from "@/components/ui/form";
 import { SheetClose, SheetFooter } from "@/components/ui/sheet";
 import { useTranslations } from "next-intl";
 import { Dispatch, FC, SetStateAction } from "react";
-import { FieldValues, UseFormReturn } from "react-hook-form";
 import useCheckoutAddAddress from "../_hooks/use-checkout-add-address";
 
 type PropsType = {
   session: string;
-  checkoutForm: UseFormReturn<FieldValues>;
   setOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-const CheckoutAddAddressForm: FC<PropsType> = ({
-  session,
-  checkoutForm,
-  setOpen,
-}) => {
+const CheckoutAddAddressForm: FC<PropsType> = ({ session, setOpen }) => {
   const t = useTranslations();
-  const { form, isPending, onSubmit } = useCheckoutAddAddress(
-    session,
-    checkoutForm,
-    setOpen
-  );
+  const { form, isPending, onSubmit } = useCheckoutAddAddress(session, setOpen);
   return (
     <Form {...form}>
       <form

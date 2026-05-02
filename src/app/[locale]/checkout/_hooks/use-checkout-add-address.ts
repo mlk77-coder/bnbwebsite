@@ -6,19 +6,15 @@ import useCheckoutStore from '@/store/use-checkout-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Dispatch, SetStateAction } from 'react';
-import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 const useCheckoutAddAddress = (
   token: string,
-  checkoutForm: UseFormReturn<FieldValues>,
   setOpen: Dispatch<SetStateAction<boolean>>
 ) => {
   const setShipping = useCheckoutStore(state => state.setShipping);
   const queryClient = useQueryClient();
-  const checkoutPhone = checkoutForm.getValues('phone') as
-    | { code?: string; number?: string }
-    | undefined;
   const form = useForm<AddAddressSchema>({
     resolver: zodResolver(AddAddressSchema),
     defaultValues: {
@@ -30,8 +26,8 @@ const useCheckoutAddAddress = (
       building_number: '',
       details: '',
       phone: {
-        code: checkoutPhone?.code || '963',
-        number: checkoutPhone?.number || '',
+        code: '963',
+        number: '',
       },
       is_default: false,
       latitude: '33.518538',
@@ -53,8 +49,6 @@ const useCheckoutAddAddress = (
   });
 
   const onSubmit = (data: AddAddressSchema) => {
-    checkoutForm.setValue('street', data.street_address);
-    checkoutForm.setValue('country', data.address_name);
     setOpen(false);
 
     if (token) mutate({ body: toAddressPayload(data), token });

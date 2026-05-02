@@ -1,9 +1,7 @@
 "use client";
 
 import { formatPrice } from "@/lib/utils";
-import useCheckoutStore from "@/store/use-checkout-store";
 import useCurrencyStore from "@/store/use-currency-store";
-import { Coupon } from "@/types/checkout";
 import { useTranslations } from "next-intl";
 import { FC } from "react";
 

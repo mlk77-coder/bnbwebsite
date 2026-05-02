@@ -11,15 +11,13 @@ import {
 import { useTranslations } from "next-intl";
 import { FC, useState } from "react";
 import CheckoutAddAddressForm from "./checkout-add-address-form";
-import { FieldValues, UseFormReturn } from "react-hook-form";
 
 type PropsType = {
   session: string;
   children: React.ReactNode;
-  checkoutForm: UseFormReturn<FieldValues>;
 };
 
-const SelectAddress: FC<PropsType> = ({ session, children, checkoutForm }) => {
+const SelectAddress: FC<PropsType> = ({ session, children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const t = useTranslations();
   return (
@@ -30,11 +28,7 @@ const SelectAddress: FC<PropsType> = ({ session, children, checkoutForm }) => {
           <SheetTitle>{t("address.add.title")}</SheetTitle>
           <SheetDescription>{t("address.add.description")}</SheetDescription>
         </SheetHeader>
-        <CheckoutAddAddressForm
-          setOpen={setIsOpen}
-          checkoutForm={checkoutForm}
-          session={session}
-        />
+        <CheckoutAddAddressForm setOpen={setIsOpen} session={session} />
       </SheetContent>
     </Sheet>
   );

@@ -1,4 +1,5 @@
 "use client";
+
 import { getOrders } from "@/api/order/get-orders";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,59 +7,52 @@ import Loader from "@/components/ui/loader";
 import { formatPrice } from "@/lib/utils";
 import { Link } from "@/navigation";
 import useCurrencyStore from "@/store/use-currency-store";
-import { GetOrdersResponse } from "@/types/order";
+import type { ApiPaginatedData } from "@/types";
+import type { OrderSummary } from "@/types/order";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useLocale, useTranslations } from "next-intl";
-import Image from "next/image";
-import { FC, Fragment, useState } from "react";
+import { Package } from "lucide-react";
+import { FC, Fragment } from "react";
 
 type PropsType = {
   token: string;
-  initialData: GetOrdersResponse;
+  initialData: ApiPaginatedData<OrderSummary>;
 };
+
 const InifinteOrders: FC<PropsType> = ({ token, initialData }) => {
   const currency = useCurrencyStore((state) => state.currency);
   const symbol = useCurrencyStore((state) => state.symbol);
-  const [hasFetched, setHasFetched] = useState(false);
   const t = useTranslations();
   const locale = useLocale();
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ["orders", token],
+      queryKey: ["orders", token, locale],
       queryFn: async ({ pageParam = 1 }) => {
         const response = await getOrders(locale, token, pageParam);
-        if (response.ok) return response.data;
-        else return initialData;
+        if (!response.ok || !response.data.success) {
+          throw new Error("orders fetch failed");
+        }
+        return response.data.data;
       },
       initialPageParam: 1,
       initialData: {
         pages: [initialData],
         pageParams: [1],
       },
+      staleTime: Infinity,
       getNextPageParam: (lastPage) => {
-        if (typeof lastPage.pagination.next_page_url === "string") {
-          return lastPage.pagination.current_page + 1;
-        } else {
-          return undefined;
-        }
+        const { current_page, last_page } = lastPage.meta;
+        return current_page < last_page ? current_page + 1 : undefined;
       },
-      enabled: hasFetched,
     });
 
-  const handleLoadMore = () => {
-    if (!hasFetched) {
-      setHasFetched(true);
-      fetchNextPage();
-    } else if (hasNextPage) {
-      fetchNextPage();
-    }
-  };
+  const handleLoadMore = () => fetchNextPage();
 
   return (
     <Fragment>
       <div className="w-full space-y-5">
-        {data.pages[0].orders.length === 0 ? (
+        {data.pages[0].data.length === 0 ? (
           <div className="flex size-full items-center justify-center rounded-3xl border border-primary/10 bg-secondary/40 px-4 py-10 text-center">
             <p className="text-lg font-bold text-primary md:text-2xl">
               {t("you-don-t-have-any-orders-yet")}
@@ -66,42 +60,38 @@ const InifinteOrders: FC<PropsType> = ({ token, initialData }) => {
           </div>
         ) : (
           data.pages.map((page) =>
-            page.orders.map((product) => (
+            page.data.map((order) => (
               <Link
-                href={`/orders/${product.id}`}
-                key={product.id}
+                href={`/orders/${order.id}`}
+                key={order.id}
                 className="group grid cursor-pointer grid-cols-[auto_1fr] gap-4 rounded-3xl border border-primary/10 bg-white p-3 shadow-sm shadow-primary/5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-xl hover:shadow-primary/10 sm:p-4"
               >
-                <Image
-                  src={product.image ?? "/no-product.svg"}
-                  alt="men"
-                  width={100}
-                  height={100}
-                  className="size-24 shrink-0 rounded-2xl object-cover sm:size-28"
-                />
+                <span className="flex size-24 shrink-0 items-center justify-center rounded-2xl bg-primary/5 text-primary sm:size-28">
+                  <Package className="size-10 sm:size-12" aria-hidden />
+                </span>
                 <span className="flex size-full min-w-0 flex-col items-start justify-start gap-1">
                   <span className="flex w-full items-start justify-between gap-3">
                     <span className="truncate font-bold text-primary sm:text-xl">
-                      {product.order_id}
+                      {order.order_number}
                     </span>
                     <Badge className="shrink-0 rounded-full" variant="secondary">
-                      {product.status}
+                      {order.status}
                     </Badge>
                   </span>
                   <span className="text-sm font-medium text-orange">
-                    {format(new Date(product.created_at), "PP")}
+                    {format(new Date(order.created_at), "PP")}
                   </span>
                   <span className="text-sm font-semibold">
-                    {formatPrice(product.total * currency, symbol)}
+                    {formatPrice(order.total * currency, symbol)}
                   </span>
                   <span className="rounded-full bg-primary/5 px-3 py-1 text-xs font-medium text-primary">
                     {t("product-count", {
-                      count: product.order_products_count,
+                      count: order.items_count,
                     })}
                   </span>
                 </span>
               </Link>
-            ))
+            )),
           )
         )}
       </div>
@@ -112,9 +102,9 @@ const InifinteOrders: FC<PropsType> = ({ token, initialData }) => {
             size="lg"
             className="rounded-full border-primary/20 px-8 hover:bg-primary hover:text-primary-foreground"
             onClick={handleLoadMore}
-            disabled={isFetchingNextPage || (!hasNextPage && hasFetched)}
+            disabled={isFetchingNextPage || !hasNextPage}
           >
-            {isFetchingNextPage ? <Loader /> : "See More"}
+            {isFetchingNextPage ? <Loader /> : t("load-more")}
           </Button>
         ) : null}
       </div>

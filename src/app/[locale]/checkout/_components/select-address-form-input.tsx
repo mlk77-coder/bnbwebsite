@@ -1,8 +1,6 @@
 "use client";
 
 import { getAddresses } from "@/api/addresses/get-addresses";
-import { getCitiesOptions } from "@/app/hooks/use-get-cities";
-import { getCountriesOptions } from "@/app/hooks/use-get-countries";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -24,14 +22,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  formatAddressStreet,
-  normalizeAddressText,
-} from "@/lib/address-utils";
-import useCheckoutStore from "@/store/use-checkout-store";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import type { CheckoutSchema } from "@/schemas/checkout.schema";
+import { useQuery } from "@tanstack/react-query";
 import { Check, ChevronsUpDown, Loader2, Plus } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { FC, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import SelectAddress from "./select-address";
@@ -42,24 +36,27 @@ type PropsType = {
 
 const SelectAddressFormInput: FC<PropsType> = ({ token }) => {
   const [open, setOpen] = useState(false);
-  const form = useFormContext();
+  const form = useFormContext<CheckoutSchema>();
   const t = useTranslations();
-  const queryClient = useQueryClient();
-  const setShipping = useCheckoutStore((state) => state.setShipping);
+  const locale = useLocale();
   const { data, isPending, isError } = useQuery({
-    queryKey: ["address", token],
+    queryKey: ["address", token, locale],
     queryFn: async () => {
-      const response = await getAddresses("en", token);
+      const response = await getAddresses(locale, token);
       if (!response.ok) throw new Error("Failed to fetch addresses");
       return response.data.data;
     },
   });
-  const { data: countries = [] } = useQuery(getCountriesOptions("en"));
+
+  const addressId = form.watch("address_id");
+  const selected = data?.find((a) => a.id === addressId);
+  const triggerLabel =
+    selected?.address_name ?? t("select-an-address");
 
   return (
     <FormField
       control={form.control}
-      name="street"
+      name="address_id"
       render={({ field }) => (
         <FormItem className="w-full">
           <FormLabel className="text-start inline-block w-full capitalize">
@@ -72,16 +69,14 @@ const SelectAddressFormInput: FC<PropsType> = ({ token }) => {
                   variant="outline"
                   role="combobox"
                   aria-expanded={open}
-                  className="w-full font-normal justify-between"
+                  className="w-full justify-between font-normal"
                   disabled={isPending}
                 >
-                  {form.watch("country")
-                    ? `${form.watch("country")}`
-                    : t("select-an-address")}
+                  {triggerLabel}
                   {isPending ? (
-                    <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="ml-2 size-4 shrink-0 animate-spin" />
                   ) : (
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
                   )}
                 </Button>
               </PopoverTrigger>
@@ -96,56 +91,26 @@ const SelectAddressFormInput: FC<PropsType> = ({ token }) => {
                           {t("error-loading-addresses-please-try-again")}
                         </CommandItem>
                       )}
-                      <SelectAddress checkoutForm={form} session={token}>
-                        <button className="relative w-full cursor-pointer flex select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none">
-                          <Plus className="me-2 h-4 w-4" />
+                      <SelectAddress session={token}>
+                        <button
+                          type="button"
+                          className="relative flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none"
+                        >
+                          <Plus className="me-2 size-4" />
                           {t("address.add.title")}
                         </button>
                       </SelectAddress>
                       {data?.map((address) => (
                         <CommandItem
                           key={address.id}
-                          onSelect={async () => {
-                            const currentCountry = form.getValues("country");
-                            const currentStreet = form.getValues("street");
-                            const currentCityId = form.getValues("city_id");
-                            const street = formatAddressStreet(address);
-                            const country = countries.find(
-                              (country) =>
-                                normalizeAddressText(country.name) ===
-                                normalizeAddressText(address.country)
-                            );
-                            const cities = country
-                              ? await queryClient.fetchQuery(
-                                  getCitiesOptions(country.id, "en")
-                                )
-                              : [];
-                            const city = cities.find(
-                              (city) =>
-                                normalizeAddressText(city.name) ===
-                                normalizeAddressText(address.city)
-                            );
-
-                            if (
-                              currentCountry !== address.address_name ||
-                              currentStreet !== street ||
-                              currentCityId !== city?.id.toString()
-                            ) {
-                              form.setValue("street", street);
-                              form.setValue("city_id", city?.id.toString() || "");
-                              form.setValue("country", address.address_name);
-                              form.setValue(
-                                "countryId",
-                                country?.id.toString() || ""
-                              );
-                              setShipping(-1);
-                            }
+                          onSelect={() => {
+                            field.onChange(address.id);
                             setOpen(false);
                           }}
                         >
                           <Check
-                            className={`mr-2 h-4 w-4 ${
-                              field.value === formatAddressStreet(address)
+                            className={`mr-2 size-4 shrink-0 ${
+                              field.value === address.id
                                 ? "opacity-100"
                                 : "opacity-0"
                             }`}
@@ -159,7 +124,7 @@ const SelectAddressFormInput: FC<PropsType> = ({ token }) => {
               </PopoverContent>
             </Popover>
           </FormControl>
-          <FormMessage className="capitalize font-normal" />
+          <FormMessage className="font-normal capitalize" />
         </FormItem>
       )}
     />

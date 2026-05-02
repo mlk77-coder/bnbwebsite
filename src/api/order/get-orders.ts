@@ -1,31 +1,23 @@
 import { fetcher } from "@/lib/fetcher";
-import { GetOrderResponse, GetOrdersResponse } from "@/types/order";
+import type { OrderDetailApiResponse, OrdersListApiResponse } from "@/types/order";
 import { cache } from "react";
 
 export const getOrders = async (
   locale: string,
   token: string,
-  id: number = 1,
-  request?: any
+  page: number = 1,
+  request?: Request
 ) => {
-  const response = await fetcher<GetOrdersResponse>(
-    `orders?page=${id}`,
-    locale,
-    {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
+  return fetcher<OrdersListApiResponse>(`orders?page=${page}`, locale, {
+    headers: {
+      authorization: `Bearer ${token}`,
     },
-    false,
-    request
-  );
-  return response;
+  }, false, request);
 };
 
 export const cachedGetOrders = cache(
-  async (locale: string, token: string, request?: any) => {
-    const data = await getOrders(locale, token, 1, request);
-    return data;
+  async (locale: string, token: string, request?: Request) => {
+    return getOrders(locale, token, 1, request);
   }
 );
 
@@ -34,23 +26,16 @@ export const getOrder = async (
   token: string,
   id: string,
   isLoggedIn: boolean = true,
-  request?: any
+  request?: Request
 ) => {
   const url = `orders/${id}`;
-  const fullUrl = isLoggedIn ? url : `${url}?s_id=${token}`;
+  const fullUrl = isLoggedIn ? url : `${url}?s_id=${encodeURIComponent(token)}`;
   const auth = (
     isLoggedIn
-      ? { headers: { authorization: `Bearer ${token}` }, cache: "no-cache" }
+      ? { headers: { authorization: `Bearer ${token}` }, cache: "no-cache" as RequestCache }
       : {}
-  ) as RequestInit;
-  const response = await fetcher<GetOrderResponse>(
-    fullUrl,
-    locale,
-    auth,
-    false,
-    request
-  );
-  return response;
+  ) satisfies RequestInit;
+  return fetcher<OrderDetailApiResponse>(fullUrl, locale, auth, false, request);
 };
 
 export const cachedGetOrder = cache(
@@ -59,9 +44,8 @@ export const cachedGetOrder = cache(
     token: string,
     id: string,
     isLoggedIn: boolean = true,
-    request?: any
+    request?: Request
   ) => {
-    const data = await getOrder(locale, token, id, isLoggedIn, request);
-    return data;
+    return getOrder(locale, token, id, isLoggedIn, request);
   }
 );

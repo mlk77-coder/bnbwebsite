@@ -45,9 +45,9 @@ const CheckoutTotalLabel: FC<PropsType> = ({ invoice_value }) => {
     : 0;
 
   return (
-    <p className="capitalize px-4 flex w-full justify-between items-center">
-      <span className="text-primary font-medium">{t("total")}</span>
-      <span className="text-xl font-bold">
+    <p className="flex w-full items-center justify-between capitalize">
+      <span className="text-lg font-semibold text-primary">{t("total")}</span>
+      <span className="text-2xl font-bold tracking-tight text-foreground tabular-nums">
         {formatPrice(total * currency, symbol)}
       </span>
     </p>

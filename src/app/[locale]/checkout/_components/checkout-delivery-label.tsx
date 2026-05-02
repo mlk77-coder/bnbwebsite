@@ -11,9 +11,9 @@ const CheckoutDeliveryLabel = () => {
   const symbol = useCurrencyStore((state) => state.symbol);
   const shipping = useCheckoutStore((state) => state.shipping);
   return (
-    <p className="capitalize flex w-full justify-between items-center">
-      <span className="text-primary font-medium">{t("delivery")}</span>{" "}
-      <span>
+    <p className="flex w-full items-center justify-between text-base capitalize">
+      <span className="font-medium text-primary">{t("delivery")}</span>
+      <span className="tabular-nums text-muted-foreground">
         {shipping === -1 ? "--" : formatPrice(shipping * currency, symbol)}
       </span>
     </p>

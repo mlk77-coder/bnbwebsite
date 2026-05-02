@@ -1,36 +1,33 @@
 "use client";
 
 import { Form } from "@/components/ui/form";
-import { CustomSession } from "@/lib/auth-options";
-import { splitCountryCode } from "@/lib/utils";
 import { CheckoutSchema } from "@/schemas/checkout.schema";
+import useCheckoutStore from "@/store/use-checkout-store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 type PropsType = {
   children: React.ReactNode;
-  session: CustomSession | null;
+  initialCartShipping?: number;
 };
 
-const CheckoutFormProvider: FC<PropsType> = ({ children, session }) => {
+const CheckoutFormProvider: FC<PropsType> = ({
+  children,
+  initialCartShipping,
+}) => {
+  const setShipping = useCheckoutStore((s) => s.setShipping);
+
+  useEffect(() => {
+    if (initialCartShipping != null && initialCartShipping >= 0) {
+      setShipping(initialCartShipping);
+    }
+  }, [initialCartShipping, setShipping]);
+
   const form = useForm<CheckoutSchema>({
     resolver: zodResolver(CheckoutSchema),
     defaultValues: {
-      description: "",
-      email: session?.user?.email || "",
-      name: session?.user?.name || "",
-      phone:
-        session && session.user
-          ? splitCountryCode(session.user.phone)
-          : {
-              code: "",
-              number: "",
-            },
-      country: "",
-      countryId: "",
-      city_id: "",
-      street: "",
+      notes: "",
     },
   });
   return <Form {...form}>{children}</Form>;

@@ -14,9 +14,11 @@ const CheckoutSubtotalLabel = ({
   const symbol = useCurrencyStore((state) => state.symbol);
 
   return (
-    <p className="capitalize flex w-full justify-between items-center">
-      <span className="text-primary font-medium">{t("subtotal")}</span>{" "}
-      <span>{formatPrice(invoice_value * currency, symbol)}</span>
+    <p className="flex w-full items-center justify-between text-base capitalize">
+      <span className="font-medium text-primary">{t("subtotal")}</span>
+      <span className="tabular-nums text-muted-foreground">
+        {formatPrice(invoice_value * currency, symbol)}
+      </span>
     </p>
   );
 };

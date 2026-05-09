@@ -1,16 +1,11 @@
 import { getCategory } from '@/api/categories/get-category-details';
-import RecentlyViewed from '@/app/[locale]/_components/recently-viewed';
 import CategoryCirclesCarousel from '@/components/category-circles-carousel';
 import CustomBreadcrumb from '@/components/custom-breadcrumb';
 import PageWrapper from '@/components/page-wrapper';
-import SectionWrapper, {
-  sectionWrapperClassName,
-} from '@/components/section-wrapper';
-import getSession from '@/lib/get-session';
-import { cn } from '@/lib/utils';
+import SectionWrapper from '@/components/section-wrapper';
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import { cookies, headers } from 'next/headers';
+import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { FC } from 'react';
 import SubCategoryProducts from '../../../components/sub-category-products';
@@ -33,7 +28,7 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
   try {
     const data = await getCategory(subCategory, locale);
 
-    if (data.ok) {
+    if (data.ok && data.data) {
       const categoryData = data.data;
       const parentCategory = categoryData.parent;
       return {
@@ -85,70 +80,50 @@ const Page: FC<PropsType> = async props => {
 
   const { category, subCategory, locale } = params;
 
-  try {
-    const cookieStore = await cookies();
-    const t = await getTranslations();
-    const session = await getSession();
-    const userToken = cookieStore.get('x-user-session')?.value || '';
-    const isLoggedIn = Boolean(session && session.user);
-    const headersList = await headers();
-    const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
-      headers: headersList,
-    });
-    const categoryDetail = getCategory(subCategory, locale, request);
-    const [data] = await Promise.all([categoryDetail]);
+  const t = await getTranslations();
+  const headersList = await headers();
+  const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
+    headers: headersList,
+  });
+  const data = await getCategory(subCategory, locale, request);
 
-    if (!data.ok) {
-      return <>error</>;
-    }
+  if (!data.ok || !data.data) return notFound();
 
-    if (data.status === 404) return notFound();
-
-    const categoryData = data.data;
-    const subcategories = categoryData.subcategories;
-    return (
-      <PageWrapper>
-        <SectionWrapper className='space-y-8! md:py-4 lg:py-8'>
-          <CustomBreadcrumb
-            activeLink={categoryData.name}
-            links={[
-              {
-                name: categoryData.parent?.name || categoryData.name,
-                slug: `/category/${category}`,
-              },
-            ]}
+  const categoryData = data.data;
+  const subcategories = categoryData.subcategories ?? [];
+  return (
+    <PageWrapper>
+      <SectionWrapper className='space-y-8! md:py-4 lg:py-8'>
+        <CustomBreadcrumb
+          activeLink={categoryData.name}
+          links={[
+            {
+              name: categoryData.parent?.name || categoryData.name,
+              slug: `/category/${category}`,
+            },
+          ]}
+        />
+        {subcategories.length > 0 ? (
+          <CategoryCirclesCarousel
+            items={subcategories.map(c => ({
+              id: c.id,
+              name: c.name,
+              image: c.image,
+              href: `/category/${getAllSlugs(c).join('/')}`,
+            }))}
+            title={t('hero-shop-by-category')}
+            description={t('explore-our-selection-description')}
+            sectionClassName='py-0!'
           />
-          {subcategories.length > 0 ? (
-            <CategoryCirclesCarousel
-              items={subcategories.map(c => ({
-                id: c.id,
-                name: c.name,
-                image: c.image,
-                href: `/category/${getAllSlugs(c).join('/')}`,
-              }))}
-              title={t('hero-shop-by-category')}
-              description={t('explore-our-selection-description')}
-              sectionClassName='py-0!'
-            />
-          ) : null}
-          <SubCategoryProducts
-            category={String(categoryData.id)}
-            searchParams={searchParams}
-            fallbackCategories={subcategories}
-          />
-        </SectionWrapper>
-        {/* <RecentlyViewed
-          className={cn('mt-16', sectionWrapperClassName)}
-          isLoggedIn={isLoggedIn}
-          token={
-            session && session.user ? session.user.access_token : userToken
-          }
-        /> */}
-      </PageWrapper>
-    );
-  } catch (error) {
-    return notFound();
-  }
+        ) : null}
+        <SubCategoryProducts
+          category={String(categoryData.id)}
+          searchParams={searchParams}
+          fallbackCategories={subcategories}
+        />
+      </SectionWrapper>
+    </PageWrapper>
+  );
 };
 
 export default Page;

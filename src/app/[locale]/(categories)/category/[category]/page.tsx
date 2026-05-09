@@ -30,11 +30,11 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
 
   try {
     const data = await getCategory(category, locale);
-    if (data.ok) {
+    if (data.ok && data.data) {
       const categoryData = data.data;
 
       // Check if there are no products and add 'noindex' if true
-      const noindex = data.data.products_count === 0;
+      const noindex = categoryData.products_count === 0;
 
       return {
         title: categoryData.name,
@@ -95,10 +95,9 @@ const Page: FC<PropsType> = async props => {
     headers: headersList,
   });
   const data = await getCategory(category, locale, request);
-  if (!data.ok) return <>error</>;
-  if (data.status === 404) return notFound();
+  if (!data.ok || !data.data) return notFound();
   const categoryData = data.data;
-  const subCategories = categoryData.subcategories;
+  const subCategories = categoryData.subcategories ?? [];
   return (
     <PageWrapper>
       <SectionWrapper className='space-y-8! md:py-4 lg:py-8'>

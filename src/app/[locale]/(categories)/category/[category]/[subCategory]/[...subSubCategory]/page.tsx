@@ -142,9 +142,9 @@ const Page: FC<PropsType> = async props => {
     );
     const [data] = await Promise.all([categoryDetail]);
 
-    if (!data.ok || data.status === 404) return notFound();
+    if (!data.ok || !data.data) return notFound();
     const categoryData = data.data;
-    const subCategories = categoryData.subcategories;
+    const subCategories = categoryData.subcategories ?? [];
     return (
       <PageWrapper>
         <SectionWrapper className='space-y-8! md:py-4 lg:py-8'>

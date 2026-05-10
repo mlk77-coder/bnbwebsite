@@ -5,22 +5,21 @@ import { useRouter } from "@/navigation";
 import { ContactSchema } from "@/schemas/contact.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+import { useForm, type Resolver } from "react-hook-form";
 import { toast } from "sonner";
 
 const useContactUs = (session: CustomSession | null) => {
   const router = useRouter();
   const form = useForm<ContactSchema>({
-    resolver: zodResolver(ContactSchema),
+    resolver: zodResolver(ContactSchema) as Resolver<ContactSchema>,
     defaultValues: {
-      email: session && session.user ? session.user.email : "",
+      email: session?.user?.email ?? "",
       message: "",
-      name: session && session.user ? session.user.name : "",
+      name: session?.user?.name ?? "",
       order_number: "",
-      phone:
-        session && session.user
-          ? splitCountryCode(session.user.phone)
-          : { code: "", number: "" },
+      phone: session?.user?.phone
+        ? splitCountryCode(session.user.phone)
+        : { code: "", number: "" },
       acceptPrivacyPolicy: false,
       acceptTermsAndConditions: false,
     },

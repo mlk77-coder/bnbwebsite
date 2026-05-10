@@ -73,6 +73,8 @@ const MobileMenu: FC<PropsType> = ({
         </Button>
       </SheetTrigger>
       <SheetContent
+        overlay={false}
+        hiddenCloseButton
         className="px-0 max-h-screen py-0 overflow-y-auto data-[state=closed]:duration-0 bg-white"
         side="left"
       >

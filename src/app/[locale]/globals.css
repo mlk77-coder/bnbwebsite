@@ -1,4 +1,8 @@
 @import 'tailwindcss';
+@import '@fontsource/playfair-display/latin.css';
+@import '@fontsource/montserrat/latin.css';
+@import '@fontsource/cairo/latin.css';
+@import '@fontsource/cairo/arabic.css';
 @plugin 'tailwindcss-animate';
 @plugin '@tailwindcss/typography';
 @plugin 'tailwind-scrollbar-hide';
@@ -109,9 +113,9 @@
 }
 
 @theme {
-  --font-display: var(--font-display), 'Times New Roman', serif;
-  --font-body: var(--font-body), 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  --font-arabic: var(--font-arabic), 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-display: 'Playfair Display', 'Times New Roman', serif;
+  --font-body: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-arabic: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
   --spacing-22: 5.5rem;
 

@@ -1,9 +1,7 @@
 import { SITE_BRAND_NAME } from '@/lib/site-branding';
-import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
 import 'react-photo-view/dist/react-photo-view.css';
 import { getLangDir } from 'rtl-detect';
-import { playfairDisplay, montserrat, cairo } from '../fonts';
 import HtmlBody from './_components/html-body';
 import HtmlHead from './_components/html-head';
 import './globals.css';
@@ -184,14 +182,7 @@ export default async function RootLayout(props: PropsType) {
   return (
     <html lang={locale} dir={direction} suppressHydrationWarning>
       <HtmlHead />
-      <body
-        className={cn(
-          'bg-background flex min-h-screen w-full flex-col items-start justify-start antialiased',
-          playfairDisplay.variable,
-          montserrat.variable,
-          cairo.variable
-        )}
-      >
+      <body className="bg-background flex min-h-screen w-full flex-col items-start justify-start antialiased">
         <HtmlBody>
           {props.children}
           {props.loginSheet}

@@ -64,7 +64,7 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^19.2.0",
     "react-fast-marquee": "^1.6.5",
-    "react-hook-form": "^7.73.0",
+    "react-hook-form": "^7.75.0",
     "react-photo-view": "^1.2.6",
     "react-star-ratings": "^2.3.0",
     "request-ip": "^3.3.0",

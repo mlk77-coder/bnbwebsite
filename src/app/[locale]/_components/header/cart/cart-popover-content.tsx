@@ -8,7 +8,7 @@ import { PopoverClose } from "@radix-ui/react-popover";
 import Image from "next/image";
 import { ArrowRight, PackageOpen, ShoppingBag, X } from "lucide-react";
 import { Fragment } from "react";
-import useUpdateCart from "../../../cart/hooks/use-update-cart";
+import useUpdateCart from "@/features/cart/client/hooks/use-update-cart";
 import { useTranslations } from "next-intl";
 import useCurrencyStore from "@/store/use-currency-store";
 import Loader from "@/components/ui/loader";

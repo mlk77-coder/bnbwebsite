@@ -1,7 +1,7 @@
 import PageWrapper from '@/components/page-wrapper';
 import SectionWrapper from '@/components/section-wrapper';
 import { FC } from 'react';
-import LoginPage from './_components/login-page';
+import { LoginPage } from '@/features/auth';
 import { cookies } from 'next/headers';
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';

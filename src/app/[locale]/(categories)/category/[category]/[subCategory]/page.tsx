@@ -1,4 +1,4 @@
-import { getCategory } from '@/api/categories/get-category-details';
+import { getCategory, getAllSlugs, SubCategoryProducts } from '@/features/categories';
 import CategoryCirclesCarousel from '@/components/category-circles-carousel';
 import CustomBreadcrumb from '@/components/custom-breadcrumb';
 import PageWrapper from '@/components/page-wrapper';
@@ -8,8 +8,6 @@ import { getTranslations } from 'next-intl/server';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { FC } from 'react';
-import SubCategoryProducts from '../../../components/sub-category-products';
-import { getAllSlugs } from './[...subSubCategory]/page';
 
 type PropsType = {
   params: Promise<{

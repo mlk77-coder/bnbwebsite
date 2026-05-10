@@ -34,10 +34,7 @@ type PropsType = {
     sale: string;
     allSale: string;
     newArrivals: string;
-    sizeChart: string;
-    aboutBnbStore: string;
-    faqs: string;
-    returnsAndRefunds: string;
+    contactUs: string;
     allCategoryById: Record<number, string>;
   };
 };
@@ -48,10 +45,7 @@ const fallbackLabels = {
   sale: "Sale",
   allSale: "All sale",
   newArrivals: "New arrivals",
-  sizeChart: "Size chart",
-  aboutBnbStore: "About BNB Store",
-  faqs: "FAQs",
-  returnsAndRefunds: "Returns and refunds",
+  contactUs: "Contact us",
   allCategoryById: {},
 };
 
@@ -79,8 +73,6 @@ const MobileMenu: FC<PropsType> = ({
         </Button>
       </SheetTrigger>
       <SheetContent
-        overlay={false}
-        hiddenCloseButton
         className="px-0 max-h-screen py-0 overflow-y-auto data-[state=closed]:duration-0 bg-white"
         side="left"
       >

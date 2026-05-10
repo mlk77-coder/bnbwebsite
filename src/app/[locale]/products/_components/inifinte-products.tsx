@@ -1,6 +1,6 @@
 'use client';
 
-import getProductList from '@/api/products/get-products';
+import getProductList from '@/features/products/api/get-products';
 import ProductCard from '@/components/product-card/product-card';
 import { Button } from '@/components/ui/button';
 import Loader from '@/components/ui/loader';

@@ -1,20 +1,13 @@
-import { getCategory } from '@/api/categories/get-category-details';
-import SubCategoryProducts from '@/app/[locale]/(categories)/components/sub-category-products';
+import { getCategory, SubCategoryProducts } from '@/features/categories';
 import CategoryCirclesCarousel from '@/components/category-circles-carousel';
 import CustomBreadcrumb from '@/components/custom-breadcrumb';
 import PageWrapper from '@/components/page-wrapper';
-import SectionWrapper, {
-  sectionWrapperClassName,
-} from '@/components/section-wrapper';
-import getSession from '@/lib/get-session';
-import { cn } from '@/lib/utils';
+import SectionWrapper from '@/components/section-wrapper';
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import { cookies, headers } from 'next/headers';
+import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { FC, Suspense } from 'react';
-import RecentlyViewed from '../../../_components/recently-viewed';
-
 type PropsType = {
   params: Promise<{
     locale: string;
@@ -85,10 +78,6 @@ const Page: FC<PropsType> = async props => {
 
   const { category, locale } = params;
 
-  const cookieStore = await cookies();
-  const session = await getSession();
-  const userToken = cookieStore.get('x-user-session')?.value || '';
-  const isLoggedIn = Boolean(session && session.user);
   const t = await getTranslations();
   const headersList = await headers();
   const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
@@ -123,11 +112,6 @@ const Page: FC<PropsType> = async props => {
           />
         </Suspense>
       </SectionWrapper>
-      {/* <RecentlyViewed
-        className={cn('mt-16', sectionWrapperClassName)}
-        isLoggedIn={isLoggedIn}
-        token={session && session.user ? session.user.access_token : userToken}
-      /> */}
     </PageWrapper>
   );
 };

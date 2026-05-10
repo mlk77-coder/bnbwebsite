@@ -150,8 +150,8 @@
   },
   "contact-us": {
     "title": "تواصل معنا",
-    "accept-policy": "لقد قرأت وقبلت <policy>الشروط والأحكام</policy>",
-    "accept-privacy-policy": "لقد قرأت وفهمت <policy>سياسة الخصوصية</policy>"
+    "accept-policy": "لقد قرأت وقبلت الشروط والأحكام.",
+    "accept-privacy-policy": "لقد قرأت وفهمت سياسة الخصوصية."
   },
   "reviews": {
     "title": "التعليقات",
@@ -167,14 +167,6 @@
       "find-us-on-social-media": "تابعنا على وسائل التواصل الاجتماعي",
       "bnb-store-membership": "عضوية BNB Store"
     }
-  },
-  "faq": {
-    "payment-questions": "أسئلة الدفع",
-    "delivery-questions": "أسئلة التوصيل",
-    "general-information": "المعلومات العامة",
-    "my-order": "طلباتي",
-    "returns-refunds": "الإرجاع واسترداد الأموال",
-    "title": "قائمة الأسئلة الشائعة"
   },
   "or": "أو",
   "sign-out": "تسجيل الخروج",
@@ -205,17 +197,9 @@
   "hero-our-collections-tag": "تسوق حسب الفئة",
   "hero-our-collections-empty": "ستظهر الفئات هنا عند توفرها.",
   "hero-view-all-categories": "عرض كل الفئات",
-  "size-chart": "مخطط المقاسات",
   "delivery": "التوصيل",
-  "returns-and-refunds": "الإرجاع والاسترداد.",
-  "faqs": "الأسئلة الشائعة",
-  "about-bnb-store": "حول BNB Store",
-  "privacy-policy": "سياسة الخصوصية",
-  "terms-and-conditions": "الشروط والأحكام",
-  "cookies-policy": "سياسة ملفات تعريف الارتباط",
   "enter-your-email": "أدخل بريدك الإلكتروني",
   "bnb-store-customer-services": "خدمة عملاء BNB Store",
-  "frequently-asked-questions": "الأسئلة الشائعة",
   "sale": "تخفيضات",
   "new-in": "جديدنا",
   "show-more": "عرض المزيد",
@@ -315,7 +299,7 @@
     "select-coupon-description": "يمكنك اختيار كوبون خصم واحد لتطبيقه على الطلب الحالي، أو متابعة الشراء دون كوبون."
   },
   "register": {
-    "accept-privacy-policy": "لقد قرأت وقبلت <terms>الشروط والأحكام</terms> و<policy>سياسة الخصوصية</policy>.",
+    "accept-privacy-policy": "لقد قرأت وقبلت الشروط والأحكام وسياسة الخصوصية.",
     "enabled-email": "تمكين تلقي إشعارات البريد الإلكتروني"
   },
   "coupon-discount": "قسيمة حسم",
@@ -384,10 +368,6 @@
   "select-language": "اختر اللغة",
   "guest": "ضيف",
   "open-menu": "افتح القائمة",
-  "about-bnb-store-description": "BNB Store، إعادة تعريف الأزياء الفاخرة. اكتشف تصاميم رائعة لكل أفراد العائلة. تسوق الآن واستمتع بالتميز.",
-  "privacy-policy-description": "خصوصيتك هي أولويتنا. تعرف على كيفية جمعنا واستخدامنا وحماية معلوماتك الشخصية.",
-  "terms-and-conditions-description": "موافقتك على استخدام موقعنا. تعرّف على حقوقك ومسؤولياتك كمستخدم.",
-  "cookies-policy-description": "تعرّف على كيفية استخدامنا لملفات تعريف الارتباط لتحسين تجربة التصفح الخاصة بك. خصوصيتك تهمنا.",
   "sign-in-to-your-account-to-manage-your-orders-and-continue-shopping": "قم بتسجيل الدخول إلى حسابك لإدارة طلباتك ومتابعة التسوق.",
   "log-in-to-your-account-to-manage-orders-view-purchase-history-and-enjoy-a-seamless-and-secure-shopping-experience": "سجّل الدخول إلى حسابك واطّلع على سجل طلباتك وقائمة الرغبات والمزيد.  ارتقِ بأسلوبك ومظهرك.  سجّل الدخول إلى حساب BNB Store الخاص بك لتكتشف عالم من الأزياء الفاخرة. استمتع بتجارب تسوق مخصصة وعروض حصرية وعملية شراء سلسة ولطيفة.",
   "create-your-account-now-to-start-shopping-manage-your-orders-and-enjoy-a-personalized-and-secure-experience": "أنشئ حسابك الآن للبدء في التسوق، إدارة طلباتك، والحصول على تجربة مخصصة وآمنة.",
@@ -397,11 +377,9 @@
   "my-addresses": "عناويني",
   "my-orders": "طلباتي",
   "meta-description": "مع BNB Store، من الأزياء الرائعة إلى منتجات التجميل المذهلة، ومستلزمات السفر الأنيقة، ومعدات المنزل الأنيقة.",
-  "size-chart-description": " اعثر على المقاس المثالي بسهولة من خلال استخدام جدول المقاسات الخاص بنا.",
   "contact-us-description": "تواصل مع فريق دعم العملاء المخصص لشركة BNB Store لأي استفسارات أو مخاوف. نحن هنا لمساعدتك والاستجابة لسؤالك",
   "cart-title": "سلة التسوق الخاصة بي",
   "cart-description": "راجع العناصر الخاصة بك، احصل على الخصومات، وادفع بأمان.",
-  "faq-description": "ابحث عن إجابات لأسئلتك الشائعة حول BNB Store.",
   "address-name": "اسم العنوان",
   "address-label": "العنوان",
   "address-fields": {

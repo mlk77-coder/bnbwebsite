@@ -1,7 +1,7 @@
 'use client';
 
-import useGetFavoriteIds from '@/app/[locale]/(auth)/hooks/use-get-favorite-ids';
-import useToggleWishList from '@/app/[locale]/products/[slug]/_hooks/use-toggle-wishlist';
+import { useGetFavoriteIds } from '@/features/auth';
+import useToggleWishList from '@/features/products/client/hooks/use-toggle-wishlist';
 import { CustomSession } from '@/lib/auth-options';
 import { cn } from '@/lib/utils';
 import { usePathname, useRouter } from '@/navigation';

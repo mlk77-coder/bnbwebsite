@@ -2,7 +2,7 @@ import PageWrapper from "@/components/page-wrapper";
 import SectionWrapper from "@/components/section-wrapper";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
-import ForgotPasswordForm from "./_components/forgot-password-form";
+import { ForgotPasswordForm } from '@/features/auth';
 import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {

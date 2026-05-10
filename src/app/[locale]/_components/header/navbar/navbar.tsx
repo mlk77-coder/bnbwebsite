@@ -1,7 +1,6 @@
-import getCart from '@/api/cart/get-cart';
-import getCategories from '@/api/categories/get-categories';
-import { getProfile } from '@/api/profile/get-profile';
-// import getSaleCategories from '@/api/sale/get-sale-categories';
+import { getCart } from '@/features/cart';
+import { getCategories } from '@/features/categories';
+import { getProfile } from '@/features/profile';
 import getSession from '@/lib/get-session';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { cookies, headers } from 'next/headers';
@@ -43,10 +42,7 @@ const Navbar = async () => {
     sale: t('sale'),
     allSale: t('all-sale'),
     newArrivals: t('new-arrivals'),
-    sizeChart: t('size-chart'),
-    aboutBnbStore: t('about-bnb-store'),
-    faqs: t('faqs'),
-    returnsAndRefunds: t('returns-and-refunds'),
+    contactUs: t('contact-us.title'),
     allCategoryById: Object.fromEntries(
       navCategories.map(category => [
         category.id,

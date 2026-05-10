@@ -2,7 +2,7 @@ import PageWrapper from "@/components/page-wrapper";
 import SectionWrapper from "@/components/section-wrapper";
 import { Metadata } from "next";
 import { FC } from "react";
-import RegisterPage from "./_components/register-page";
+import { RegisterPage } from "@/features/auth";
 import { getTranslations } from "next-intl/server";
 
 type PropsType = {

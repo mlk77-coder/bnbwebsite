@@ -2,7 +2,7 @@ import PageWrapper from "@/components/page-wrapper";
 import SectionWrapper from "@/components/section-wrapper";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
-import ResetPasswordForm from "./_components/reset-password-form";
+import { ResetPasswordForm } from '@/features/auth';
 import { cookies } from "next/headers";
 import { redirect } from "@/navigation";
 import { getLocale } from "next-intl/server";

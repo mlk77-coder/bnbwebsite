@@ -151,22 +151,14 @@
   },
   "contact-us": {
     "title": "Contact Us",
-    "accept-policy": "I have read and accepted the <policy>Terms & Conditions</policy>",
-    "accept-privacy-policy": "I have read and understood the <policy>Privacy Policy</policy>"
+    "accept-policy": "I have read and accepted the Terms & Conditions.",
+    "accept-privacy-policy": "I have read and understood the Privacy Policy."
   },
   "reviews": {
     "title": "Reviews",
     "all-reviews": "All Reviews",
     "write-review": "Write Review",
     "send-review": "Send review"
-  },
-  "faq": {
-    "payment-questions": "Payment Questions",
-    "delivery-questions": "Delivery Questions",
-    "general-information": "General Information",
-    "my-order": "My Orders",
-    "returns-refunds": "Returns Refunds",
-    "title": "FAQ Menu"
   },
   "footer": {
     "title": {
@@ -206,17 +198,9 @@
   "hero-our-collections-tag": "Shop by category",
   "hero-our-collections-empty": "Categories will appear here when available.",
   "hero-view-all-categories": "View all categories",
-  "size-chart": "Size Chart",
   "delivery": "Delivery",
-  "returns-and-refunds": "Returns & Refunds",
-  "faqs": "FAQs",
-  "about-bnb-store": "About BNB Store",
-  "privacy-policy": "Privacy Policy",
-  "terms-and-conditions": "Terms & Conditions",
-  "cookies-policy": "Cookies Policy",
   "enter-your-email": "Enter your email",
   "bnb-store-customer-services": "BNB Store Customer Services",
-  "frequently-asked-questions": "Frequently Asked Questions",
   "sale": "sale",
   "new-in": "new in",
   "show-more": "show more",
@@ -318,7 +302,7 @@
     "select-coupon-description": "You can choose one discount coupon to apply to the current order, or continue purchasing without a coupon."
   },
   "register": {
-    "accept-privacy-policy": "I have read and accepted the <terms>Terms & Conditions</terms> and the <policy>Privacy Policy</policy>.",
+    "accept-privacy-policy": "I have read and accepted the Terms & Conditions and the Privacy Policy.",
     "enabled-email": "Enable receiving email notifications"
   },
   "coupon-discount": "Coupon discount",
@@ -387,10 +371,6 @@
   "select-language": "Select Language",
   "guest": "Guest",
   "open-menu": "Open Menu",
-  "about-bnb-store-description": "BNB Store, Luxury fashion reimagined. Discover exquisite designs for the whole family. Shop now and experience the difference.",
-  "privacy-policy-description": "Your privacy is our priority. Learn how we collect, use, and protect your personal information.",
-  "terms-and-conditions-description": "Your agreement to use our website. Learn about your rights and responsibilities as a user.",
-  "cookies-policy-description": "Learn how we use cookies to enhance your browsing experience. Your privacy is important to us.",
   "sign-in-to-your-account-to-manage-your-orders-and-continue-shopping": "Sign in to your account to manage your orders and continue shopping.",
   "log-in-to-your-account-to-manage-orders-view-purchase-history-and-enjoy-a-seamless-and-secure-shopping-experience": "Sign in to your account and access your order history, wishlist, and more.  Elevate Your Style.  Sign in to your BNB Store account to unlock a world of luxury fashion. Enjoy personalized shopping experiences, exclusive offers, and seamless checkout.",
   "create-your-account-now-to-start-shopping-manage-your-orders-and-enjoy-a-personalized-and-secure-experience": "Create your account now to start shopping, manage your orders, and enjoy a personalized and secure experience.",
@@ -400,11 +380,9 @@
   "my-addresses": "My Addresses",
   "my-orders": "My Orders",
   "meta-description": "With BNB Store, From exquisite fashion to stunning beauty products, stylish travel essentials, and elegant home equipment.",
-  "size-chart-description": "Find the perfect fit with our easy-to-use size chart.",
   "contact-us-description": "Get in touch with BNB Store's dedicated customer support team for any inquiries or concerns. We're here to help.",
   "cart-title": "My Cart",
   "cart-description": "Review your items, apply discounts, and checkout securely.",
-  "faq-description": "Find answers to your frequently asked questions about BNB Store. ",
   "address-name": "Address name",
   "address-label": "Address",
   "address-fields": {

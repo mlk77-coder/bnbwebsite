@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
-import ReviewSkeletonLoader from './_components/review-skeleton-loader';
+import ReviewSkeletonLoader from '@/features/products/components/review-skeleton-loader';
 
 const ProductInfoSkeleton = () => (
   <div className='space-y-5 md:col-span-5'>

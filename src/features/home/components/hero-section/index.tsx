@@ -1,5 +1,3 @@
-'use client';
-
 import { useTranslations } from 'next-intl';
 import { HeroSlider } from './hero-slider';
 import { QuadCard } from './quad-card';

@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 const Loading = () => {
   return (
-    <PageWrapper className='mx-auto flex max-w-screen-md flex-col items-center justify-center'>
+    <PageWrapper className='mx-auto flex max-w-3xl flex-col items-center justify-center'>
       <Image src='/logo-light.png' width={300} height={300} alt='logo' />
       <LetterPullup
         words='BNB Store'

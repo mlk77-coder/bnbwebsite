@@ -5,7 +5,8 @@ import {
   parseCreatedOrderId,
 } from "@/features/orders/api/create-order";
 import SubmitButton from "@/components/submit-button";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import AddToCartErrorDialog from "@/features/products/client/add-to-cart-error-dialog";
 import CheckoutConfirmationDialog from "@/features/checkout/client/checkout-confirmation-dialog";
 import { useRouter } from "@/navigation";
@@ -56,6 +57,8 @@ const PaymentButton: FC<PropsType> = ({ isLoggedIn, token }) => {
         return;
       }
 
+      setShowConfirmation(false);
+      setPendingPayload(null);
       form.reset();
       setCoupon(null);
       setShipping(-1);
@@ -123,32 +126,31 @@ const PaymentButton: FC<PropsType> = ({ isLoggedIn, token }) => {
   };
 
   const handleConfirmOrder = () => {
-    if (!pendingPayload) return;
+    if (!pendingPayload || isPending) return;
     setErrorMessage("");
     mutate(pendingPayload);
-    setShowConfirmation(false);
-    setPendingPayload(null);
   };
 
   return (
     <>
-      <Button
+      <button
         type="button"
         onClick={handlePaymentClick}
-        size="lg"
         disabled={isPending}
-        className="h-14 w-full rounded-2xl text-base font-semibold shadow-md transition-all hover:shadow-lg"
+        className={cn(
+          buttonVariants({ size: "lg" }),
+          "shadow-primary/20 h-13 w-full gap-2 rounded-2xl text-base uppercase shadow-lg",
+        )}
       >
         <SubmitButton isPending={isPending} text={t("pay-button")} />
-      </Button>
+      </button>
 
       <CheckoutConfirmationDialog
         open={showConfirmation}
         onOpenChange={(open) => {
-          if (!open) {
-            setShowConfirmation(false);
-            setPendingPayload(null);
-          }
+          if (isPending) return;
+          setShowConfirmation(open);
+          if (!open) setPendingPayload(null);
         }}
         onConfirm={handleConfirmOrder}
         isPending={isPending}

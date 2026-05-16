@@ -1,7 +1,7 @@
 'use client';
 
 import ConfirmationDialog from '@/components/confirmation-dialog';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, ShoppingCart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { FC } from 'react';
 
@@ -26,8 +26,8 @@ const CheckoutConfirmationDialog: FC<ConfirmationDialogProps> = ({
       onOpenChange={onOpenChange}
       title={t('checkout-confirmation-title')}
       description={t('checkout-confirmation-description')}
-      icon={ShoppingBag}
-      iconTone='warning'
+      icon={ShoppingCart}
+      iconTone='primary'
       confirmLabel={t('pay-button')}
       confirmVariant='default'
       onConfirm={onConfirm}

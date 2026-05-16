@@ -383,6 +383,8 @@
   "contact-us-description": "Get in touch with BNB Store's dedicated customer support team for any inquiries or concerns. We're here to help.",
   "cart-title": "My Cart",
   "cart-description": "Review your items, apply discounts, and checkout securely.",
+  "checkout-title": "Checkout",
+  "checkout-description": "Complete your delivery details and place your order securely.",
   "address-name": "Address name",
   "address-label": "Address",
   "address-fields": {

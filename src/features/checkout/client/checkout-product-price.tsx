@@ -13,7 +13,7 @@ const CheckoutProductPrice = ({
   const currency = useCurrencyStore((state) => state.currency);
   const symbol = useCurrencyStore((state) => state.symbol);
   return (
-    <p className="text-base font-semibold text-foreground tabular-nums">
+    <p className="mt-1 text-sm font-bold text-primary tabular-nums">
       {formatPrice(+price * quantity * currency, symbol)}
     </p>
   );

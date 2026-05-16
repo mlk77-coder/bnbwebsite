@@ -10,9 +10,7 @@ type PropsType = {
 
 /** Cart totals already include shipping; order API only needs address + payment + notes. */
 const PayOrGetShipping: FC<PropsType> = ({ isLoggedIn, token }) => (
-  <div className="px-4">
-    <PaymentButton isLoggedIn={isLoggedIn} token={token} />
-  </div>
+  <PaymentButton isLoggedIn={isLoggedIn} token={token} />
 );
 
 export default PayOrGetShipping;

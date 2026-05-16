@@ -3,7 +3,6 @@
 import FormTextArea from '@/components/form-text-area';
 import CheckoutAddNewAddress from '@/features/checkout/client/checkout-add-new-address';
 import { CustomSession } from '@/lib/auth-options';
-import { cn } from '@/lib/utils';
 import { CheckoutSchema } from '@/schemas/checkout.schema';
 import { ClipboardList, MapPin } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -20,19 +19,12 @@ function SectionCard({
   children: ReactNode;
 }) {
   return (
-    <section
-      className={cn(
-        'border-primary/10 shadow-primary/5 rounded-3xl border bg-white p-5 shadow-sm',
-        'hover:shadow-primary/10 transition-shadow duration-300 hover:shadow-md'
-      )}
-    >
-      <div className='border-primary/10 mb-4 flex items-center gap-2.5 border-b pb-3'>
-        <span className='bg-primary/8 text-primary flex size-9 items-center justify-center rounded-2xl'>
+    <section className='border-primary/10 rounded-3xl border bg-white p-5 transition-all duration-300'>
+      <div className='mb-4 flex items-center gap-3'>
+        <span className='bg-primary/10 text-primary flex size-10 items-center justify-center rounded-2xl'>
           <Icon className='size-4' aria-hidden />
         </span>
-        <h2 className='text-primary text-xs font-semibold tracking-[0.18em] uppercase'>
-          {title}
-        </h2>
+        <h2 className='text-foreground text-base font-semibold'>{title}</h2>
       </div>
       <div>{children}</div>
     </section>
@@ -48,7 +40,7 @@ const CheckoutForm: FC<PropsType> = ({ session }) => {
   const t = useTranslations();
 
   return (
-    <div className='space-y-5'>
+    <div className='space-y-4'>
       <SectionCard title={t('order-notes')} icon={ClipboardList}>
         <FormTextArea
           control={form.control}

@@ -27,7 +27,7 @@ const AddNewAddress: FC<PropsType> = ({ session }) => {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button
-          className='border-primary/25 bg-primary/5 text-primary hover:border-primary/40 hover:bg-primary/10 hover:text-primary size-full min-h-44 flex-col rounded-3xl border-dashed capitalize shadow-sm transition-all hover:-translate-y-0.5'
+          className='border-primary/25 bg-primary/5 text-primary hover:border-primary/40 hover:bg-primary/10 hover:text-primary flex h-full min-h-[10.5rem] w-full flex-col rounded-2xl border-dashed capitalize transition-colors'
           variant='outline'
         >
           <span className='mb-2 flex size-12 items-center justify-center rounded-2xl bg-white shadow-sm'>

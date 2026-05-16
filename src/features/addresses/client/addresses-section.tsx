@@ -1,23 +1,21 @@
-"use client";
+'use client';
 
-import { getAddresses } from "@/features/addresses/api/get-addresses";
-import AddNewAddress from "@/features/addresses/client/add-new-address";
-import EditAddress from "@/features/addresses/client/edit-address";
-import RemoveAddress from "@/features/addresses/client/remove-address";
-import SetDefaultAddress from "@/features/addresses/client/set-default-address";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+import { getAddresses } from '@/features/addresses/api/get-addresses';
+import AddNewAddress from '@/features/addresses/client/add-new-address';
+import EditAddress from '@/features/addresses/client/edit-address';
+import RemoveAddress from '@/features/addresses/client/remove-address';
+import SetDefaultAddress from '@/features/addresses/client/set-default-address';
+import { Badge } from '@/components/ui/badge';
 import {
   formatAddressLocation,
   formatAddressStreet,
-} from "@/lib/address-utils";
-import { addressesListQueryKey } from "@/lib/address-query-keys";
-import { CustomSession } from "@/lib/auth-options";
-import type { Address } from "@/types/address";
-import { useQuery } from "@tanstack/react-query";
-import { Home } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { FC } from "react";
+} from '@/lib/address-utils';
+import { addressesListQueryKey } from '@/lib/address-query-keys';
+import { CustomSession } from '@/lib/auth-options';
+import type { Address } from '@/types/address';
+import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
+import { FC } from 'react';
 
 type PropsType = {
   locale: string;
@@ -37,67 +35,55 @@ const AddressesSection: FC<PropsType> = ({
     queryKey: addressesListQueryKey(locale, token),
     queryFn: async () => {
       const response = await getAddresses(locale, token);
-      if (!response.ok) throw new Error("Failed to fetch addresses");
+      if (!response.ok) throw new Error('Failed to fetch addresses');
       return response.data.data;
     },
     initialData: initialAddresses,
   });
 
   return (
-    <>
-      <div className="flex flex-col gap-3 rounded-3xl bg-secondary/40 p-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-            <Home className="size-5" />
-          </span>
-          <div>
-            <h2 className="text-2xl font-bold text-primary">
-              {t("address.title")}
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              {t("addresses-count", { count: addresses.length })}
+    <div className='grid w-full gap-3 sm:grid-cols-2'>
+      {addresses.map(address => (
+        <article
+          key={address.id}
+          className='border-primary/10 flex flex-col gap-3 rounded-2xl border bg-white p-3.5 capitalize sm:p-4'
+        >
+          <div className='flex items-start justify-between gap-2'>
+            <p className='text-primary truncate text-sm font-bold'>
+              {address.address_name}
             </p>
+            {address.is_default ? (
+              <Badge
+                variant='secondary'
+                className='bg-primary/12 text-primary shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium'
+              >
+                {t('address-fields.default')}
+              </Badge>
+            ) : null}
           </div>
-        </div>
-      </div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {addresses.map((address) => (
-          <div
-            key={address.id}
-            className="group relative min-h-44 w-full overflow-hidden rounded-3xl border border-primary/10 bg-white p-4 capitalize shadow-sm shadow-primary/5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-xl hover:shadow-primary/10"
-          >
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-linear-to-b from-primary/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-            <div className="relative flex items-start justify-between gap-3 pb-2">
-              <p className="text-xl font-bold text-primary">
-                {address.address_name}
-              </p>
-              {address.is_default ? (
-                <Badge variant="secondary">{t("address-fields.default")}</Badge>
-              ) : null}
-            </div>
-            <Separator />
-            <div className="relative space-y-2 pt-3 text-sm text-muted-foreground">
-              <p>{formatAddressLocation(address)}</p>
-              <p>{formatAddressStreet(address)}</p>
-              {address.details ? <p>{address.details}</p> : null}
-              <p>{address.phone}</p>
-            </div>
-            <div className="relative mt-4 flex flex-wrap items-center justify-start gap-4">
-              <EditAddress address={address} session={session} />
-              {!address.is_default ? (
-                <SetDefaultAddress id={address.id} token={token} />
-              ) : null}
-              <RemoveAddress
-                id={address.id}
-                name={address.address_name}
-                token={token}
-              />
-            </div>
+
+          <div className='text-muted-foreground space-y-1 text-xs'>
+            <p>{formatAddressLocation(address)}</p>
+            <p>{formatAddressStreet(address)}</p>
+            {address.details ? <p>{address.details}</p> : null}
+            <p>{address.phone}</p>
           </div>
-        ))}
-        <AddNewAddress session={session} />
-      </div>
-    </>
+
+          <div className='mt-auto flex flex-wrap items-center gap-3 pt-1'>
+            <EditAddress address={address} session={session} />
+            {!address.is_default ? (
+              <SetDefaultAddress id={address.id} token={token} />
+            ) : null}
+            <RemoveAddress
+              id={address.id}
+              name={address.address_name}
+              token={token}
+            />
+          </div>
+        </article>
+      ))}
+      <AddNewAddress session={session} />
+    </div>
   );
 };
 

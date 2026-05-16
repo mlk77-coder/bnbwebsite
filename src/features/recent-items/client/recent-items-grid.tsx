@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
 import {
   getRecentlyViewed,
   GetRecentlyViewedResponse,
-} from "@/features/recent-items/api/get-recently-viewed";
-import ProductCard from "@/components/product-card/product-card";
-import { Button } from "@/components/ui/button";
-import Loader from "@/components/ui/loader";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useLocale, useTranslations } from "next-intl";
-import { FC, Fragment, useState } from "react";
+} from '@/features/recent-items/api/get-recently-viewed';
+import ProductCard from '@/components/product-card/product-card';
+import { Button } from '@/components/ui/button';
+import Loader from '@/components/ui/loader';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useLocale, useTranslations } from 'next-intl';
+import { FC, useState } from 'react';
 
 type PropsType = {
   token: string;
@@ -22,7 +22,7 @@ const RecentItemsGrid: FC<PropsType> = ({ token, initialData }) => {
   const locale = useLocale();
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ["user-recently-viewed", token],
+      queryKey: ['user-recently-viewed', token],
       queryFn: async ({ pageParam = 1 }) => {
         const response = await getRecentlyViewed(
           locale,
@@ -31,19 +31,18 @@ const RecentItemsGrid: FC<PropsType> = ({ token, initialData }) => {
           true
         );
         if (response.ok) return response.data;
-        else return initialData;
+        return initialData;
       },
       initialPageParam: 1,
       initialData: {
         pages: [initialData],
         pageParams: [1],
       },
-      getNextPageParam: (lastPage) => {
-        if (typeof lastPage.pagination.next_page_url === "string") {
+      getNextPageParam: lastPage => {
+        if (typeof lastPage.pagination.next_page_url === 'string') {
           return lastPage.pagination.current_page + 1;
-        } else {
-          return undefined;
         }
+        return undefined;
       },
       enabled: hasFetched,
     });
@@ -57,40 +56,38 @@ const RecentItemsGrid: FC<PropsType> = ({ token, initialData }) => {
     }
   };
 
+  const products = data.pages.flatMap(page => page.products);
+
   return (
-    <Fragment>
-      <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {data.pages[0].products.length === 0 ? (
-          <p className="col-span-full rounded-3xl border border-primary/10 bg-secondary/40 px-4 py-8 text-center text-sm text-muted-foreground">
-            {t("recently-viewed-empty")}
-          </p>
-        ) : (
-          data.pages.map((page) =>
-            page.products.map((product) => (
-              <div
-                key={product.id}
-                className="rounded-3xl border border-primary/10 bg-white p-2 shadow-sm shadow-primary/5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/10"
-              >
-                <ProductCard product={product} />
-              </div>
-            ))
-          )
-        )}
-      </div>
-      <div className="w-full flex justify-center items-center">
-        {hasNextPage ? (
+    <div className='w-full space-y-4'>
+      {products.length === 0 ? (
+        <p className='border-primary/10 bg-secondary/40 text-muted-foreground rounded-xl border px-4 py-8 text-center text-sm'>
+          {t('recently-viewed-empty')}
+        </p>
+      ) : (
+        <div className='grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+          {products.map(product => (
+            <div key={product.id} className='relative'>
+              <ProductCard product={product} />
+            </div>
+          ))}
+        </div>
+      )}
+
+      {hasNextPage ? (
+        <div className='flex justify-center pt-2'>
           <Button
-            variant="outline"
-            size="lg"
-            className="rounded-full border-primary/20 px-8 hover:bg-primary hover:text-primary-foreground"
+            variant='outline'
+            size='lg'
+            className='border-primary/20 hover:bg-primary hover:text-primary-foreground rounded-full px-8'
             onClick={handleLoadMore}
             disabled={isFetchingNextPage || (!hasNextPage && hasFetched)}
           >
-            {isFetchingNextPage ? <Loader /> : "See More"}
+            {isFetchingNextPage ? <Loader /> : t('load-more')}
           </Button>
-        ) : null}
-      </div>
-    </Fragment>
+        </div>
+      ) : null}
+    </div>
   );
 };
 

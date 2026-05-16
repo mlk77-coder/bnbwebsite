@@ -43,6 +43,7 @@ const AccountOrderDetailPage: FC<PropsType> = async (props) => {
       <OrderDetailContent
         order={order}
         t={t}
+        embedded
         cancelAction={
           canCancelOrder ? (
             <CancelOrderButton

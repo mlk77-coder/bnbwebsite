@@ -1,5 +1,5 @@
-import { AccountOrderDetailPage } from "@/features/orders";
-import { FC } from "react";
+import { AccountOrderDetailPage } from '@/features/orders';
+import { FC } from 'react';
 
 type PropsType = {
   params: Promise<{
@@ -8,7 +8,7 @@ type PropsType = {
   }>;
 };
 
-const Page: FC<PropsType> = async (props) => {
+const Page: FC<PropsType> = async props => {
   return <AccountOrderDetailPage params={props.params} />;
 };
 

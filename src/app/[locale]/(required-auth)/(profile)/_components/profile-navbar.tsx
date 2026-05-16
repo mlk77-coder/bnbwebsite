@@ -4,14 +4,7 @@ import { profileLinks } from '../_constant/profile-links';
 import getSession from '@/lib/get-session';
 import { getTranslations } from 'next-intl/server';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import {
-  Clock,
-  Heart,
-  Home,
-  PackageCheck,
-  Settings,
-  User,
-} from 'lucide-react';
+import { Clock, Heart, Home, PackageCheck, Settings, User } from 'lucide-react';
 
 const profileIcons = {
   '/orders': PackageCheck,
@@ -26,7 +19,7 @@ const ProfileNavbar = async () => {
   const t = await getTranslations();
   if (!session) return null;
   return (
-    <aside className='border-primary/10 shadow-primary/5 h-fit rounded-3xl border bg-white p-3 shadow-xl lg:sticky lg:top-24'>
+    <aside className='border-primary/10 h-fit rounded-3xl border bg-white p-3 lg:sticky lg:top-24'>
       <div className='border-muted mb-3 border-b p-4'>
         <div className='flex items-center gap-3'>
           <Avatar className='size-11 rounded-lg ring-2 ring-white'>
@@ -36,10 +29,10 @@ const ProfileNavbar = async () => {
             </AvatarFallback>
           </Avatar>
           <div className='min-w-0'>
-            <p className='text-primary truncate text-sm font-bold'>
+            <p className='text-primary truncate text-lg font-bold'>
               {session.user?.name || t('my-account')}
             </p>
-            <p className='text-muted-foreground truncate text-xs'>
+            <p className='text-muted-foreground truncate text-sm'>
               {session.user?.email ||
                 session.user?.phone ||
                 t('account-settings')}

@@ -8,8 +8,22 @@ import { useTranslations } from 'next-intl';
 const ProfileBreadcrumb = () => {
   const pathname = usePathname();
   const normalizedPathname = pathname.replace(/^\/(ar|en)(?=\/|$)/, '') || '/profile';
-  const activeLink = profileLinks.find(link => link.href === normalizedPathname);
   const t = useTranslations();
+
+  const isOrderDetail = /^\/orders\/[^/]+$/.test(normalizedPathname);
+  if (isOrderDetail) {
+    return (
+      <CustomBreadcrumb
+        activeLink={t('order-details')}
+        links={[
+          { name: t('my-account'), slug: '/profile' },
+          { name: t('orders'), slug: '/orders' },
+        ]}
+      />
+    );
+  }
+
+  const activeLink = profileLinks.find(link => link.href === normalizedPathname);
   if (!activeLink) return null;
   return (
     <CustomBreadcrumb

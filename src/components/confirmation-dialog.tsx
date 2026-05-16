@@ -66,7 +66,7 @@ const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
         <DialogHeader className='flex! flex-row items-center gap-4 px-0!'>
           <div
             className={cn(
-              'mt-1 flex size-10 shrink-0 items-center justify-center rounded-md',
+              'mt-1 flex size-10 shrink-0 items-center justify-center rounded-lg',
               iconToneClassName[iconTone]
             )}
           >
@@ -88,7 +88,7 @@ const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
             variant='outline'
             onClick={() => onOpenChange(false)}
             disabled={isPending}
-            className='rounded-md'
+            className='rounded-lg'
           >
             {cancelLabel ?? t('global.cancel')}
           </Button>
@@ -97,7 +97,7 @@ const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
             variant={confirmVariant}
             onClick={onConfirm}
             disabled={isPending}
-            className='gap-2 rounded-md'
+            className='gap-2 rounded-lg'
           >
             {isPending ? <Loader size='xs' /> : null}
             {confirmLabel}

@@ -35,14 +35,13 @@ const ClientLink: FC<PropsType> = ({
 }) => {
   // Get the current pathname from the router
   const pathname = usePathname();
+  const isActive = pathname.includes(slug) && !disabled;
 
   return (
     <Link
+      aria-current={isActive ? "page" : undefined}
       // Combine the provided className and activeClassName if the pathname includes the slug
-      className={cn(
-        className,
-        pathname.includes(slug) && !disabled ? activeClassName : ""
-      )}
+      className={cn(className, isActive ? activeClassName : "")}
       {...props}
     >
       {children}

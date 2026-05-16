@@ -1,21 +1,13 @@
 "use client";
 
+import ConfirmationDialog from "@/components/confirmation-dialog";
 import { cancelOrderApi } from "@/features/orders/api/create-order";
-import SubmitButton from "@/components/submit-button";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "@/navigation";
 import { useMutation } from "@tanstack/react-query";
+import { Ban } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { type FC, useState } from "react";
 import { toast } from "sonner";
@@ -55,41 +47,31 @@ const CancelOrderButton: FC<PropsType> = ({ orderId, token }) => {
   });
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+    <ConfirmationDialog
+      open={open}
+      onOpenChange={setOpen}
+      title={t("cancel-order")}
+      icon={Ban}
+      confirmLabel={t("cancel-order-confirm")}
+      onConfirm={() => mutate()}
+      isPending={isPending}
+      trigger={
         <Button type="button" variant="destructive">
           {t("cancel-order")}
         </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{t("cancel-order")}</DialogTitle>
-        </DialogHeader>
-        <div className="space-y-2 py-2">
-          <Label htmlFor="cancel-reason">{t("cancel-order-reason")}</Label>
-          <Textarea
-            id="cancel-reason"
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-            placeholder={t("cancel-order-reason")}
-            rows={3}
-          />
-        </div>
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button type="button" variant="outline">
-              {t("global.cancel")}
-            </Button>
-          </DialogClose>
-          <Button type="button" disabled={isPending} onClick={() => mutate()}>
-            <SubmitButton
-              isPending={isPending}
-              text={t("cancel-order-confirm")}
-            />
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      }
+    >
+      <div className="space-y-2 pb-2">
+        <Label htmlFor="cancel-reason">{t("cancel-order-reason")}</Label>
+        <Textarea
+          id="cancel-reason"
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+          placeholder={t("cancel-order-reason")}
+          rows={3}
+        />
+      </div>
+    </ConfirmationDialog>
   );
 };
 

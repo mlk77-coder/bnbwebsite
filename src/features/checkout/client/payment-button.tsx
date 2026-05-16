@@ -144,9 +144,11 @@ const PaymentButton: FC<PropsType> = ({ isLoggedIn, token }) => {
 
       <CheckoutConfirmationDialog
         open={showConfirmation}
-        onClose={() => {
-          setShowConfirmation(false);
-          setPendingPayload(null);
+        onOpenChange={(open) => {
+          if (!open) {
+            setShowConfirmation(false);
+            setPendingPayload(null);
+          }
         }}
         onConfirm={handleConfirmOrder}
         isPending={isPending}

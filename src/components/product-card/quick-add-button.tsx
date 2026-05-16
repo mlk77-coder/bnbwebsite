@@ -62,7 +62,7 @@ export function QuickAddButton({ productId, outOfStock }: Props) {
         disabled={!!outOfStock || state === 'loading'}
         aria-label={t('cart.add-to-cart-button')}
         className={cn(
-          'absolute inset-x-0 bottom-0 z-10 hidden items-center justify-center gap-2 sm:flex',
+          'absolute inset-x-0 bottom-0 z-10 hidden cursor-pointer items-center justify-center gap-2 sm:flex',
           'h-11 text-[11px] font-semibold tracking-[0.16em] uppercase',
           'translate-y-full transition-transform duration-300 ease-out group-hover:translate-y-0',
           state === 'done'

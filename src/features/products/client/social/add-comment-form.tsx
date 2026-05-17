@@ -31,15 +31,15 @@ const AddCommentForm: FC<PropsType> = ({
   const router = useRouter();
   const pathname = usePathname();
   const queryClient = useQueryClient();
-  const [comment, setComment] = useState('');
+  const [body, setBody] = useState('');
   const queryKey = ['product-comments', productId, token];
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: (text: string) =>
-      addProductCommentAction({ productId, token, comment: text }),
+      addProductCommentAction({ productId, token, body: text }),
     onSuccess: result => {
       if (result === 'success') {
-        setComment('');
+        setBody('');
         toast.success(t('product-social.comment-added'));
         queryClient.invalidateQueries({ queryKey });
       } else {
@@ -50,7 +50,7 @@ const AddCommentForm: FC<PropsType> = ({
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const trimmed = comment.trim();
+    const trimmed = body.trim();
     if (!trimmed) return;
 
     if (!isLoggedIn) {
@@ -88,8 +88,8 @@ const AddCommentForm: FC<PropsType> = ({
         >
           <input
             type='text'
-            value={comment}
-            onChange={e => setComment(e.target.value)}
+            value={body}
+            onChange={e => setBody(e.target.value)}
             placeholder={
               isLoggedIn
                 ? t('product-social.add-comment-placeholder')
@@ -102,7 +102,7 @@ const AddCommentForm: FC<PropsType> = ({
             type='submit'
             size='icon'
             variant='ghost'
-            disabled={isPending || !comment.trim()}
+            disabled={isPending || !body.trim()}
             className='text-primary size-8 shrink-0 rounded-full'
             aria-label={t('product-social.post-comment')}
           >

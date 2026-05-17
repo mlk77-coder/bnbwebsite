@@ -21,6 +21,7 @@ import ReviewsContainer from '@/features/products/client/reviews/reviews-contain
 import WishToggleButton from '@/features/products/client/wish-toggle-button';
 import { getProductComments } from '@/features/products/api/get-product-comments';
 import { getProductLikes } from '@/features/products/api/get-product-likes';
+import { normalizeCommentsData } from '@/features/products/lib/normalize-comments-data';
 import ProductSocialPanel from '@/features/products/components/product-social-panel';
 
 type PropsType = {
@@ -58,14 +59,14 @@ const ProductDetailPage: FC<PropsType> = async props => {
 
   const initialLikes = likesResponse.ok
     ? likesResponse.data
-    : { likes_count: product.likes_count ?? 0, is_liked: product.is_liked ?? false };
+    : {
+        likes_count: product.likes_count ?? 0,
+        is_liked: product.is_liked ?? false,
+      };
 
   const initialCommentsData = commentsResponse.ok
     ? commentsResponse.data
-    : {
-        comments: [],
-        comments_count: product.comments_count ?? 0,
-      };
+    : normalizeCommentsData([], product.comments_count ?? 0);
 
   return (
     <PageWrapper>
@@ -106,11 +107,11 @@ const ProductDetailPage: FC<PropsType> = async props => {
             <ProductSocialPanel
               productId={product.id}
               token={token}
+              locale={locale}
               isLoggedIn={isLoggedIn}
               initialLikes={initialLikes}
               initialComments={initialCommentsData.comments}
               commentsCount={initialCommentsData.comments_count}
-              currentUserId={session?.user?.id}
               userName={session?.user?.name}
               userAvatar={session?.user?.avatar ?? session?.user?.image}
             />

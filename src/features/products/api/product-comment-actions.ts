@@ -4,17 +4,17 @@ import { actionHandleError } from '@/lib/utils';
 export const addProductCommentAction = async ({
   productId,
   token,
-  comment,
+  body,
 }: {
   productId: number;
   token: string;
-  comment: string;
+  body: string;
 }) => {
   try {
     if (!token) return 'Unauthorized';
 
     const formData = new FormData();
-    formData.append('comment', comment);
+    formData.append('body', body);
 
     await axiosInstance.post(`products/${productId}/comments`, formData, {
       headers: { Authorization: `Bearer ${token}` },

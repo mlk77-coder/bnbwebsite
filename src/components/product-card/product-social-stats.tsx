@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils';
+import { cn, formatLocaleNumber } from '@/lib/utils';
 import { ProductCard as ProductCardType } from '@/types/products';
 import { Heart, MessageCircle } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
@@ -36,7 +36,9 @@ const ProductSocialStats: FC<PropsType> = ({ product, className }) => {
           className={cn('size-3.5', isLiked && 'fill-red-500 text-red-500')}
           aria-hidden
         />
-        <span className='tabular-nums'>{likesCount.toLocaleString(locale)}</span>
+        <span className='tabular-nums'>
+          {formatLocaleNumber(likesCount, locale)}
+        </span>
         <span className='font-normal'>
           {isLiked
             ? t('product-social.you-liked')
@@ -50,7 +52,7 @@ const ProductSocialStats: FC<PropsType> = ({ product, className }) => {
         <span className='text-muted-foreground flex items-center gap-1'>
           <MessageCircle className='size-3.5' aria-hidden />
           <span className='tabular-nums'>
-            {commentsCount.toLocaleString(locale)}
+            {formatLocaleNumber(commentsCount, locale)}
           </span>
         </span>
       )}

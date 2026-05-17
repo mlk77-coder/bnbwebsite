@@ -32,6 +32,10 @@ export const formatPrice = (value: number, currencyCode: string): string =>
     currency: currencyCode,
   }).format(value);
 
+/** Locale-aware integers with stable SSR/hydration (Node vs browser differ on default digits for `ar`). */
+export const formatLocaleNumber = (value: number, locale: string): string =>
+  new Intl.NumberFormat(locale, { numberingSystem: "latn" }).format(value);
+
 /**
  * Handles errors from API actions, with a special focus on Axios errors.
  * It returns a user-friendly error message based on the type of error encountered.

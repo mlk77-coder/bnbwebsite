@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils';
+import { cn, formatLocaleNumber } from '@/lib/utils';
 import { ProductCard as ProductCardType } from '@/types/products';
 import { Heart } from 'lucide-react';
 import { useLocale } from 'next-intl';
@@ -34,7 +34,9 @@ const ProductLikeBadge: FC<PropsType> = ({ product, className }) => {
         className={cn('size-3.5 shrink-0', isLiked && 'fill-white text-white')}
         aria-hidden
       />
-      <span className='tabular-nums'>{likesCount.toLocaleString(locale)}</span>
+      <span className='tabular-nums'>
+        {formatLocaleNumber(likesCount, locale)}
+      </span>
     </div>
   );
 };

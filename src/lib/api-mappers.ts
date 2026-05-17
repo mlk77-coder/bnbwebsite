@@ -119,11 +119,12 @@ export function normalizeProductLikes(data: {
 export function mapApiProductComment(comment: ApiProductComment): ProductComment {
   return {
     id: comment.id,
-    comment: comment.comment,
+    body: comment.body,
     userId: comment.user.id,
     userName: comment.user.name,
     userAvatar: comment.user.avatar,
     createdAt: comment.created_at,
+    isMine: Boolean(comment.is_mine),
   };
 }
 

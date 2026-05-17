@@ -15,22 +15,24 @@ export type GetProductLikesResponse = ApiResponse & {
 
 export type ApiProductComment = {
   id: number;
-  comment: string;
+  body: string;
   user: {
     id: number;
     name: string;
     avatar: string | null;
   };
   created_at: string;
+  is_mine?: boolean;
 };
 
 export type ProductComment = {
   id: number;
-  comment: string;
+  body: string;
   userId: number;
   userName: string;
   userAvatar: string | null;
   createdAt: string;
+  isMine: boolean;
 };
 
 export type GetProductCommentsResponse = ApiResponse & {

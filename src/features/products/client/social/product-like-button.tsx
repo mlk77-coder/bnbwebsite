@@ -3,7 +3,7 @@
 import { getProductLikes } from '@/features/products/api/get-product-likes';
 import useToggleProductLike from '@/features/products/client/social/hooks/use-toggle-product-like';
 import Loader from '@/components/ui/loader';
-import { cn } from '@/lib/utils';
+import { cn, formatLocaleNumber } from '@/lib/utils';
 import { ProductLikesData } from '@/types/product-social';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
@@ -63,20 +63,16 @@ const ProductLikeButton: FC<PropsType> = ({
       onClick={handleClick}
       disabled={isPending}
       whileTap={{ scale: 0.88 }}
-      className='group flex items-center gap-2 rounded-full transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
+      className='group focus-visible:ring-primary/40 flex items-center gap-2 rounded-full transition-colors outline-none focus-visible:ring-2'
       aria-pressed={likes.is_liked}
       aria-label={
-        likes.is_liked
-          ? t('product-social.unlike')
-          : t('product-social.like')
+        likes.is_liked ? t('product-social.unlike') : t('product-social.like')
       }
     >
       <span
         className={cn(
           'flex size-10 items-center justify-center rounded-full transition-colors',
-          likes.is_liked
-            ? 'bg-red-500/10'
-            : 'bg-muted/80 group-hover:bg-muted'
+          likes.is_liked ? 'bg-red-500/10' : 'bg-muted/80 group-hover:bg-muted'
         )}
       >
         {isPending ? (
@@ -91,16 +87,14 @@ const ProductLikeButton: FC<PropsType> = ({
             <Heart
               className={cn(
                 'size-5 transition-colors',
-                likes.is_liked
-                  ? 'fill-red-500 text-red-500'
-                  : 'text-foreground'
+                likes.is_liked ? 'fill-red-500 text-red-500' : 'text-foreground'
               )}
             />
           </motion.span>
         )}
       </span>
       <span className='text-sm font-semibold tabular-nums'>
-        {likes.likes_count.toLocaleString(locale)}
+        {formatLocaleNumber(likes.likes_count, locale)}
       </span>
       <span className='text-muted-foreground text-sm'>
         {likes.likes_count === 1

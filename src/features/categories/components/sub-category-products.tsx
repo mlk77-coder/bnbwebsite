@@ -1,6 +1,7 @@
 import { getProductList } from "@/features/products";
 import InifinteProducts from "@/app/[locale]/products/_components/inifinte-products";
 import ProductCard from "@/components/product-card/product-card";
+import getSession from "@/lib/get-session";
 import { cn } from "@/lib/utils";
 import { Link } from "@/navigation";
 import { CategoryMainInfo } from "@/types/categories";
@@ -27,6 +28,8 @@ const SubCategoryProducts: FC<PropsType> = async ({
   try {
     const t = await getTranslations();
     const locale = await getLocale();
+    const session = await getSession();
+    const token = session?.user?.access_token ?? "";
     const headersList = await headers();
     const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
       headers: headersList,
@@ -35,7 +38,8 @@ const SubCategoryProducts: FC<PropsType> = async ({
       category,
       searchParams,
       locale,
-      request
+      request,
+      token
     );
     if (!response.ok) return <>error</>;
     const { data: productList } = response;
@@ -52,7 +56,8 @@ const SubCategoryProducts: FC<PropsType> = async ({
                 String(fallbackCategory.id),
                 { per_page: String(FALLBACK_PRODUCTS_PER_CATEGORY) },
                 locale,
-                request
+                request,
+                token
               );
 
               if (

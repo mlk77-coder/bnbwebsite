@@ -19,6 +19,9 @@ import ProductSelectQuantity from '@/features/products/client/product-select-qua
 import RelatedProducts from '@/features/products/components/related-products';
 import ReviewsContainer from '@/features/products/client/reviews/reviews-container';
 import WishToggleButton from '@/features/products/client/wish-toggle-button';
+import { getProductComments } from '@/features/products/api/get-product-comments';
+import { getProductLikes } from '@/features/products/api/get-product-likes';
+import ProductSocialPanel from '@/features/products/components/product-social-panel';
 
 type PropsType = {
   params: Promise<{ locale: string; slug: string }>;
@@ -47,6 +50,22 @@ const ProductDetailPage: FC<PropsType> = async props => {
   );
   if (!response.ok) notFound();
   const product = response.data;
+
+  const [likesResponse, commentsResponse] = await Promise.all([
+    getProductLikes(product.id, locale, token, request),
+    getProductComments(product.id, locale, token, request),
+  ]);
+
+  const initialLikes = likesResponse.ok
+    ? likesResponse.data
+    : { likes_count: product.likes_count ?? 0, is_liked: product.is_liked ?? false };
+
+  const initialCommentsData = commentsResponse.ok
+    ? commentsResponse.data
+    : {
+        comments: [],
+        comments_count: product.comments_count ?? 0,
+      };
 
   return (
     <PageWrapper>
@@ -84,6 +103,17 @@ const ProductDetailPage: FC<PropsType> = async props => {
               <AddToCartButton product={product} />
               <WishToggleButton session={session} id={product.id} />
             </div>
+            <ProductSocialPanel
+              productId={product.id}
+              token={token}
+              isLoggedIn={isLoggedIn}
+              initialLikes={initialLikes}
+              initialComments={initialCommentsData.comments}
+              commentsCount={initialCommentsData.comments_count}
+              currentUserId={session?.user?.id}
+              userName={session?.user?.name}
+              userAvatar={session?.user?.avatar ?? session?.user?.image}
+            />
             <ReviewsContainer
               productId={product.id}
               averageRating={product.rating}

@@ -2,6 +2,7 @@
 
 import { FEATURED_PRODUCTS_PER_PAGE } from '@/features/home/constants';
 import { getProducts } from '@/features/products';
+import getSession from '@/lib/get-session';
 import type { Pagination } from '@/types';
 import type { ProductCard } from '@/types/products';
 import { headers } from 'next/headers';
@@ -19,6 +20,8 @@ export async function loadMoreFeaturedProductsAction(
     return { ok: false, message: 'Invalid page' };
   }
 
+  const session = await getSession();
+  const token = session?.user?.access_token ?? '';
   const headersList = await headers();
   const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
     headers: headersList,
@@ -27,7 +30,8 @@ export async function loadMoreFeaturedProductsAction(
   const response = await getProducts(
     { per_page: String(perPage), page: String(page) },
     locale,
-    request
+    request,
+    token
   );
 
   if (!response.ok) {

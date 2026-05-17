@@ -19,6 +19,7 @@ export type ApiProduct = {
   likes_count?: number;
   comments_count?: number;
   is_liked?: boolean;
+  liked?: boolean;
   is_available: boolean;
   stock_quantity?: number;
   specifications?: Record<string, string> | null;
@@ -42,6 +43,8 @@ export type ProductCard = {
   image: string;
   rating: number;
   reviews_count: number;
+  likes_count?: number;
+  comments_count?: number;
   is_liked?: boolean;
   is_available: boolean;
   stock_quantity: number;

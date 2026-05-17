@@ -159,6 +159,30 @@
     "send-review": "إرسال التعليق",
     "all-reviews": "جميع التعليقات"
   },
+  "product-social": {
+    "like": "إعجاب",
+    "unlike": "إلغاء الإعجاب",
+    "like-singular": "إعجاب",
+    "like-plural": "إعجابات",
+    "you-liked": "أعجبك",
+    "like-error": "تعذر تحديث الإعجاب. حاول مرة أخرى.",
+    "comments-title": "التعليقات",
+    "comments-count": "{count} تعليق",
+    "comment-singular": "تعليق",
+    "comment-plural": "تعليقات",
+    "empty-comments": "لا توجد تعليقات بعد. كن أول من يشارك رأيه!",
+    "loading-comments": "جاري تحميل التعليقات…",
+    "add-comment-placeholder": "أضف تعليقاً…",
+    "login-to-comment": "سجّل الدخول للتعليق",
+    "post-comment": "نشر التعليق",
+    "comment-added": "تم نشر التعليق",
+    "comment-deleted": "تم حذف التعليق",
+    "delete-comment": "حذف",
+    "delete-comment-title": "حذف التعليق؟",
+    "delete-comment-description": "سيتم حذف هذا التعليق نهائياً.",
+    "comment-options": "خيارات التعليق",
+    "cancel": "إلغاء"
+  },
   "footer": {
     "title": {
       "shopping-with-bnb-store": "تسوق مع BNB Store",

@@ -41,7 +41,8 @@ const SalesDiscountPage: FC<PropsType> = async (props) => {
       discount_id: id,
     },
     locale,
-    request
+    request,
+    isLoggedIn ? session?.user?.access_token ?? "" : ""
   );
   if (!response.ok) return <>error</>;
   const { data: productList } = response;

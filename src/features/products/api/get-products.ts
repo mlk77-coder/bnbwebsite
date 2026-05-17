@@ -7,17 +7,21 @@ const buildQueryString = (params: Record<string, string> = {}) => {
   return query ? `?${query}` : "";
 };
 
+const authOptions = (token?: string): RequestInit | undefined =>
+  token ? { headers: { authorization: `Bearer ${token}` } } : undefined;
+
 export const getProducts = async (
   params: Record<string, string> = {},
   locale: string = "en",
-  request?: Request
+  request?: Request,
+  token?: string
 ) => {
   const query = buildQueryString(params);
   const path = `products${query}`;
   const response = await fetcher<GetApiProductsResponse>(
     path,
     locale,
-    undefined,
+    authOptions(token),
     false,
     request
   );
@@ -38,10 +42,11 @@ const getProductList = async (
   categoryId: string,
   params: Record<string, string> = {},
   locale: string = "en",
-  request?: Request
+  request?: Request,
+  token?: string
 ) => {
   if (!categoryId) {
-    return getProducts(params, locale, request);
+    return getProducts(params, locale, request, token);
   }
 
   const query = buildQueryString(params);
@@ -49,7 +54,7 @@ const getProductList = async (
   const response = await fetcher<GetApiProductsResponse>(
     path,
     locale,
-    undefined,
+    authOptions(token),
     false,
     request
   );

@@ -160,6 +160,30 @@
     "write-review": "Write Review",
     "send-review": "Send review"
   },
+  "product-social": {
+    "like": "Like",
+    "unlike": "Unlike",
+    "like-singular": "like",
+    "like-plural": "likes",
+    "you-liked": "Liked by you",
+    "like-error": "Could not update like. Please try again.",
+    "comments-title": "Comments",
+    "comments-count": "{count} comments",
+    "comment-singular": "comment",
+    "comment-plural": "comments",
+    "empty-comments": "No comments yet. Be the first to share your thoughts!",
+    "loading-comments": "Loading comments…",
+    "add-comment-placeholder": "Add a comment…",
+    "login-to-comment": "Log in to comment",
+    "post-comment": "Post comment",
+    "comment-added": "Comment posted",
+    "comment-deleted": "Comment deleted",
+    "delete-comment": "Delete",
+    "delete-comment-title": "Delete comment?",
+    "delete-comment-description": "This comment will be removed permanently.",
+    "comment-options": "Comment options",
+    "cancel": "Cancel"
+  },
   "footer": {
     "title": {
       "shopping-with-bnb-store": "Shopping with BNB Store",

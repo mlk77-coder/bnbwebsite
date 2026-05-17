@@ -6,6 +6,7 @@ import { FeaturedProducts } from '@/features/home/components/featured-collection
 import { HeroSection } from '@/features/home/components/hero-section';
 import { FEATURED_PRODUCTS_PER_PAGE } from '@/features/home/constants';
 import { getProducts } from '@/features/products';
+import getSession from '@/lib/get-session';
 import type { Pagination } from '@/types';
 import { heroDummyContent } from '@/lib/hero-section-dummy-data';
 import { headers } from 'next/headers';
@@ -30,10 +31,8 @@ const HomePage: FC<PropsType> = async props => {
 
   const { locale } = params;
 
-  // const cookieStore = await cookies();
-  // const session = await getSession();
-  // const userToken = cookieStore.get('x-user-session')?.value || '';
-  // const isLoggedIn = Boolean(session && session.user);
+  const session = await getSession();
+  const token = session?.user?.access_token ?? '';
   const headersList = await headers();
   const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
     headers: headersList,
@@ -43,7 +42,8 @@ const HomePage: FC<PropsType> = async props => {
     getProducts(
       { per_page: String(FEATURED_PRODUCTS_PER_PAGE), page: '1' },
       locale,
-      request
+      request,
+      token
     ),
   ]);
   const products = productsResponse.ok ? productsResponse.data.products : [];

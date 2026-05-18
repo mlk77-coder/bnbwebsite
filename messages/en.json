@@ -474,5 +474,23 @@
   "footer-description": "Luxury fashion reimagined. Discover exquisite designs for the whole family. Shop now and experience the difference.",
   "payment-methods": "Payment Methods",
   "all-rights-reserved": "All rights reserved.",
-  "back-to-top": "Back to top"
+  "back-to-top": "Back to top",
+  "reels": {
+    "section-title": "Shop Reels",
+    "section-description": "Watch short videos and discover products curated for you.",
+    "reel-fallback-title": "Reel",
+    "back-to-home": "Back to home",
+    "duration": "Duration",
+    "featured-product": "Featured product",
+    "previous": "Previous",
+    "next": "Next",
+    "view-details": "View details",
+    "card-details": "Details",
+    "close": "Close",
+    "viewer-title": "Reels viewer",
+    "swipe-hint": "Swipe to browse reels",
+    "swipe-hint-vertical": "Swipe up or down to browse reels",
+    "keyboard-hint-desktop": "← → or ↑ ↓ to navigate · Esc to close",
+    "sale": "Sale"
+  }
 }

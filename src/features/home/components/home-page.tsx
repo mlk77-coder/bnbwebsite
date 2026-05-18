@@ -6,6 +6,8 @@ import { FeaturedProducts } from '@/features/home/components/featured-collection
 import { HeroSection } from '@/features/home/components/hero-section';
 import { FEATURED_PRODUCTS_PER_PAGE } from '@/features/home/constants';
 import { getProducts } from '@/features/products';
+import ReelsSection from '@/features/reels/client/reels-section';
+import { getReels, REELS_HOME_PER_PAGE } from '@/features/reels';
 import getSession from '@/lib/get-session';
 import type { Pagination } from '@/types';
 import { heroDummyContent } from '@/lib/hero-section-dummy-data';
@@ -37,10 +39,16 @@ const HomePage: FC<PropsType> = async props => {
   const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
     headers: headersList,
   });
-  const [categories, productsResponse] = await Promise.all([
+  const [categories, productsResponse, reelsResponse] = await Promise.all([
     getCategories(locale, request),
     getProducts(
       { per_page: String(FEATURED_PRODUCTS_PER_PAGE), page: '1' },
+      locale,
+      request,
+      token
+    ),
+    getReels(
+      { per_page: String(REELS_HOME_PER_PAGE), page: '1' },
       locale,
       request,
       token
@@ -50,6 +58,7 @@ const HomePage: FC<PropsType> = async props => {
   const featuredPagination = productsResponse.ok
     ? productsResponse.data.pagination
     : fallbackFeaturedPagination;
+  const reels = reelsResponse.ok ? reelsResponse.data.reels : [];
   const homeCategories = categories.map(category => ({
     id: category.id,
     name: category.name,
@@ -68,10 +77,10 @@ const HomePage: FC<PropsType> = async props => {
         discounts={null}
         collectionsCategories={homeCategories.slice(0, 4)}
       />
+      <ReelsSection reels={reels} />
       <SectionWrapper className='bg-transparent py-0!'>
         <CategoriesCarousel categories={homeCategories} />
       </SectionWrapper>
-
       <FeaturedProducts
         key={locale}
         locale={locale}

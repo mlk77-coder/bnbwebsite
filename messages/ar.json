@@ -471,5 +471,23 @@
   "footer-description": "أزياء فاخرة بإعادة تعريف. اكتشف تصاميم رائعة لجميع أفراد العائلة. تسوق الآن واستمتع بالتميز.",
   "payment-methods": "طرق الدفع",
   "all-rights-reserved": "جميع الحقوق محفوظة.",
-  "back-to-top": "العودة للأعلى"
+  "back-to-top": "العودة للأعلى",
+  "reels": {
+    "section-title": "ريلز التسوق",
+    "section-description": "شاهد فيديوهات قصيرة واكتشف منتجات مختارة لك.",
+    "reel-fallback-title": "ريل",
+    "back-to-home": "العودة للرئيسية",
+    "duration": "المدة",
+    "featured-product": "المنتج المميز",
+    "previous": "السابق",
+    "next": "التالي",
+    "view-details": "عرض التفاصيل",
+    "card-details": "التفاصيل",
+    "close": "إغلاق",
+    "viewer-title": "عارض الريلز",
+    "swipe-hint": "اسحب للتصفح بين الريلز",
+    "swipe-hint-vertical": "اسحب للأعلى أو الأسفل للتصفح",
+    "keyboard-hint-desktop": "← → أو ↑ ↓ للتنقل · Esc للإغلاق",
+    "sale": "تخفيض"
+  }
 }

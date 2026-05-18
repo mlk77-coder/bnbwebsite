@@ -63,12 +63,7 @@ const PaymentButton: FC<PropsType> = ({ isLoggedIn, token }) => {
       setCoupon(null);
       setShipping(-1);
       setProductsCount(0);
-      if (isLoggedIn) router.replace(`/orders/${orderId}`);
-      else {
-        document.cookie =
-          "softNavigationToken=true; path=/; max-age=3600";
-        router.replace(`/order-details/${orderId}`);
-      }
+      router.replace(`/orders/${orderId}`);
     },
     onError: (error) => {
       if (isAxiosError(error) && error.response?.data?.message) {

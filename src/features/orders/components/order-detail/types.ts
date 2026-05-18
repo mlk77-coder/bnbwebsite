@@ -9,7 +9,6 @@ export type OrderDetailTFunc = (
 export type OrderDetailContentProps = {
   order: OrderDetail;
   t: OrderDetailTFunc;
-  embedded?: boolean;
   cancelAction?: ReactNode;
 };
 

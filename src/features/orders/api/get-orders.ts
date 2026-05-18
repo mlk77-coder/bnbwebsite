@@ -34,30 +34,22 @@ export const getOrder = async (
   locale: string,
   token: string,
   id: string,
-  isLoggedIn: boolean = true,
   request?: Request
 ) => {
-  const url = `orders/${id}`;
-  const fullUrl = isLoggedIn ? url : `${url}?s_id=${encodeURIComponent(token)}`;
-  const auth = (
-    isLoggedIn
-      ? {
-          headers: { authorization: `Bearer ${token}` },
-          cache: "no-cache" as RequestCache,
-        }
-      : {}
-  ) satisfies RequestInit;
-  return fetcher<OrderDetailApiResponse>(fullUrl, locale, auth, false, request);
+  return fetcher<OrderDetailApiResponse>(
+    `orders/${id}`,
+    locale,
+    {
+      headers: { authorization: `Bearer ${token}` },
+      cache: "no-cache",
+    },
+    false,
+    request
+  );
 };
 
 export const cachedGetOrder = cache(
-  async (
-    locale: string,
-    token: string,
-    id: string,
-    isLoggedIn: boolean = true,
-    request?: Request
-  ) => {
-    return getOrder(locale, token, id, isLoggedIn, request);
+  async (locale: string, token: string, id: string, request?: Request) => {
+    return getOrder(locale, token, id, request);
   }
 );

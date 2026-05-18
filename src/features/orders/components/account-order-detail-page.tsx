@@ -28,7 +28,6 @@ const AccountOrderDetailPage: FC<PropsType> = async (props) => {
       locale,
       session.user.access_token,
       id,
-      true,
       request,
     );
 
@@ -43,7 +42,6 @@ const AccountOrderDetailPage: FC<PropsType> = async (props) => {
       <OrderDetailContent
         order={order}
         t={t}
-        embedded
         cancelAction={
           canCancelOrder ? (
             <CancelOrderButton

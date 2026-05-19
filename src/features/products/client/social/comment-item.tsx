@@ -1,17 +1,9 @@
 'use client';
 
 import { deleteProductCommentAction } from '@/features/products/api/product-comment-actions';
+import ConfirmationDialog from '@/components/confirmation-dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import Loader from '@/components/ui/loader';
 import { cn } from '@/lib/utils';
 import { ProductComment } from '@/types/product-social';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -129,39 +121,16 @@ const CommentItem: FC<PropsType> = ({
             </>
           ) : null}
 
-          <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
-            <DialogContent className='max-w-sm'>
-              <DialogHeader>
-                <DialogTitle>
-                  {t('product-social.delete-comment-title')}
-                </DialogTitle>
-                <DialogDescription>
-                  {t('product-social.delete-comment-description')}
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter className='gap-2 sm:gap-0'>
-                <Button
-                  type='button'
-                  variant='outline'
-                  onClick={() => setConfirmOpen(false)}
-                >
-                  {t('product-social.cancel')}
-                </Button>
-                <Button
-                  type='button'
-                  variant='destructive'
-                  disabled={isPending}
-                  onClick={() => mutateAsync()}
-                >
-                  {isPending ? (
-                    <Loader className='size-4' />
-                  ) : (
-                    t('product-social.delete-comment')
-                  )}
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <ConfirmationDialog
+            open={confirmOpen}
+            onOpenChange={setConfirmOpen}
+            title={t('product-social.delete-comment-title')}
+            description={t('product-social.delete-comment-description')}
+            icon={Trash2}
+            confirmLabel={t('product-social.delete-comment')}
+            onConfirm={() => mutateAsync()}
+            isPending={isPending}
+          />
         </div>
       ) : null}
     </article>

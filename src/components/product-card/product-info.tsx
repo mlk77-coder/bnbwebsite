@@ -2,7 +2,6 @@
 
 import { cn, formatPrice } from '@/lib/utils';
 import useCurrencyStore from '@/store/use-currency-store';
-import ProductSocialStats from '@/components/product-card/product-social-stats';
 import { ProductCard as ProductCardType } from '@/types/products';
 import { FC } from 'react';
 
@@ -37,7 +36,6 @@ const ProductInfo: FC<ProductInfoProps> = ({ product }) => {
           <span className='font-semibold'>{originalPrice}</span>
         )}
       </div>
-      <ProductSocialStats product={product} />
     </div>
   );
 };

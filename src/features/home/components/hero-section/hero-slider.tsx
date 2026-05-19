@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import type { HomePageContent } from '@/types/home';
+import { heroFallbackSlides } from '@/lib/hero-section-dummy-data';
 
 interface Slide {
   id: number;
@@ -13,32 +14,7 @@ interface Slide {
   alt: string;
 }
 
-const FALLBACK_SLIDES: Slide[] = [
-  {
-    id: 1,
-    image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=2400&q=90',
-    mobileImage: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=90',
-    alt: 'Home & Living',
-  },
-  {
-    id: 2,
-    image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=2400&q=90',
-    mobileImage: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1200&q=90',
-    alt: 'Beauty & Cosmetics',
-  },
-  {
-    id: 3,
-    image: 'https://images.unsplash.com/photo-1556906781-9a412961c28c?auto=format&fit=crop&w=2400&q=90',
-    mobileImage: 'https://images.unsplash.com/photo-1556906781-9a412961c28c?auto=format&fit=crop&w=1200&q=90',
-    alt: 'Footwear & Sneakers',
-  },
-  {
-    id: 4,
-    image: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?auto=format&fit=crop&w=2400&q=90',
-    mobileImage: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?auto=format&fit=crop&w=1200&q=90',
-    alt: 'Skincare & Self-care',
-  },
-];
+const FALLBACK_SLIDES: Slide[] = heroFallbackSlides;
 
 function slidesFromContent(content: HomePageContent | null | undefined): Slide[] {
   if (!content?.media_urls?.length) return FALLBACK_SLIDES;
@@ -101,6 +77,7 @@ export function HeroSlider({ content }: HeroSliderProps) {
               src={slides[currentSlide].image}
               alt={slides[currentSlide].alt}
               fill
+              sizes="100vw"
               className="object-cover"
               priority={currentSlide === 0}
               quality={90}
@@ -112,6 +89,7 @@ export function HeroSlider({ content }: HeroSliderProps) {
               src={slides[currentSlide].mobileImage || slides[currentSlide].image}
               alt={slides[currentSlide].alt}
               fill
+              sizes="100vw"
               className="object-cover"
               priority={currentSlide === 0}
               quality={90}

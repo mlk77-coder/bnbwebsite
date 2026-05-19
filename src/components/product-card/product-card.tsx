@@ -9,6 +9,7 @@ import { FC } from 'react';
 import { getLangDir } from 'rtl-detect';
 import ProductImage from './product-image';
 import ProductInfo from './product-info';
+import ProductSocialStats from './product-social-stats';
 import { QuickAddButton } from './quick-add-button';
 import { WishlistHeart } from './wishlist-heart';
 
@@ -52,6 +53,7 @@ const ProductCard: FC<PropsType> = ({
         <Wrapper href={`/products/${product.slug}`}>
           <ProductInfo product={product} />
         </Wrapper>
+        <ProductSocialStats product={product} />
       </div>
     </article>
   );

@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/carousel';
 import ReelCard from '@/features/reels/client/reel-card';
 import ReelsViewer from '@/features/reels/client/reels-viewer';
+import { prefetchReelNeighbors } from '@/features/reels/lib/reel-video-prefetch';
 import { cn } from '@/lib/utils';
 import type { ReelCard as ReelCardType } from '@/types/reels';
 import { motion } from 'framer-motion';
@@ -55,11 +56,17 @@ const ReelsSection: FC<PropsType> = ({ reels }) => {
   const handleOpenReel = useCallback(
     (reelId: number) => {
       const index = reels.findIndex(r => r.id === reelId);
-      setViewerIndex(index >= 0 ? index : 0);
+      const safeIndex = index >= 0 ? index : 0;
+      prefetchReelNeighbors(reels, safeIndex);
+      setViewerIndex(safeIndex);
       setViewerOpen(true);
     },
     [reels]
   );
+
+  useEffect(() => {
+    if (reels.length) prefetchReelNeighbors(reels, 0);
+  }, [reels]);
 
   if (!reels.length) return null;
 
@@ -129,7 +136,7 @@ const ReelsSection: FC<PropsType> = ({ reels }) => {
             {reels.map((reel, index) => (
               <CarouselItem
                 key={reel.id}
-                className='basis-[42%] pt-1 pl-3 sm:basis-1/3 sm:pl-4 md:basis-1/4 lg:basis-1/5 xl:basis-[18%]'
+                className='basis-[100%] pt-1 pl-3 sm:basis-1/3 sm:pl-4 md:basis-1/4 lg:basis-1/5 xl:basis-[18%]'
               >
                 <motion.div
                   initial={{ opacity: 0, y: 18 }}

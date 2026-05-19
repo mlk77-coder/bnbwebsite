@@ -2,7 +2,11 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import ReelFeaturedProduct from '@/features/reels/client/reel-featured-product';
-import ReelStats from '@/features/reels/client/reel-stats';
+import ReelViewerSocial from '@/features/reels/client/reel-viewer-social';
+import {
+  getReelPreloadLevel,
+  shouldMountReelVideoSrc,
+} from '@/features/reels/lib/reel-video-prefetch';
 import { cn } from '@/lib/utils';
 import type { ReelCard as ReelCardType } from '@/types/reels';
 import { UserRound, Volume2, VolumeX } from 'lucide-react';
@@ -12,16 +16,26 @@ type PropsType = {
   reel: ReelCardType;
   isActive: boolean;
   isMobile: boolean;
+  slideIndex: number;
+  activeIndex: number;
+  onVideoInteract?: () => void;
 };
 
 export const ReelsViewerVideo: FC<PropsType> = ({
   reel,
   isActive,
   isMobile,
+  slideIndex,
+  activeIndex,
+  onVideoInteract,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [muted, setMuted] = useState(true);
+  /** Stays true until the browser blocks unmuted autoplay once. */
+  const preferSoundRef = useRef(true);
+  const [muted, setMuted] = useState(false);
   const [paused, setPaused] = useState(false);
+  const loadVideo = shouldMountReelVideoSrc(slideIndex, activeIndex);
+  const preload = getReelPreloadLevel(slideIndex, activeIndex);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -30,7 +44,21 @@ export const ReelsViewerVideo: FC<PropsType> = ({
     if (isActive) {
       video.currentTime = 0;
       setPaused(false);
-      video.play().catch(() => setPaused(true));
+
+      const startWithSound = preferSoundRef.current;
+      video.muted = !startWithSound;
+      setMuted(!startWithSound);
+
+      video.play().catch(() => {
+        if (startWithSound) {
+          preferSoundRef.current = false;
+          video.muted = true;
+          setMuted(true);
+          video.play().catch(() => setPaused(true));
+        } else {
+          setPaused(true);
+        }
+      });
     } else {
       video.pause();
       video.currentTime = 0;
@@ -41,6 +69,15 @@ export const ReelsViewerVideo: FC<PropsType> = ({
   const togglePlayback = () => {
     const video = videoRef.current;
     if (!video) return;
+
+    onVideoInteract?.();
+
+    if (video.muted) {
+      preferSoundRef.current = true;
+      video.muted = false;
+      setMuted(false);
+    }
+
     if (video.paused) {
       video.play().then(() => setPaused(false)).catch(() => {});
     } else {
@@ -49,12 +86,22 @@ export const ReelsViewerVideo: FC<PropsType> = ({
     }
   };
 
+  const toggleMute = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    const nextMuted = !video.muted;
+    preferSoundRef.current = !nextMuted;
+    video.muted = nextMuted;
+    setMuted(nextMuted);
+  };
+
   return (
     <>
       <video
         ref={videoRef}
-        src={reel.videoUrl}
+        src={loadVideo ? reel.videoUrl : undefined}
         poster={reel.thumbnailUrl}
+        preload={preload}
         className={cn(
           'size-full',
           isMobile ? 'object-cover' : 'object-contain'
@@ -86,7 +133,7 @@ export const ReelsViewerVideo: FC<PropsType> = ({
         type='button'
         onClick={e => {
           e.stopPropagation();
-          setMuted(prev => !prev);
+          toggleMute();
         }}
         className={cn(
           'absolute z-20 rounded-full bg-black/40 p-2.5 text-white backdrop-blur-sm transition hover:bg-black/60',
@@ -108,6 +155,8 @@ type SlideProps = {
   reel: ReelCardType;
   isActive: boolean;
   isMobile: boolean;
+  slideIndex: number;
+  activeIndex: number;
   onNavigate?: () => void;
 };
 
@@ -115,8 +164,20 @@ export const ReelsViewerSlide: FC<SlideProps> = ({
   reel,
   isActive,
   isMobile,
+  slideIndex,
+  activeIndex,
   onNavigate,
 }) => {
+  const [commentsOpen, setCommentsOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isActive) setCommentsOpen(false);
+  }, [isActive]);
+
+  const handleVideoInteract = () => {
+    if (commentsOpen) setCommentsOpen(false);
+  };
+
   return (
     <div
       className={cn(
@@ -126,7 +187,14 @@ export const ReelsViewerSlide: FC<SlideProps> = ({
           : 'aspect-[9/16] h-full max-h-[min(calc(100dvh-6rem),900px)] w-auto rounded-2xl shadow-2xl ring-1 ring-white/10'
       )}
     >
-      <ReelsViewerVideo reel={reel} isActive={isActive} isMobile={isMobile} />
+      <ReelsViewerVideo
+        reel={reel}
+        isActive={isActive}
+        isMobile={isMobile}
+        slideIndex={slideIndex}
+        activeIndex={activeIndex}
+        onVideoInteract={handleVideoInteract}
+      />
 
       <div className='pointer-events-none absolute inset-0 flex flex-col justify-end'>
         <div className='bg-linear-to-t from-black/95 via-black/60 to-transparent px-4 pt-24 pb-6 md:px-5 md:pb-5'>
@@ -161,7 +229,12 @@ export const ReelsViewerSlide: FC<SlideProps> = ({
               </p>
             ) : null}
 
-            <ReelStats reel={reel} variant='overlay' />
+            <ReelViewerSocial
+              reel={reel}
+              isActive={isActive}
+              commentsOpen={commentsOpen}
+              onCommentsOpenChange={setCommentsOpen}
+            />
 
             {reel.product ? (
               <ReelFeaturedProduct

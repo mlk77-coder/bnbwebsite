@@ -5,16 +5,19 @@ import SectionWrapper, {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import ReelFeaturedProduct from '@/features/reels/client/reel-featured-product';
-import ReelStats from '@/features/reels/client/reel-stats';
 import ReelVideoPlayer from '@/features/reels/client/reel-video-player';
+import ReelSocialPanel from '@/features/reels/components/reel-social-panel';
+import { getReelComments } from '@/features/reels/api/get-reel-comments';
 import { getReelDetails } from '@/features/reels/api/get-reel-details';
+import { getReelLikes } from '@/features/reels/api/get-reel-likes';
 import { formatReelDuration } from '@/features/reels/lib/reel-mappers';
+import { normalizeReelCommentsData } from '@/features/reels/lib/normalize-reel-comments-data';
 import getSession from '@/lib/get-session';
 import { cn } from '@/lib/utils';
 import { Link } from '@/navigation';
 import { ArrowLeft, UserRound } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
-import { headers } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { FC } from 'react';
 
@@ -27,7 +30,10 @@ const ReelDetailPage: FC<PropsType> = async props => {
   const { locale, id } = params;
 
   const session = await getSession();
-  const token = session?.user?.access_token ?? '';
+  const isLoggedIn = Boolean(session && session.user);
+  const cookieStore = await cookies();
+  const userToken = cookieStore.get('x-user-session')?.value || '';
+  const token = isLoggedIn ? session?.user?.access_token || '' : userToken;
   const headersList = await headers();
   const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
     headers: headersList,
@@ -38,6 +44,22 @@ const ReelDetailPage: FC<PropsType> = async props => {
   if (!response.ok) notFound();
 
   const reel = response.data;
+
+  const [likesResponse, commentsResponse] = await Promise.all([
+    getReelLikes(reel.id, locale, token, request),
+    getReelComments(reel.id, locale, token, request),
+  ]);
+
+  const initialLikes = likesResponse.ok
+    ? likesResponse.data
+    : {
+        likes_count: reel.likesCount,
+        is_liked: reel.isLiked,
+      };
+
+  const initialCommentsData = commentsResponse.ok
+    ? commentsResponse.data
+    : normalizeReelCommentsData([], reel.commentsCount);
 
   return (
     <PageWrapper>
@@ -92,7 +114,19 @@ const ReelDetailPage: FC<PropsType> = async props => {
               <p className='text-base leading-relaxed'>{reel.caption}</p>
             ) : null}
 
-            <ReelStats reel={reel} />
+            <ReelSocialPanel
+              reelId={reel.id}
+              token={token}
+              locale={locale}
+              isLoggedIn={isLoggedIn}
+              initialLikes={initialLikes}
+              initialComments={initialCommentsData.comments}
+              commentsCount={initialCommentsData.comments_count}
+              viewsCount={reel.viewsCount}
+              userName={session?.user?.name}
+              userAvatar={session?.user?.avatar ?? session?.user?.image}
+              variant='page'
+            />
 
             {reel.product ? (
               <>

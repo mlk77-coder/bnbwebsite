@@ -8,6 +8,7 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 import { ReelsViewerSlide } from '@/features/reels/client/reels-viewer-slide';
+import { useReelNeighborsPrefetch } from '@/features/reels/client/use-reel-neighbors-prefetch';
 import { cn, formatLocaleNumber } from '@/lib/utils';
 import { Link } from '@/navigation';
 import type { ReelCard as ReelCardType } from '@/types/reels';
@@ -120,6 +121,8 @@ const ReelsViewer: FC<PropsType> = ({
 
   const activeReel = reels[current];
 
+  useReelNeighborsPrefetch(reels, current, open);
+
   if (!reels.length) return null;
 
   return (
@@ -188,6 +191,8 @@ const ReelsViewer: FC<PropsType> = ({
                         reel={reel}
                         isActive={index === current}
                         isMobile
+                        slideIndex={index}
+                        activeIndex={current}
                         onNavigate={closeViewer}
                       />
                     </CarouselItem>
@@ -239,6 +244,8 @@ const ReelsViewer: FC<PropsType> = ({
                             reel={reel}
                             isActive={index === current}
                             isMobile={false}
+                            slideIndex={index}
+                            activeIndex={current}
                             onNavigate={closeViewer}
                           />
                         </CarouselItem>

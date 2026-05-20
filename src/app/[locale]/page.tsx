@@ -7,6 +7,7 @@ type PropsType = {
 
 export const generateMetadata = HomePageMetaData;
 
+
 const Page: FC<PropsType> = async (props) => {
   return <HomePage params={props.params} />;
 };

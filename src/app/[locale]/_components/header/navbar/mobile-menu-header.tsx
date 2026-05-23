@@ -18,11 +18,11 @@ const MobileMenuHeader = ({
   signInLabel: string;
 }) => {
   return (
-    <div className="pt-3 pb-2 w-full flex justify-center items-center divide-x">
-      <div className="w-full flex justify-center items-center">
+    <div className="flex w-full items-center justify-between gap-3">
+      <div className="min-w-0 flex-1">
         {session?.user ? (
           <UserMenu
-            className="max-xl:inline-flex"
+            className="max-xl:inline-flex max-xl:w-full max-xl:justify-start"
             label={session.user.name}
             session={session}
             userToken={userToken}
@@ -31,18 +31,18 @@ const MobileMenuHeader = ({
           <Link
             className={cn(
               buttonVariants({ variant: "ghost" }),
-              "flex justify-center capitalize items-center gap-1"
+              "h-10 w-full justify-start gap-2 px-2 capitalize"
             )}
             href="/login"
           >
-            <UserRound className="size-5" />
-            {signInLabel}
+            <UserRound className="size-5 shrink-0 text-gray-600" />
+            <span className="truncate text-sm font-medium text-gray-800">
+              {signInLabel}
+            </span>
           </Link>
         )}
       </div>
-      <div className="w-full flex justify-center items-center">
-        <LanguagesToggle inMobileMenu />
-      </div>
+      <LanguagesToggle inMobileMenu />
     </div>
   );
 };

@@ -9,7 +9,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Tooltip } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter } from "@/navigation";
 import { Globe, Check } from "lucide-react";
@@ -46,52 +45,57 @@ const LanguagesToggle: FC<PropsType> = ({ inMobileMenu = false }) => {
     { code: "en", name: t("english"), flag: "🇬🇧", native: "English" },
   ];
 
+  const triggerButton = (
+    <Button
+      type="button"
+      title={t("change-language")}
+      disabled={isPending}
+      className={cn(
+        "group relative hover:bg-gray-100/80 transition-all duration-300",
+        isPending && "transition-opacity [&:disabled]:opacity-30",
+        inMobileMenu
+          ? "h-10 shrink-0 gap-2 rounded-lg border border-gray-100/80 bg-white/90 px-3 capitalize shadow-sm hover:bg-white"
+          : "hidden md:flex"
+      )}
+      variant="ghost"
+      size={inMobileMenu ? "default" : "icon"}
+    >
+      {inMobileMenu ? (
+        <Fragment>
+          <Globe className="size-4 text-gray-600" aria-hidden />
+          <span className="text-sm font-medium text-gray-700">
+            {isRTL ? "عربي" : "English"}
+          </span>
+          <span className="text-base leading-none" aria-hidden>
+            {isRTL ? "🇸🇦" : "🇬🇧"}
+          </span>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <span className="sr-only">{t("change-language")}</span>
+          <div className="relative">
+            <Globe
+              className={cn(
+                "w-5 h-5 transition-all duration-300",
+                isPending
+                  ? "animate-pulse text-primary"
+                  : "text-gray-600 group-hover:text-gray-900"
+              )}
+            />
+            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-primary rounded-full border border-white" />
+          </div>
+        </Fragment>
+      )}
+    </Button>
+  );
+
   return (
-    <DropdownMenu modal={false}>
-      <Tooltip text={t("change-language")}>
-        <DropdownMenuTrigger asChild>
-          <Button
-            disabled={isPending}
-            className={cn(
-              "group relative hover:bg-gray-100/80 transition-all duration-300",
-              isPending && "transition-opacity [&:disabled]:opacity-30",
-              inMobileMenu
-                ? "flex justify-center capitalize items-center gap-2 w-full"
-                : "hidden md:flex"
-            )}
-            variant="ghost"
-            size={inMobileMenu ? "default" : "icon"}
-          >
-            {inMobileMenu ? (
-              <Fragment>
-                <Globe className="w-5 h-5 text-gray-600" />
-                <span className="text-gray-700">
-                  {isRTL ? "عربي" : "English"}
-                </span>
-                <span className="ml-auto text-lg">
-                  {isRTL ? "🇸🇦" : "🇬🇧"}
-                </span>
-              </Fragment>
-            ) : (
-              <Fragment>
-                <span className="sr-only">{t("change-language")}</span>
-                <div className="relative">
-                  <Globe className={cn(
-                    "w-5 h-5 transition-all duration-300",
-                    isPending ? "animate-pulse text-primary" : "text-gray-600 group-hover:text-gray-900"
-                  )} />
-                  {/* Active indicator dot */}
-                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-primary rounded-full border border-white" />
-                </div>
-              </Fragment>
-            )}
-          </Button>
-        </DropdownMenuTrigger>
-      </Tooltip>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>{triggerButton}</DropdownMenuTrigger>
 
       <DropdownMenuContent
         align={isRTL ? "start" : "end"}
-        className="w-56 p-2"
+        className={cn("z-[100] w-56 p-2")}
         sideOffset={8}
       >
         <DropdownMenuLabel

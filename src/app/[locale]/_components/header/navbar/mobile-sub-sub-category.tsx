@@ -5,7 +5,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
-import { Separator } from '@/components/ui/separator';
 import { SheetClose } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { SubCategory } from '@/types/categories';
@@ -17,61 +16,72 @@ type PropsType = {
   mainCategorySlug: string;
   isLast: boolean;
 };
-const MobileSubCategory: FC<PropsType> = ({
+
+const rowLinkClass = cn(
+  'flex w-full min-h-11 flex-1 items-center rounded-lg px-3 py-2.5',
+  'text-start text-sm font-medium text-gray-800 transition-colors',
+  'hover:bg-white/80 active:bg-white'
+);
+
+const MobileSubSubCategory: FC<PropsType> = ({
   subCategory,
   mainCategorySlug,
-  isLast,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const hasChildren = subCategory.subcategories.length > 0;
+
   return (
     <Collapsible
-      className='w-full'
+      className="w-full"
       open={isOpen}
       onOpenChange={setIsOpen}
-      key={subCategory.id}
     >
-      <div
-        className={cn(
-          'flex w-full items-center justify-between',
-          isOpen ? '' : 'border-b pb-4',
-          isLast ? 'border-0 pb-0' : ''
-        )}
-      >
+      <div className="flex w-full items-center gap-1">
         <SheetClose asChild>
           <ClientLink
-            activeClassName='text-orange'
+            activeClassName="text-orange font-semibold"
             slug={String(subCategory.id)}
-            className={cn(
-              'inline-block w-full flex-1 py-4',
-              isOpen ? 'pb-2' : ''
-            )}
+            className={cn(rowLinkClass, isOpen && 'pb-1')}
             href={`/category/${mainCategorySlug}/${subCategory.id}`}
           >
             {subCategory.name}
           </ClientLink>
         </SheetClose>
-        {subCategory.subcategories.length > 0 ? (
+        {hasChildren ? (
           <CollapsibleTrigger asChild>
-            <Button className='size-6' variant='outline' size='icon'>
-              <span className='sr-only'>Show related categories</span>
+            <Button
+              className="size-8 shrink-0 rounded-lg border-gray-200"
+              variant="outline"
+              size="icon"
+              aria-expanded={isOpen}
+            >
+              <span className="sr-only">Toggle subcategories</span>
               {isOpen ? (
-                <Minus className='size-5' />
+                <Minus className="size-4" />
               ) : (
-                <Plus className='size-5' />
+                <Plus className="size-4" />
               )}
             </Button>
           </CollapsibleTrigger>
         ) : null}
       </div>
-      <CollapsibleContent>
-        <div className='pb-4'>
-          <div className='flex flex-col items-start justify-start gap-2 border-s ps-3'>
-            {subCategory.subcategories?.map(subSubCategory => (
+      {hasChildren ? (
+        <CollapsibleContent>
+          <div
+            className={cn(
+              'mb-1 flex flex-col gap-0.5 border-gray-200/80 py-1',
+              'border-s ps-2'
+            )}
+          >
+            {subCategory.subcategories.map(subSubCategory => (
               <SheetClose asChild key={subSubCategory.id}>
                 <ClientLink
-                  activeClassName='text-orange'
+                  activeClassName="text-orange font-semibold"
                   slug={String(subSubCategory.id)}
-                  className='hover:text-orange'
+                  className={cn(
+                    rowLinkClass,
+                    'py-2 text-sm text-gray-600 hover:text-gray-900'
+                  )}
                   href={`/category/${mainCategorySlug}/${subCategory.id}/${subSubCategory.id}`}
                 >
                   {subSubCategory.name}
@@ -79,11 +89,10 @@ const MobileSubCategory: FC<PropsType> = ({
               </SheetClose>
             ))}
           </div>
-        </div>
-        <Separator />
-      </CollapsibleContent>
+        </CollapsibleContent>
+      ) : null}
     </Collapsible>
   );
 };
 
-export default MobileSubCategory;
+export default MobileSubSubCategory;

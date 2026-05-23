@@ -104,7 +104,7 @@ const CartProductsList = ({
             </div>
             <ClearCartButton />
           </div>
-          <div className="space-y-4">
+          <div className="overflow-hidden rounded-xl border border-gray-100 bg-white md:space-y-4 md:overflow-visible md:rounded-none md:border-0 md:bg-transparent">
             {data.items.map((item) => (
               <CartProductCard
                 key={`${item.id}-${item.product.id}`}

@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
   SheetClose,
@@ -12,8 +11,9 @@ import { FetcherResponse } from "@/lib/fetcher";
 import { GetCartResponse } from "@/types/cart";
 import { Category } from "@/types/categories";
 import { X, Menu } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { FC } from "react";
+import { getLangDir } from "rtl-detect";
 import CartPopover from "../cart/cart-popover";
 import SearchHeader from "../search/search-header";
 import Logo from "./logo";
@@ -49,6 +49,9 @@ const MobileMenu: FC<PropsType> = ({
   sales,
   labels,
 }) => {
+  const locale = useLocale();
+  const dir = getLangDir(locale);
+  const isRTL = dir === "rtl";
   const t = useTranslations();
   const tA11y = useTranslations("accessibility");
   const menuLabels = labels ?? {
@@ -62,7 +65,7 @@ const MobileMenu: FC<PropsType> = ({
   };
 
   return (
-    <Sheet>
+    <Sheet modal={false}>
       <SheetTrigger asChild>
         <Button
           className="lg:hidden group relative hover:bg-gray-100/80 transition-all duration-300"
@@ -74,32 +77,33 @@ const MobileMenu: FC<PropsType> = ({
         </Button>
       </SheetTrigger>
       <SheetContent
-        overlay={false}
+        overlay
         hiddenCloseButton
-        className="px-0 max-h-screen py-0 overflow-y-auto data-[state=closed]:duration-0 bg-white"
-        side="left"
+        allowPortaledOverlays
+        dir={dir}
+        className="flex h-full max-h-screen w-full max-w-[min(100vw,22rem)] flex-col gap-0 overflow-hidden border-gray-100/80 bg-background p-0 data-[state=closed]:duration-200 sm:max-w-sm"
+        side={isRTL ? "right" : "left"}
       >
-        {/* Modern Mobile Menu Header */}
-        <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-xl border-b border-gray-100">
-          <div className="flex h-16 px-4 justify-between gap-3 items-center">
-            <div className="flex justify-start gap-3 items-center">
+        <div className="sticky top-0 z-10 border-b border-gray-100/80 bg-white/95 backdrop-blur-xl">
+          <div className="flex h-14 items-center justify-between gap-2 px-4">
+            <div className="flex min-w-0 items-center gap-2">
               <SheetClose asChild>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="hover:bg-gray-100/80 transition-colors"
+                  className="shrink-0 hover:bg-gray-100/80"
                 >
                   <span className="sr-only">{tA11y("close-menu")}</span>
-                  <X className="w-5 h-5 text-gray-700" />
+                  <X className="size-5 text-gray-700" />
                 </Button>
               </SheetClose>
               <SheetClose asChild>
-                <span>
+                <span className="inline-flex">
                   <Logo />
                 </span>
               </SheetClose>
             </div>
-            <div className="flex justify-end items-center gap-1">
+            <div className="flex shrink-0 items-center gap-0.5">
               <SearchHeader isMobile />
               <CartPopover
                 insideSheet
@@ -111,27 +115,26 @@ const MobileMenu: FC<PropsType> = ({
           </div>
         </div>
 
-        {/* User Header Section */}
-        <div className="px-4 py-4 bg-linear-to-br from-primary/5 to-transparent">
-          <MobileMenuHeader
-            session={session}
-            userToken={userToken}
-            signInLabel={menuLabels.signIn}
-          />
-        </div>
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+          <div className="border-b border-gray-100/80 bg-accent/40 px-4 py-3">
+            <MobileMenuHeader
+              session={session}
+              userToken={userToken}
+              signInLabel={menuLabels.signIn}
+            />
+          </div>
 
-        <Separator className="opacity-50" />
+          <nav className="flex-1 px-2 py-3" aria-label={tA11y("main-navigation")}>
+            <MobileCategories
+              categories={categories}
+              sales={sales}
+              labels={menuLabels}
+            />
+          </nav>
 
-        {/* Categories Section */}
-        <div className="py-2">
-          <MobileCategories categories={categories} sales={sales} labels={menuLabels} />
-        </div>
-
-        <Separator className="opacity-50" />
-
-        {/* Bottom Links */}
-        <div className="py-4 px-4">
-          <MenuBottomLinks labels={menuLabels} />
+          <div className="mt-auto border-t border-gray-100/80 p-4">
+            <MenuBottomLinks labels={menuLabels} />
+          </div>
         </div>
       </SheetContent>
     </Sheet>

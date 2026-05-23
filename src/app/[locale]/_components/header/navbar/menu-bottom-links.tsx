@@ -2,6 +2,7 @@
 
 import { SheetClose } from "@/components/ui/sheet";
 import { Link } from "@/navigation";
+import { MessageCircle } from "lucide-react";
 
 type PropsType = {
   labels: {
@@ -11,16 +12,15 @@ type PropsType = {
 
 const MenuBottomLinks = ({ labels }: PropsType) => {
   return (
-    <div className="flex flex-col items-start justify-start gap-8 bg-beige/75 !px-6 py-9">
+    <SheetClose asChild>
       <Link
         href="/contact-us"
-        className="underline underline-offset-1 hover:text-orange"
+        className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 active:bg-primary/85"
       >
-        <SheetClose asChild>
-          <span>{labels.contactUs}</span>
-        </SheetClose>
+        <MessageCircle className="size-4 shrink-0" aria-hidden />
+        {labels.contactUs}
       </Link>
-    </div>
+    </SheetClose>
   );
 };
 

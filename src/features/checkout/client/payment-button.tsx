@@ -41,19 +41,22 @@ const PaymentButton: FC<PropsType> = ({ isLoggedIn, token }) => {
   const setCoupon = useCheckoutStore((state) => state.setCoupon);
   const setProductsCount = useCartCountStore((state) => state.setProductsCount);
   const t = useTranslations();
+  const tCheckout = useTranslations('checkout');
+  const tAuth = useTranslations('auth');
+  const genericError = tAuth('something-went-wrong-please-try-again');
 
   const { mutate, isPending, reset } = useMutation({
     mutationFn: async (body: CreateOrderBody) =>
       createOrderApi(body, { token, locale }),
     onSuccess: (res) => {
       if (!res.success) {
-        setErrorMessage(res.message ?? "Could not complete order.");
+        setErrorMessage(res.message ?? tCheckout('order-complete-failed'));
         return;
       }
 
       const orderId = parseCreatedOrderId(res);
       if (orderId == null) {
-        setErrorMessage("Could not resolve new order id from response.");
+        setErrorMessage(tCheckout('order-id-resolve-failed'));
         return;
       }
 
@@ -75,14 +78,12 @@ const PaymentButton: FC<PropsType> = ({ isLoggedIn, token }) => {
               ? Object.values(msg as Record<string, unknown>)
                   .flat()
                   .join("\n")
-              : "Something went wrong, please try again",
+              : genericError,
         );
         return;
       }
       setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : "Something went wrong, please try again",
+        error instanceof Error ? error.message : genericError,
       );
     },
   });

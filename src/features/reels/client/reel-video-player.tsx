@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import { Play } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { FC, useRef, useState } from 'react';
 
 type PropsType = {
@@ -17,6 +18,7 @@ const ReelVideoPlayer: FC<PropsType> = ({
   caption,
   className,
 }) => {
+  const tA11y = useTranslations('accessibility');
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -59,7 +61,7 @@ const ReelVideoPlayer: FC<PropsType> = ({
           type='button'
           onClick={togglePlayback}
           className='absolute inset-0 flex items-center justify-center bg-black/20 transition-opacity hover:bg-black/30'
-          aria-label='Play video'
+          aria-label={tA11y('play-video')}
         >
           <div className='rounded-full bg-black/50 p-4 backdrop-blur-sm'>
             <Play className='size-10 fill-white text-white' aria-hidden />

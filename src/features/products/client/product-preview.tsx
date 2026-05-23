@@ -4,8 +4,10 @@ import { formatPrice } from '@/lib/utils';
 import useCurrencyStore from '@/store/use-currency-store';
 import useProductDetailsStore from '@/store/use-product-details-store';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 const ProductPreview = () => {
+  const t = useTranslations('product');
   const productDetail = useProductDetailsStore(state => state.productDetail);
   const quantity = useProductDetailsStore(state => state.quantity);
   const currency = useCurrencyStore(state => state.currency);
@@ -21,7 +23,9 @@ const ProductPreview = () => {
       />
       <span className='w-full flex ltr:tracking-wide text-sm flex-col justify-start items-start'>
         <span className='w-full text-base font-medium'>{productDetail.name}</span>
-        <span className='ltr:tracking-wide'>Quantity: {quantity}</span>
+        <span className='ltr:tracking-wide'>
+          {t('preview-quantity', { quantity })}
+        </span>
         <span className='font-bold'>
           {formatPrice(productDetail.price * currency, symbol)}
         </span>

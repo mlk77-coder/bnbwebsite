@@ -11,6 +11,7 @@ import {
   type UseFormReturn,
   useForm,
 } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import type { z } from "zod";
 
@@ -25,6 +26,7 @@ type ContactUsFormHook = {
 };
 
 const useContactUs = (session: CustomSession | null): ContactUsFormHook => {
+  const t = useTranslations("contact-us");
   const router = useRouter();
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(ContactSchema) as Resolver<ContactFormValues>,
@@ -45,7 +47,7 @@ const useContactUs = (session: CustomSession | null): ContactUsFormHook => {
     mutationFn: contactUsAction,
     onSuccess: (data) => {
       if (data === "success") {
-        toast.success("Message sent successfully");
+        toast.success(t("message-sent-success"));
         router.push("/");
         form.reset();
       } else toast.error(data);

@@ -27,6 +27,7 @@ type PropsType = {
 const AddToCartSuccessDialog: FC<PropsType> = ({ isOpen, onClose }) => {
   const setQuantity = useProductDetailsStore(state => state.setQuantity);
   const t = useTranslations();
+  const tProduct = useTranslations('product');
   return (
     <Suspense fallback={null}>
       <Dialog
@@ -43,7 +44,7 @@ const AddToCartSuccessDialog: FC<PropsType> = ({ isOpen, onClose }) => {
               <span>{t('this-item-has-been-added-to-your-cart')}</span>
             </DialogTitle>
             <DialogDescription className='sr-only'>
-              products added to cart successfully
+              {tProduct('add-to-cart-success-description')}
             </DialogDescription>
           </DialogHeader>
           <div className='w-full flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6 md:gap-8'>

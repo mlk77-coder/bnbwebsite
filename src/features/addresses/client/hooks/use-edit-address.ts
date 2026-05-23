@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 type EditVariables = {
@@ -46,6 +47,7 @@ const valuesFromAddress = (address: Address): AddAddressSchema => ({
 });
 
 const useEditAddress = (token: string, address: Address, options?: Options) => {
+  const tAddress = useTranslations("address");
   const queryClient = useQueryClient();
   const syncedValues = useMemo(() => valuesFromAddress(address), [address]);
 
@@ -63,7 +65,7 @@ const useEditAddress = (token: string, address: Address, options?: Options) => {
       }),
     onSuccess: (data, vars) => {
       if (data === "success") {
-        toast.success("Address updated successfully");
+        toast.success(tAddress("updated-success"));
         invalidateAddressRelatedQueries(queryClient);
         form.reset(vars.formSnapshot);
         options?.onMutationSuccess?.();

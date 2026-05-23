@@ -7,8 +7,10 @@ import { cn } from '@/lib/utils';
 import { usePathname, useRouter } from '@/navigation';
 import { Heart, Loader2 } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 
 export function WishlistHeart({ id }: { id: number }) {
+  const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
   const { data: raw } = useSession();
@@ -36,7 +38,7 @@ export function WishlistHeart({ id }: { id: number }) {
     <button
       onClick={handleClick}
       disabled={isPending}
-      aria-label={isFav ? 'Remove from wishlist' : 'Add to wishlist'}
+      aria-label={isFav ? t('remove-from-wishlist') : t('add-to-wishlist')}
       className={cn(
         'group absolute inset-e-2 top-2 z-20 flex size-8 cursor-pointer items-center justify-center rounded-full',
         'border-border/30 border bg-white/90 shadow-sm backdrop-blur-sm',

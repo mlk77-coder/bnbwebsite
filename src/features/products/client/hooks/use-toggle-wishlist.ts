@@ -4,9 +4,11 @@ import {
   removeFromWishListAction,
 } from '@/app/actions/wishlist-actions';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 const useToggleWishList = (token: string, id: number) => {
+  const t = useTranslations();
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationFn: async ({
@@ -42,10 +44,10 @@ const useToggleWishList = (token: string, id: number) => {
                 )
               ),
             });
-            toast.success('This product has been removed from wishlist');
+            toast.success(t('wishlist-removed-success'));
           } else {
             queryClient.invalidateQueries({ queryKey: key });
-            toast.success('This product has been added to wishlist');
+            toast.success(t('wishlist-added-success'));
           }
         }
       } else {

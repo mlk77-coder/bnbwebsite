@@ -15,6 +15,7 @@ interface WishlistButtonProps
   extends React.ComponentPropsWithoutRef<'button'> {}
 
 const WishlistButton: FC<WishlistButtonProps> = ({ ...props }) => {
+  const t = useTranslations();
   return (
     <Button
       {...props}
@@ -23,7 +24,7 @@ const WishlistButton: FC<WishlistButtonProps> = ({ ...props }) => {
       className='text-base w-full capitalize'
     >
       <Heart className='size-5 me-2' />
-      add to wishlist
+      {t('add-to-wishlist')}
     </Button>
   );
 };

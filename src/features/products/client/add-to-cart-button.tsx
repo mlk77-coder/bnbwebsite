@@ -62,7 +62,7 @@ const AddToCartButton: FC<PropsType> = ({ product }) => {
       const message =
         error instanceof Error
           ? error.message
-          : 'Something went wrong, please try again';
+          : t('auth.something-went-wrong-please-try-again');
       if (message === ADD_TO_CART_AUTH_REQUIRED) {
         reset();
         router.push(getLoginUrlWithCallback(pathname || '/'));

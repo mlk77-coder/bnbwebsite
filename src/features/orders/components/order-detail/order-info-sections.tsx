@@ -1,4 +1,8 @@
-import { getOrderStatusClassName } from '@/features/orders/lib/order-status';
+import {
+  getOrderPaymentStatusLabel,
+  getOrderStatusClassName,
+  getOrderStatusLabel,
+} from '@/features/orders/lib/order-status';
 import { cn } from '@/lib/utils';
 import type { OrderDetail } from '@/types/order';
 import { format } from 'date-fns';
@@ -48,7 +52,7 @@ const OrderInfoSections = ({
                 getOrderStatusClassName(order.status)
               )}
             >
-              {order.status}
+              {getOrderStatusLabel(order.status, t)}
             </span>
           </MetaRow>
           <MetaRow label={`${t('estimated-delivery')}:`} embedded={embedded}>
@@ -62,7 +66,9 @@ const OrderInfoSections = ({
             </span>
           </MetaRow>
           <MetaRow label={`${t('payment-status')}:`} embedded={embedded}>
-            <span className='capitalize'>{order.payment_status}</span>
+            <span className='capitalize'>
+              {getOrderPaymentStatusLabel(order.payment_status, t)}
+            </span>
           </MetaRow>
         </dl>
       </DetailSection>

@@ -26,6 +26,7 @@ const CheckoutPage: FC<PropsType> = async (props) => {
     const cookieStore = await cookies();
     const session = await getSession();
     const t = await getTranslations();
+    const tCheckout = await getTranslations('checkout');
     const user_token = cookieStore.get("x-user-session")?.value || "";
     const isLoggedIn = Boolean(session && session.user);
     const token = isLoggedIn ? session?.user?.access_token || "" : user_token;
@@ -35,7 +36,17 @@ const CheckoutPage: FC<PropsType> = async (props) => {
     });
     const response = await getCart(token, locale, isLoggedIn, request);
 
-    if (!response.ok) return <>error</>;
+    if (!response.ok) {
+      return (
+        <PageWrapper>
+          <SectionWrapper>
+            <p className="text-muted-foreground text-center text-sm">
+              {tCheckout('load-error')}
+            </p>
+          </SectionWrapper>
+        </PageWrapper>
+      );
+    }
     if (response.data.data.items.length === 0) return <NotFoundUi />;
 
     const cart = response.data.data;
@@ -84,7 +95,16 @@ const CheckoutPage: FC<PropsType> = async (props) => {
       </CheckoutFormProvider>
     );
   } catch {
-    return <>error</>;
+    const tCheckout = await getTranslations('checkout');
+    return (
+      <PageWrapper>
+        <SectionWrapper>
+          <p className="text-muted-foreground text-center text-sm">
+            {tCheckout('load-error')}
+          </p>
+        </SectionWrapper>
+      </PageWrapper>
+    );
   }
 };
 

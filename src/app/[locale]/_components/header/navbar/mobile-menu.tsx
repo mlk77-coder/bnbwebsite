@@ -12,6 +12,7 @@ import { FetcherResponse } from "@/lib/fetcher";
 import { GetCartResponse } from "@/types/cart";
 import { Category } from "@/types/categories";
 import { X, Menu } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { FC } from "react";
 import CartPopover from "../cart/cart-popover";
 import SearchHeader from "../search/search-header";
@@ -39,16 +40,6 @@ type PropsType = {
   };
 };
 
-const fallbackLabels = {
-  openMenu: "Open menu",
-  signIn: "Sign in",
-  sale: "Sale",
-  allSale: "All sale",
-  newArrivals: "New arrivals",
-  contactUs: "Contact us",
-  allCategoryById: {},
-};
-
 const MobileMenu: FC<PropsType> = ({
   categories,
   cartResponse,
@@ -58,7 +49,17 @@ const MobileMenu: FC<PropsType> = ({
   sales,
   labels,
 }) => {
-  const menuLabels = labels ?? fallbackLabels;
+  const t = useTranslations();
+  const tA11y = useTranslations("accessibility");
+  const menuLabels = labels ?? {
+    openMenu: t("open-menu"),
+    signIn: t("sign-in"),
+    sale: t("sale"),
+    allSale: t("all-sale"),
+    newArrivals: t("new-arrivals"),
+    contactUs: t("contact-us.title"),
+    allCategoryById: {},
+  };
 
   return (
     <Sheet>
@@ -88,7 +89,7 @@ const MobileMenu: FC<PropsType> = ({
                   size="icon"
                   className="hover:bg-gray-100/80 transition-colors"
                 >
-                  <span className="sr-only">close menu</span>
+                  <span className="sr-only">{tA11y("close-menu")}</span>
                   <X className="w-5 h-5 text-gray-700" />
                 </Button>
               </SheetClose>

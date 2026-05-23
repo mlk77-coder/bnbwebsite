@@ -41,7 +41,13 @@ const SubCategoryProducts: FC<PropsType> = async ({
       request,
       token
     );
-    if (!response.ok) return <>error</>;
+    if (!response.ok) {
+      return (
+        <p className='text-muted-foreground text-sm'>
+          {t('errors.load-page-error')}
+        </p>
+      );
+    }
     const { data: productList } = response;
     const shouldLoadFallbackProducts =
       productList.products.length === 0 &&
@@ -117,7 +123,7 @@ const SubCategoryProducts: FC<PropsType> = async ({
           <div className="flex flex-col items-center justify-center gap-4 py-4">
             <Image
               src="/no-product.svg"
-              alt="no product avatar"
+              alt={t('no-products-image-alt')}
               width={300}
               height={300}
             />
@@ -144,7 +150,12 @@ const SubCategoryProducts: FC<PropsType> = async ({
       </>
     );
   } catch {
-    return <>error</>;
+    const t = await getTranslations();
+    return (
+      <p className='text-muted-foreground text-sm'>
+        {t('errors.load-page-error')}
+      </p>
+    );
   }
 };
 

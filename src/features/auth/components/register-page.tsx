@@ -10,6 +10,7 @@ type PropsType = {
 
 const RegisterPage: FC<PropsType> = async ({ hardLink = false }) => {
   const t = await getTranslations();
+  const tHome = await getTranslations('home');
 
   return (
     <div className='relative mx-auto max-w-lg overflow-hidden rounded-xl border border-border/50 bg-white shadow-2xl shadow-black/10'>
@@ -28,7 +29,7 @@ const RegisterPage: FC<PropsType> = async ({ hardLink = false }) => {
               width={300}
               height={300}
               className='relative h-auto w-[88px] object-contain drop-shadow-sm'
-              alt='BNB Store logo'
+              alt={tHome('logo-alt')}
             />
           </div>
 

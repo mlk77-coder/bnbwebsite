@@ -62,7 +62,7 @@ const AddReview: FC<PropsType> = ({ slug, token }) => {
       if (response === 'success') {
         setIsOpen(false);
         form.reset();
-        toast.success('Review added successfully');
+        toast.success(t('reviews.added-success'));
         queryClient.invalidateQueries({ queryKey: ['reviews'] });
       } else {
         toast.error(response);

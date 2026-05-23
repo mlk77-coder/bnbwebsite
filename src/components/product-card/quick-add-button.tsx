@@ -49,7 +49,7 @@ export function QuickAddButton({ productId, outOfStock }: Props) {
       setState('done');
       setTimeout(() => setState('idle'), 2200);
     } catch {
-      toast.error("Couldn't add to cart, please try again");
+      toast.error(t('cart.add-failed'));
       setState('idle');
     }
   };

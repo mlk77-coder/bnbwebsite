@@ -20,12 +20,13 @@ type PropsType = {
 
 const CouponErrorDialog: FC<PropsType> = ({ errorMessage, open, onClose }) => {
   const t = useTranslations();
+  const tCheckout = useTranslations('checkout');
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="flex justify-center items-center text-center">
-            <span className="sr-only">error when adding coupon</span>
+            <span className="sr-only">{tCheckout('coupon-error-sr-only')}</span>
             <CircleX strokeWidth={1.2} className="text-red-500 size-24" />
           </DialogTitle>
         </DialogHeader>

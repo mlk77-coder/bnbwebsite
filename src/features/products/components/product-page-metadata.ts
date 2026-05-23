@@ -1,7 +1,8 @@
 import { getProductDetails } from '@/features/products/api/get-product-details';
+import { getSiteBranding } from '@/lib/page-metadata';
 import { cleanDescription } from '@/lib/utils';
 import { htmlToText } from 'html-to-text';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 
 type PropsType = {
   locale: string;
@@ -16,6 +17,7 @@ export default async function ProductPageMetaData(
   if (!response.ok) return {};
 
   const product = response.data;
+  const { siteName } = await getSiteBranding();
 
   return {
     title: product.name,
@@ -40,7 +42,7 @@ export default async function ProductPageMetaData(
       url: `${process.env.NEXT_PUBLIC_LOCAL_URL}/${locale}/products/${slug}`,
       title: product.name,
       description: htmlToText(cleanDescription(product.description || '')),
-      siteName: 'BNB Store',
+      siteName,
       locale,
       images: [product.image || ''],
     },

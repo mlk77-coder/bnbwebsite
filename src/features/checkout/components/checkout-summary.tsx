@@ -16,6 +16,7 @@ type PropsType = {
 
 const CheckoutSummary: FC<PropsType> = async ({ cart, isLoggedIn, token }) => {
   const t = await getTranslations();
+  const tHome = await getTranslations('home');
 
   return (
     <aside
@@ -28,7 +29,7 @@ const CheckoutSummary: FC<PropsType> = async ({ cart, isLoggedIn, token }) => {
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-primary/70 text-xs font-semibold tracking-[0.2em] uppercase">
-                BNB Store
+                {tHome('site-name')}
               </p>
               <h3 className="text-foreground mt-1 text-2xl font-bold">
                 {t("order-summary")}

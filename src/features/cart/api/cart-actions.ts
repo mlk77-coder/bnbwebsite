@@ -7,7 +7,7 @@ import getSession from "@/lib/get-session";
 import { actionHandleError } from "@/lib/utils";
 import type { AddToCartBody } from "@/types/cart";
 import { headers } from "next/headers";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 const getFetcherErrorMessage = (error: FetcherErrorDetail, fallback: string) => {
   if (typeof error === "string") return error;
@@ -43,10 +43,8 @@ export async function addToCartAction(
     );
 
     if (!response.ok) {
-      return getFetcherErrorMessage(
-        response.error,
-        "Can not add to cart, please try again"
-      );
+      const t = await getTranslations("cart");
+      return getFetcherErrorMessage(response.error, t("add-failed"));
     }
 
     return "success";

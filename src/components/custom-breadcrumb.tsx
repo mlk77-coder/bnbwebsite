@@ -1,4 +1,6 @@
-﻿import { Link } from "@/navigation";
+﻿'use client';
+
+import { Link } from '@/navigation';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,43 +8,35 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "./ui/breadcrumb";
-import { FC, Fragment } from "react";
+} from './ui/breadcrumb';
+import { useTranslations } from 'next-intl';
+import { FC, Fragment } from 'react';
 
-// Define the type for each breadcrumb link
 export type BreadcrumbLinkType = {
   name: string;
   slug: string;
 };
 
 type PropsType = {
-  activeLink: string; // The currently active breadcrumb (the last one in the list)
-  links: BreadcrumbLinkType[]; // An array of breadcrumb links (excluding the active one)
+  activeLink: string;
+  links: BreadcrumbLinkType[];
   hasActiveLink?: boolean;
 };
 
-/**
- * CustomBreadcrumb component
- *
- * A component to render breadcrumb navigation. It displays the given list of links
- * and highlights the active link at the end.
- *
- * @param {string} activeLink - The name of the currently active breadcrumb.
- * @param {BreadcrumbLinkType[]} links - An array of breadcrumb links with names and slugs.
- *
- * @returns {JSX.Element} The rendered breadcrumb navigation.
- */
 const CustomBreadcrumb: FC<PropsType> = ({
   activeLink,
   links,
   hasActiveLink = true,
 }) => {
+  const tA11y = useTranslations('accessibility');
+  const tHome = useTranslations('home');
+
   return (
-    <Breadcrumb>
+    <Breadcrumb ariaLabel={tA11y('breadcrumb')}>
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link href="/">BNB Store</Link>
+            <Link href='/'>{tHome('site-name')}</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator>|</BreadcrumbSeparator>
@@ -61,9 +55,7 @@ const CustomBreadcrumb: FC<PropsType> = ({
         ))}
         {hasActiveLink ? (
           <BreadcrumbItem>
-            <BreadcrumbPage className="text-orange">
-              {activeLink}
-            </BreadcrumbPage>
+            <BreadcrumbPage className='text-orange'>{activeLink}</BreadcrumbPage>
           </BreadcrumbItem>
         ) : null}
       </BreadcrumbList>

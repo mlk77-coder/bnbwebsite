@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import type { HomePageContent } from '@/types/home';
 import { heroFallbackSlides } from '@/lib/hero-section-dummy-data';
 
@@ -22,7 +23,7 @@ function slidesFromContent(content: HomePageContent | null | undefined): Slide[]
     id: m.web.id,
     image: m.web.url,
     mobileImage: m.mobile?.url ?? m.web.url,
-    alt: `Hero ${i + 1}`,
+    alt: '',
   }));
 }
 
@@ -30,10 +31,24 @@ type HeroSliderProps = {
   content?: HomePageContent | null;
 };
 
+const HERO_SLIDE_ALT_KEYS = [
+  'hero-slide-alt-1',
+  'hero-slide-alt-2',
+  'hero-slide-alt-3',
+  'hero-slide-alt-4',
+] as const;
+
 export function HeroSlider({ content }: HeroSliderProps) {
+  const t = useTranslations('home');
+  const tCarousel = useTranslations('carousel');
   const slides = useMemo(() => slidesFromContent(content ?? undefined), [content]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  const slideAlt = (index: number) => {
+    const key = HERO_SLIDE_ALT_KEYS[index];
+    return key ? t(key) : t('hero-slide-alt-1');
+  };
 
   useEffect(() => {
     setCurrentSlide(0);
@@ -75,7 +90,7 @@ export function HeroSlider({ content }: HeroSliderProps) {
           <div className="hidden sm:block absolute inset-0">
             <Image
               src={slides[currentSlide].image}
-              alt={slides[currentSlide].alt}
+              alt={slideAlt(currentSlide)}
               fill
               sizes="100vw"
               className="object-cover"
@@ -87,7 +102,7 @@ export function HeroSlider({ content }: HeroSliderProps) {
           <div className="sm:hidden absolute inset-0">
             <Image
               src={slides[currentSlide].mobileImage || slides[currentSlide].image}
-              alt={slides[currentSlide].alt}
+              alt={slideAlt(currentSlide)}
               fill
               sizes="100vw"
               className="object-cover"
@@ -117,7 +132,7 @@ export function HeroSlider({ content }: HeroSliderProps) {
           setTimeout(() => setIsAutoPlaying(true), 10000);
         }}
         className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-white/90 hover:bg-white shadow-lg transition-all duration-300 hover:scale-110 group"
-        aria-label="Previous slide"
+        aria-label={tCarousel('previous')}
       >
         <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-800 group-hover:text-primary" />
       </button>
@@ -128,7 +143,7 @@ export function HeroSlider({ content }: HeroSliderProps) {
           setTimeout(() => setIsAutoPlaying(true), 10000);
         }}
         className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-white/90 hover:bg-white shadow-lg transition-all duration-300 hover:scale-110 group"
-        aria-label="Next slide"
+        aria-label={tCarousel('next')}
       >
         <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-gray-800 group-hover:text-primary" />
       </button>
@@ -144,7 +159,7 @@ export function HeroSlider({ content }: HeroSliderProps) {
                 ? 'bg-white w-6 sm:w-8'
                 : 'bg-white/60 hover:bg-white/80'
             }`}
-            aria-label={`Go to slide ${index + 1}`}
+            aria-label={tCarousel('go-to-slide', { number: index + 1 })}
           />
         ))}
       </div>

@@ -35,7 +35,7 @@ const CheckCodeForm: FC<PropsType> = ({ email, setOpen }) => {
   });
   const t = useTranslations();
   const { handleSendCode, isPending: isPendingSendCode } = useSendCode(() => {
-    toast.success('The verification code has been re-sent successfully');
+    toast.success(t('auth.verification-code-resent-success'));
   });
 
   const { mutateAsync, isPending } = useMutation({
@@ -43,7 +43,7 @@ const CheckCodeForm: FC<PropsType> = ({ email, setOpen }) => {
     onSuccess: async response => {
       if (response === 'success') {
         setOpen(false);
-        toast.success('Account verified successfully');
+        toast.success(t('auth.account-verified-success'));
 
         Cookies.set('email', email, { expires: 1 / 24 });
         Cookies.set('code', form.getValues('code'), { expires: 1 / 24 });

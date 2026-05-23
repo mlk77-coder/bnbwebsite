@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { FC } from 'react';
 import { Play } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 type ThumbnailCarouselProps = {
   images: string[];
@@ -27,6 +28,8 @@ const ThumbnailCarousel: FC<ThumbnailCarouselProps> = ({
   mainApi,
   name,
 }) => {
+  const tProduct = useTranslations('product');
+  const tCarousel = useTranslations('carousel');
   const isVideo = (url: string): boolean => {
     const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi', '.mkv'];
     const lowerUrl = url.toLowerCase();
@@ -52,7 +55,7 @@ const ThumbnailCarousel: FC<ThumbnailCarouselProps> = ({
               className={cn(
                 'aspect-square p-0 relative overflow-hidden rounded-lg border-2 border-transparent transition-all duration-200 min-h-[80px] min-w-[80px]'
               )}
-              aria-label={`Go to slide ${index + 1}`}
+              aria-label={tCarousel('go-to-slide', { number: index + 1 })}
             >
               {isVideo(src) ? (
                 <div className='relative w-full h-full aspect-square'>
@@ -70,7 +73,7 @@ const ThumbnailCarousel: FC<ThumbnailCarouselProps> = ({
                 <div className='relative w-full h-full aspect-square'>
                   <Image
                     src={src ?? ''}
-                    alt={`${name} Thumbnail ${index + 1}`}
+                    alt={tProduct('thumbnail-alt', { name, index: index + 1 })}
                     fill
                     className='object-cover rounded-md'
                   />

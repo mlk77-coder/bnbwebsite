@@ -22,6 +22,7 @@ const CartPage: FC<PropsType> = async props => {
 
   const cookieStore = await cookies();
   const t = await getTranslations();
+  const tCart = await getTranslations('cart');
   const session = await getSession();
   const headersList = await headers();
   const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
@@ -51,7 +52,7 @@ const CartPage: FC<PropsType> = async props => {
           <div className='flex w-full flex-col items-center gap-5 rounded p-4 text-xl capitalize'>
             <Image
               src='/empty-cart.svg'
-              alt='empty cart'
+              alt={tCart('empty-cart-image-alt')}
               width={600}
               height={400}
             />

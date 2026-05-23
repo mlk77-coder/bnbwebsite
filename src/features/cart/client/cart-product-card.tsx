@@ -44,7 +44,7 @@ const CartProductCard: FC<PropsType> = ({ item }) => {
           {hasSale ? (
             <span className="absolute inset-s-2 top-2 inline-flex items-center gap-1 rounded-full bg-primary px-2 py-1 text-[10px] font-semibold text-primary-foreground shadow">
               <Sparkles className="size-3" />
-              Sale
+              {t('sale')}
             </span>
           ) : null}
         </Link>
@@ -75,7 +75,7 @@ const CartProductCard: FC<PropsType> = ({ item }) => {
                 </span>
               )}
               <span className="rounded-full bg-secondary/70 px-3 py-1 text-xs text-muted-foreground">
-                {t("quantity")}: {item.quantity}
+                {t('cart.quantity-label', { quantity: item.quantity })}
               </span>
             </div>
           </div>

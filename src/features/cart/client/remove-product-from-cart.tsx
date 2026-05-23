@@ -37,7 +37,9 @@ const RemoveProductFromCart: FC<PropsType> = ({ item }) => {
           variant="outline"
           size="icon"
         >
-          <span className="sr-only">Remove product {name} from cart</span>
+          <span className="sr-only">
+            {t('cart.remove-from-cart-sr', { name })}
+          </span>
           <X className="size-4" />
         </Button>
       }

@@ -29,7 +29,11 @@ const WishlistPage: FC<PropsType> = async props => {
     request
   );
 
-  if (!wishListResponse.ok) return <>error</>;
+  if (!wishListResponse.ok) {
+    return (
+      <p className='text-muted-foreground text-sm'>{t('wishlist-load-error')}</p>
+    );
+  }
   return (
     <div className='flex size-full flex-col items-start justify-start gap-6'>
       <div className='flex items-center gap-3'>

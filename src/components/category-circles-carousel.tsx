@@ -12,7 +12,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 export type CategoryCircleItem = {
   id: number | string;
@@ -65,6 +65,7 @@ export function CategoryCirclesCarousel({
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [current, setCurrent] = useState(0);
   const locale = useLocale();
+  const tCarousel = useTranslations('carousel');
   const [count, setCount] = useState(0);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
@@ -150,7 +151,7 @@ export function CategoryCirclesCarousel({
                     ? 'cursor-not-allowed opacity-40'
                     : 'hover:border-primary hover:bg-primary hover:text-white hover:shadow-md active:scale-95'
                 )}
-                aria-label='Previous'
+                aria-label={tCarousel('previous')}
               >
                 <ChevronLeft className='h-4 w-4 sm:h-5 sm:w-5 rtl:rotate-180' />
               </button>
@@ -163,7 +164,7 @@ export function CategoryCirclesCarousel({
                     ? 'cursor-not-allowed opacity-40'
                     : 'hover:border-primary hover:bg-primary hover:text-white hover:shadow-md active:scale-95'
                 )}
-                aria-label='Next'
+                aria-label={tCarousel('next')}
               >
                 <ChevronRight className='h-4 w-4 sm:h-5 sm:w-5 rtl:rotate-180' />
               </button>
@@ -215,7 +216,7 @@ export function CategoryCirclesCarousel({
                       ? 'bg-primary w-6'
                       : 'bg-border hover:bg-muted-foreground/50 w-1.5'
                   )}
-                  aria-label={`Go to slide ${index + 1}`}
+                  aria-label={tCarousel('go-to-slide', { number: index + 1 })}
                 />
               ))}
             </div>

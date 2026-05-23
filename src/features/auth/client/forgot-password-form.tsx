@@ -20,6 +20,7 @@ const CheckCodeDialog = dynamic(
 );
 
 const ForgotPasswordForm = () => {
+  const t = useTranslations();
   const [openCheckCodeDialog, setOpenCheckCodeDialog] = useState(false);
   const form = useForm<ForgotPasswordSchema>({
     resolver: zodResolver(ForgotPasswordSchema),
@@ -29,11 +30,10 @@ const ForgotPasswordForm = () => {
   });
   const { handleSendCode, isPending } = useSendCode(response => {
     if (response === 'success') {
-      toast.success('The verification code has been sent successfully');
+      toast.success(t('auth.verification-code-sent-success'));
       setOpenCheckCodeDialog(true);
     } else toast.error(response);
   });
-  const t = useTranslations();
   const onSubmit = async (data: ForgotPasswordSchema) => {
     await handleSendCode(data.email);
   };

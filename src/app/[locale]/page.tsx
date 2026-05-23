@@ -5,7 +5,7 @@ type PropsType = {
   params: Promise<{ locale: string }>;
 };
 
-export const generateMetadata = HomePageMetaData;
+export { HomePageMetaData as generateMetadata };
 
 
 const Page: FC<PropsType> = async (props) => {

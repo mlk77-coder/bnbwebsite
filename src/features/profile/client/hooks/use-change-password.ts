@@ -6,9 +6,11 @@ import { ChangePasswordSchema } from "@/schemas/profile.shema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 const useChangePassword = (session: CustomSession) => {
+  const tProfile = useTranslations("profile");
   const form = useForm<ChangePasswordSchema>({
     resolver: zodResolver(ChangePasswordSchema),
     defaultValues: {
@@ -22,7 +24,7 @@ const useChangePassword = (session: CustomSession) => {
     mutationFn: changePasswordAction,
     onSuccess: async (data) => {
       if (data === "success") {
-        toast.success("Password changed successfully");
+        toast.success(tProfile("password-changed-success"));
         form.reset();
       } else toast.error(data);
     },

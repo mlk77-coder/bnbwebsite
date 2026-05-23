@@ -1,3 +1,40 @@
+const KNOWN_ORDER_STATUSES = [
+  'pending',
+  'processing',
+  'completed',
+  'delivered',
+  'cancelled',
+  'canceled',
+] as const;
+
+const KNOWN_PAYMENT_STATUSES = ['paid', 'unpaid', 'pending', 'failed'] as const;
+
+export const getOrderStatusLabel = (
+  status: string,
+  t: (key: string) => string,
+) => {
+  const normalized = status.toLowerCase().trim();
+  if (
+    (KNOWN_ORDER_STATUSES as readonly string[]).includes(normalized)
+  ) {
+    return t(`order-statuses.${normalized}`);
+  }
+  return status;
+};
+
+export const getOrderPaymentStatusLabel = (
+  status: string,
+  t: (key: string) => string,
+) => {
+  const normalized = status.toLowerCase().trim();
+  if (
+    (KNOWN_PAYMENT_STATUSES as readonly string[]).includes(normalized)
+  ) {
+    return t(`order-payment-statuses.${normalized}`);
+  }
+  return status;
+};
+
 export const getOrderStatusClassName = (status: string) => {
   const value = status.toLowerCase();
 

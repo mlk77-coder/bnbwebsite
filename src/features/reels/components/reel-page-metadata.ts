@@ -1,5 +1,7 @@
 import { getReelDetails } from '@/features/reels/api/get-reel-details';
-import { Metadata } from 'next';
+import { getSiteBranding } from '@/lib/page-metadata';
+import { getTranslations } from 'next-intl/server';
+import type { Metadata } from 'next';
 
 type PropsType = {
   locale: string;
@@ -14,8 +16,11 @@ export default async function ReelPageMetadata(
   if (!response.ok) return {};
 
   const reel = response.data;
-  const title = reel.caption || 'Reel';
-  const description = reel.caption || 'Watch this reel on BNB Store';
+  const t = await getTranslations('reels');
+  const { siteName } = await getSiteBranding();
+  const title = reel.caption || t('reel-fallback-title');
+  const description = reel.caption || t('meta-fallback-description');
+  const base = process.env.NEXT_PUBLIC_LOCAL_URL;
 
   return {
     title,
@@ -25,17 +30,17 @@ export default async function ReelPageMetadata(
       follow: true,
     },
     alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_LOCAL_URL}/${locale}/reels/${id}`,
+      canonical: `${base}/${locale}/reels/${id}`,
       languages: {
-        en: `${process.env.NEXT_PUBLIC_LOCAL_URL}/en/reels/${id}`,
-        ar: `${process.env.NEXT_PUBLIC_LOCAL_URL}/ar/reels/${id}`,
+        en: `${base}/en/reels/${id}`,
+        ar: `${base}/ar/reels/${id}`,
       },
     },
     openGraph: {
-      url: `${process.env.NEXT_PUBLIC_LOCAL_URL}/${locale}/reels/${id}`,
+      url: `${base}/${locale}/reels/${id}`,
       title,
       description,
-      siteName: 'BNB Store',
+      siteName,
       locale,
       images: [reel.thumbnailUrl],
       type: 'video.other',

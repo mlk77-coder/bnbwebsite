@@ -11,6 +11,7 @@ import { useTranslations } from 'next-intl';
 
 const ShoppingInfo = () => {
   const t = useTranslations();
+  const tHome = useTranslations('home');
   const subtotal = useCartShoppingStore(state => state.subtotal);
   const tax = useCartShoppingStore(state => state.tax);
   const shipping = useCartShoppingStore(state => state.shipping);
@@ -32,7 +33,7 @@ const ShoppingInfo = () => {
           <div className='flex items-start justify-between gap-4'>
             <div>
               <p className='text-primary/70 text-xs font-semibold tracking-[0.2em] uppercase'>
-                BNB Store
+                {tHome('site-name')}
               </p>
               <h3 className='text-foreground mt-1 text-2xl font-bold'>
                 {t('shopping-info')}

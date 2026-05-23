@@ -3,13 +3,17 @@ import { Slot } from "@radix-ui/react-slot"
 import { ChevronRight, MoreHorizontal } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import BreadcrumbEllipsisLabel from "@/components/ui/breadcrumb-ellipsis-label"
 
 const Breadcrumb = React.forwardRef<
   HTMLElement,
-  React.ComponentPropsWithoutRef<"nav"> & {
-    separator?: React.ReactNode
+  React.ComponentPropsWithoutRef<'nav'> & {
+    separator?: React.ReactNode;
+    ariaLabel?: string;
   }
->(({ ...props }, ref) => <nav ref={ref} aria-label="breadcrumb" {...props} />)
+>(({ ariaLabel = 'breadcrumb', ...props }, ref) => (
+  <nav ref={ref} aria-label={ariaLabel} {...props} />
+));
 Breadcrumb.displayName = "Breadcrumb"
 
 const BreadcrumbList = React.forwardRef<
@@ -99,7 +103,7 @@ const BreadcrumbEllipsis = ({
     {...props}
   >
     <MoreHorizontal className="h-4 w-4" />
-    <span className="sr-only">More</span>
+    <BreadcrumbEllipsisLabel />
   </span>
 )
 BreadcrumbEllipsis.displayName = "BreadcrumbElipssis"

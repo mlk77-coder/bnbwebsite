@@ -3,7 +3,10 @@
 import { Button } from '@/components/ui/button';
 import Loader from '@/components/ui/loader';
 import { getOrders } from '@/features/orders/api/get-orders';
-import { getOrderStatusClassName } from '@/features/orders/lib/order-status';
+import {
+  getOrderStatusClassName,
+  getOrderStatusLabel,
+} from '@/features/orders/lib/order-status';
 import { cn, formatPrice } from '@/lib/utils';
 import { Link } from '@/navigation';
 import useCurrencyStore from '@/store/use-currency-store';
@@ -31,7 +34,7 @@ const InfiniteOrders: FC<PropsType> = ({ token, initialData }) => {
       queryFn: async ({ pageParam = 1 }) => {
         const response = await getOrders(locale, token, pageParam);
         if (!response.ok || !response.data.success) {
-          throw new Error('orders fetch failed');
+          throw new Error(t('errors.load-page-error'));
         }
         return response.data.data;
       },
@@ -76,7 +79,7 @@ const InfiniteOrders: FC<PropsType> = ({ token, initialData }) => {
                         getOrderStatusClassName(order.status)
                       )}
                     >
-                      {order.status}
+                      {getOrderStatusLabel(order.status, t)}
                     </span>
                   </span>
 

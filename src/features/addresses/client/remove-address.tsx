@@ -19,12 +19,13 @@ type PropsType = {
 const RemoveAddress: FC<PropsType> = ({ id, name, token }) => {
   const [isOpen, setIsOpen] = useState(false);
   const t = useTranslations();
+  const tAddress = useTranslations("address");
   const queryClient = useQueryClient();
   const { isPending, mutate } = useMutation({
     mutationFn: deleteAddressAction,
     onSuccess: (response) => {
       if (response === "success") {
-        toast.success("This address has been removed successfully");
+        toast.success(tAddress("removed-success"));
         setIsOpen(false);
         invalidateAddressRelatedQueries(queryClient);
       } else toast.error(response);

@@ -17,12 +17,13 @@ type PropsType = {
 
 const SetDefaultAddress: FC<PropsType> = ({ id, token }) => {
   const t = useTranslations();
+  const tAddress = useTranslations("address");
   const queryClient = useQueryClient();
   const { isPending, mutate } = useMutation({
     mutationFn: setDefaultAddressAction,
     onSuccess: (response) => {
       if (response === "success") {
-        toast.success("Default address updated successfully");
+        toast.success(tAddress("default-updated-success"));
         invalidateAddressRelatedQueries(queryClient);
       } else toast.error(response);
     },

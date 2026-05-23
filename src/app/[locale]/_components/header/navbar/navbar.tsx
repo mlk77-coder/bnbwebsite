@@ -13,7 +13,7 @@ import LoginButton from '../account/login-button';
 import Logo from './logo';
 import MobileMenu from './mobile-menu';
 import NavLinks from './nav-links';
-import { DUMMY_SALE_CATEGORIES } from '../data/dummy-nav-categories';
+import { getNavSaleCategories } from '@/features/sale/lib/nav-sale-categories';
 import { Category } from '@/types/categories';
 
 const toClientCategory = (category: Category): Category => ({
@@ -33,7 +33,6 @@ const Navbar = async () => {
   const cookieStore = await cookies();
 
   const categoriesApi = getCategories(locale, request);
-  // const salesApi = getSaleCategories(locale, request);
   const [session, categories] = await Promise.all([sessionApi, categoriesApi]);
   const navCategories = categories.map(toClientCategory);
   const mobileMenuLabels = {
@@ -50,7 +49,7 @@ const Navbar = async () => {
       ])
     ),
   };
-  const sales = DUMMY_SALE_CATEGORIES;
+  const sales = getNavSaleCategories(locale);
 
   const user_token = cookieStore.get('x-user-session')?.value || '';
   const isLoggedIn = Boolean(session && session.user);

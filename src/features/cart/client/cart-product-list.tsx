@@ -27,6 +27,7 @@ const CartProductsList = ({
     isLoggedIn
   );
   const t = useTranslations();
+  const tCart = useTranslations('cart');
   if (isPending)
     return (
       <div className="flex min-h-80 w-full flex-col items-center justify-center gap-4 rounded-3xl border border-primary/10 bg-primary/5">
@@ -63,7 +64,7 @@ const CartProductsList = ({
         <div className="w-full flex flex-col capitalize items-center text-xl rounded p-4 gap-20">
           <Image
             src="/empty-cart.svg"
-            alt="empty cart"
+            alt={tCart('empty-cart-image-alt')}
             width={600}
             height={400}
           />

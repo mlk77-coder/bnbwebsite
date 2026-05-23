@@ -3,6 +3,7 @@ import CategoryCirclesCarousel from '@/components/category-circles-carousel';
 import CustomBreadcrumb from '@/components/custom-breadcrumb';
 import PageWrapper from '@/components/page-wrapper';
 import SectionWrapper from '@/components/section-wrapper';
+import { getCategoryMetadataFallback, getSiteBranding } from '@/lib/page-metadata';
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { headers } from 'next/headers';
@@ -25,15 +26,14 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
     const data = await getCategory(category, locale);
     if (data.ok && data.data) {
       const categoryData = data.data;
-
-      // Check if there are no products and add 'noindex' if true
+      const { siteName } = await getSiteBranding();
       const noindex = categoryData.products_count === 0;
 
       return {
         title: categoryData.name,
         description: categoryData.description,
         robots: {
-          index: !noindex, // Prevent indexing if no products
+          index: !noindex,
           follow: true,
           'max-snippet': -1,
           'max-image-preview': 'standard',
@@ -52,23 +52,17 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
           url: `${process.env.NEXT_PUBLIC_LOCAL_URL}/${locale}/category/${categoryData.slug}`,
           title: categoryData.name,
           description: categoryData.description || undefined,
-          siteName: 'BNB Store',
+          siteName,
           locale,
           images: categoryData.image ? [categoryData.image] : [],
         },
       };
-    } else {
-      return {
-        title: 'Default Category',
-        description: 'Default description for category',
-      };
     }
+
+    return getCategoryMetadataFallback('default');
   } catch (error) {
     console.error('Error fetching category data:', error);
-    return {
-      title: 'Error',
-      description: 'Unable to fetch category data at the moment.',
-    };
+    return getCategoryMetadataFallback('error');
   }
 }
 

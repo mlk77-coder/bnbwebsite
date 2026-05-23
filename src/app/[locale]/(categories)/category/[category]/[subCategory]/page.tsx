@@ -3,6 +3,7 @@ import CategoryCirclesCarousel from '@/components/category-circles-carousel';
 import CustomBreadcrumb from '@/components/custom-breadcrumb';
 import PageWrapper from '@/components/page-wrapper';
 import SectionWrapper from '@/components/section-wrapper';
+import { getCategoryMetadataFallback, getSiteBranding } from '@/lib/page-metadata';
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { headers } from 'next/headers';
@@ -29,6 +30,7 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
     if (data.ok && data.data) {
       const categoryData = data.data;
       const parentCategory = categoryData.parent;
+      const { siteName } = await getSiteBranding();
       return {
         title: parentCategory
           ? `${parentCategory.name} | ${categoryData.name}`
@@ -54,22 +56,16 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
           url: `${process.env.NEXT_PUBLIC_LOCAL_URL}/en/category/${parentCategory?.slug || categoryData.slug}/${categoryData.slug}`,
           title: categoryData.name,
           description: categoryData.description || undefined,
-          siteName: 'BNB Store',
+          siteName,
           locale,
           images: categoryData.image ? [categoryData.image] : [],
         },
       };
-    } else {
-      return {
-        title: 'Unknown Category',
-        description: 'No description available for this category.',
-      };
     }
-  } catch (error) {
-    return {
-      title: 'Error',
-      description: 'Unable to fetch category data at the moment.',
-    };
+
+    return getCategoryMetadataFallback('unknown');
+  } catch {
+    return getCategoryMetadataFallback('error');
   }
 }
 const Page: FC<PropsType> = async props => {

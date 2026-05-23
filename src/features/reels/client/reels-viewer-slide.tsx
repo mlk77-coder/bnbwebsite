@@ -10,6 +10,7 @@ import {
 import { cn } from '@/lib/utils';
 import type { ReelCard as ReelCardType } from '@/types/reels';
 import { UserRound, Volume2, VolumeX } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { FC, useEffect, useRef, useState } from 'react';
 
 type PropsType = {
@@ -29,6 +30,7 @@ export const ReelsViewerVideo: FC<PropsType> = ({
   activeIndex,
   onVideoInteract,
 }) => {
+  const tA11y = useTranslations('accessibility');
   const videoRef = useRef<HTMLVideoElement>(null);
   /** Stays true until the browser blocks unmuted autoplay once. */
   const preferSoundRef = useRef(true);
@@ -119,7 +121,7 @@ export const ReelsViewerVideo: FC<PropsType> = ({
           type='button'
           onClick={togglePlayback}
           className='absolute inset-0 z-10 flex items-center justify-center'
-          aria-label='Play'
+          aria-label={tA11y('play')}
         >
           <span className='rounded-full bg-black/40 p-5 backdrop-blur-sm'>
             <svg viewBox='0 0 24 24' className='size-10 fill-white text-white'>

@@ -10,6 +10,7 @@ import MediaSlide from '@/features/products/client/media-slide';
 import PhotoProvider from '@/features/products/client/photo-provider';
 import ThumbnailCarousel from '@/features/products/client/thumbnail-carousel';
 import { useMediaQuery } from '@/app/hooks/use-media-query';
+import { useTranslations } from 'next-intl';
 
 type ProductImagesSliderProps = {
   images: string[];
@@ -25,7 +26,13 @@ const ProductImagesSlider: React.FC<ProductImagesSliderProps> = ({
   const [mainApi, setMainApi] = useState<CarouselApi>();
   const [thumbnailApi, setThumbnailApi] = useState<CarouselApi>();
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const t = useTranslations('product');
   const media = images.length > 0 ? images : [mainImage];
+
+  const mediaAlt = (index?: number) =>
+    index != null
+      ? t('media-image-alt', { name, index: index + 1 })
+      : t('media-image-alt-single', { name });
 
   const syncSliders = useCallback((api: CarouselApi, index: number) => {
     if (!api) return;
@@ -59,7 +66,7 @@ const ProductImagesSlider: React.FC<ProductImagesSliderProps> = ({
               {media.length !== 0 ? (
                 media.map((item, index) => (
                   <MediaSlide
-                    alt={`${name} media preview ${index + 1}`}
+                    alt={mediaAlt(index)}
                     key={`${item}-${index}-${isMobile ? 'mobile' : 'desktop'}`}
                     media={item}
                     isMobile={isMobile}
@@ -68,7 +75,7 @@ const ProductImagesSlider: React.FC<ProductImagesSliderProps> = ({
               ) : (
                 <MediaSlide
                   key={`main-media-${isMobile ? 'mobile' : 'desktop'}`}
-                  alt={`${name} media preview`}
+                  alt={mediaAlt()}
                   isMobile={isMobile}
                   media={mainImage}
                 />

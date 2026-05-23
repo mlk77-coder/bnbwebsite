@@ -23,7 +23,7 @@ const RemoveFromWishlist: FC<PropsType> = ({ productId, name, token }) => {
     mutationFn: removeFromWishListAction,
     onSuccess: (response) => {
       if (response === "success") {
-        toast.success("This product has been removed form wishlist");
+        toast.success(t('wishlist-removed-success'));
         setIsOpen(false);
         queryClient.invalidateQueries({ queryKey: ["user-wishlist", token] });
         queryClient.invalidateQueries({ queryKey: ["favorite-ids", token] });
@@ -45,7 +45,9 @@ const RemoveFromWishlist: FC<PropsType> = ({ productId, name, token }) => {
       isPending={isPending}
       trigger={
         <Button variant="ghost" size="icon" className="absolute inset-e-0 top-0">
-          <span className="sr-only">Remove product {name} from wishlist</span>
+          <span className="sr-only">
+            {t('remove-from-wishlist-sr', { name })}
+          </span>
           <HeartIcon strokeWidth={1.2} className="fill-red-500 text-red-500" />
         </Button>
       }

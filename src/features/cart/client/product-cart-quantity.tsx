@@ -52,7 +52,7 @@ const ProductCartQuantity: FC<PropsType> = ({ item }) => {
         size="icon"
         variant="ghost"
       >
-        <span className="sr-only">Minus</span>
+        <span className="sr-only">{t('decrease')}</span>
         <Minus className="size-3.5" />
       </Button>
       <div className="relative flex size-9 select-none items-center justify-center rounded-full bg-secondary/70 text-sm font-semibold text-foreground">
@@ -72,7 +72,7 @@ const ProductCartQuantity: FC<PropsType> = ({ item }) => {
         size="icon"
         type="button"
       >
-        <span className="sr-only">Plus</span>
+        <span className="sr-only">{t('increase')}</span>
         <Plus className="size-3.5" />
       </Button>
     </div>

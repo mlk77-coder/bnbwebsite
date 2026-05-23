@@ -39,7 +39,13 @@ const NewArrivalsCategoryPage: FC<PropsType> = async (props) => {
               {t("new-arrivals")}
             </h1>
           </div>
-          <Suspense fallback={<>loading.....</>}>
+          <Suspense
+            fallback={
+              <p className='text-muted-foreground text-sm'>
+                {t('products-loading')}
+              </p>
+            }
+          >
             <SubCategoryProducts category={slug} searchParams={searchParams} />
           </Suspense>
         </SectionWrapper>
@@ -52,8 +58,17 @@ const NewArrivalsCategoryPage: FC<PropsType> = async (props) => {
         />
       </PageWrapper>
     );
-  } catch (error) {
-    return <>error</>;
+  } catch {
+    const t = await getTranslations();
+    return (
+      <PageWrapper>
+        <SectionWrapper>
+          <p className='text-muted-foreground text-sm'>
+            {t('errors.load-page-error')}
+          </p>
+        </SectionWrapper>
+      </PageWrapper>
+    );
   }
 };
 

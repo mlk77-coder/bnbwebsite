@@ -1,9 +1,3 @@
-import React from 'react'
+import RouteLoading from '@/components/route-loading';
 
-const Loading = () => {
-  return (
-    <div>register Loading</div>
-  )
-}
-
-export default Loading
+export default RouteLoading;

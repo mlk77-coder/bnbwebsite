@@ -24,7 +24,13 @@ const RecentItemsPage: FC<PropsType> = async props => {
     session.user.access_token
   );
 
-  if (!recentResponse.ok) return <>error</>;
+  if (!recentResponse.ok) {
+    return (
+      <p className='text-muted-foreground text-sm'>
+        {t('recent-items-load-error')}
+      </p>
+    );
+  }
 
   const data = recentResponse.data;
 

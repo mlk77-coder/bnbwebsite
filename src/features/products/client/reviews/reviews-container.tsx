@@ -47,7 +47,11 @@ const ReviewsContainer: FC<PropsType> = ({
   });
 
   if (isPending) return <ReviewSkeletonLoader />;
-  if (isError) return <div>Error loading reviews</div>;
+  if (isError) {
+    return (
+      <p className='text-muted-foreground text-sm'>{t('reviews.load-error')}</p>
+    );
+  }
 
   const totalReviews = reviewsCount ?? reviews.pagination.total;
   const totalPages = Math.ceil(totalReviews / itemsPerPage);

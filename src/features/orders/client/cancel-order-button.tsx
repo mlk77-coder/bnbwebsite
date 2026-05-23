@@ -40,7 +40,7 @@ const CancelOrderButton: FC<PropsType> = ({ orderId, token }) => {
         setOpen(false);
         router.refresh();
       } else {
-        toast.error(payload.message ?? "Error");
+        toast.error(payload.message ?? t("errors.generic"));
       }
     },
     onError: () => toast.error(t("error-something-went-wrong")),

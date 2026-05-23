@@ -37,7 +37,7 @@ const ResetPasswordForm = ({ email, code }: ResetPasswordFormProps) => {
         await redirectHard('/login');
         Cookies.remove('email');
         Cookies.remove('code');
-        toast.success('The password has been reset successfully');
+        toast.success(t('auth.password-reset-success'));
       } else {
         toast.error(response);
       }

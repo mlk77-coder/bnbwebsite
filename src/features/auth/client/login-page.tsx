@@ -17,6 +17,7 @@ const LoginPage: FC<PropsType> = ({
   userToken: _userToken,
 }) => {
   const t = useTranslations();
+  const tHome = useTranslations('home');
 
   return (
     <div className='border-border/50 relative mx-auto max-w-md overflow-hidden rounded-xl border bg-white shadow-2xl shadow-black/10'>
@@ -40,7 +41,7 @@ const LoginPage: FC<PropsType> = ({
               width={90}
               height={90}
               className='relative h-auto w-[88px] object-contain drop-shadow-sm'
-              alt='BNB Store logo'
+              alt={tHome('logo-alt')}
             />
           </div>
 

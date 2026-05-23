@@ -20,6 +20,7 @@ import { FormEvent, useState } from "react";
 
 const PromoCodeForm = () => {
   const t = useTranslations();
+  const tAuth = useTranslations('auth');
   const [code, setCode] = useState("");
   const setCoupon = useCheckoutStore((state) => state.setCoupon);
   const coupon = useCheckoutStore((state) => state.coupon);
@@ -50,7 +51,7 @@ const PromoCodeForm = () => {
                 .join("\n")
         );
       } else {
-        setErrorMessage("Something went wrong, please try again");
+        setErrorMessage(tAuth('something-went-wrong-please-try-again'));
       }
     },
   });

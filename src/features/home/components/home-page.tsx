@@ -12,6 +12,7 @@ import getSession from '@/lib/get-session';
 import type { Pagination } from '@/types';
 import { heroDummyContent } from '@/lib/hero-section-dummy-data';
 import { headers } from 'next/headers';
+import { getTranslations } from 'next-intl/server';
 import { FC } from 'react';
 
 type PropsType = {
@@ -32,6 +33,7 @@ const HomePage: FC<PropsType> = async props => {
   const params = await props.params;
 
   const { locale } = params;
+  const t = await getTranslations('home');
 
   const session = await getSession();
   const token = session?.user?.access_token ?? '';
@@ -69,7 +71,7 @@ const HomePage: FC<PropsType> = async props => {
 
   return (
     <PageWrapper>
-      <h1 className='sr-only'>Welcome to BNB Store</h1>
+      <h1 className='sr-only'>{t('page-heading')}</h1>
       <HeroSection
         content={heroDummyContent}
         bestSellingProducts={products}

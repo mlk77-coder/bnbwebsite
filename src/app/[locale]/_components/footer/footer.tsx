@@ -57,6 +57,7 @@ const socialIcons: Record<string, React.ReactNode> = {
 
 const Footer = ({ socialLinks }: { socialLinks: SocialLink[] }) => {
   const t = useTranslations();
+  const tHome = useTranslations('home');
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   // Handle scroll to top button visibility
@@ -97,7 +98,7 @@ const Footer = ({ socialLinks }: { socialLinks: SocialLink[] }) => {
             <Link href='/' className='inline-block'>
               <Image
                 src='/logo-light.png'
-                alt='BNB Store'
+                alt={tHome('logo-alt')}
                 width={150}
                 height={40}
                 className='h-10 w-auto object-contain'
@@ -245,7 +246,8 @@ const Footer = ({ socialLinks }: { socialLinks: SocialLink[] }) => {
 
             {/* Copyright */}
             <p className='text-center text-sm text-gray-500'>
-              © {new Date().getFullYear()} BNB Store. {t('all-rights-reserved')}
+              © {new Date().getFullYear()} {tHome('site-name')}.{' '}
+              {t('all-rights-reserved')}
             </p>
 
             {/* Back to Top Button */}

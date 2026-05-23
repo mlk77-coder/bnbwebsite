@@ -6,6 +6,7 @@ import getSession from '@/lib/get-session';
 import type { Pagination } from '@/types';
 import type { ProductCard } from '@/types/products';
 import { headers } from 'next/headers';
+import { getTranslations } from 'next-intl/server';
 
 export type LoadMoreFeaturedProductsResult =
   | { ok: true; products: ProductCard[]; pagination: Pagination }
@@ -16,8 +17,10 @@ export async function loadMoreFeaturedProductsAction(
   page: number,
   perPage: number = FEATURED_PRODUCTS_PER_PAGE
 ): Promise<LoadMoreFeaturedProductsResult> {
+  const t = await getTranslations({ locale, namespace: 'home' });
+
   if (page < 1 || !Number.isFinite(page)) {
-    return { ok: false, message: 'Invalid page' };
+    return { ok: false, message: t('load-products-invalid-page') };
   }
 
   const session = await getSession();
@@ -38,7 +41,7 @@ export async function loadMoreFeaturedProductsAction(
     const msg =
       typeof response.error === 'string'
         ? response.error
-        : response.error?.message ?? 'Failed to load products';
+        : response.error?.message ?? t('load-products-failed');
     return { ok: false, message: msg };
   }
 

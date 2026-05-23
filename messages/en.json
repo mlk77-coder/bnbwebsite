@@ -2,6 +2,7 @@
   "cart": {
     "your-cart-is-empty": "Your cart is empty",
     "add-to-cart-button": "add to cart",
+    "add-failed": "Could not add to cart. Please try again.",
     "title": "Cart",
     "clear-cart": "Clear cart",
     "clear-cart-confirmation": "Are you sure you want to clear all items from your cart?",
@@ -9,7 +10,17 @@
     "loading-description": "We are refreshing your items and totals.",
     "updating": "Updating cart...",
     "products-count": "{count} item(s) in your cart",
-    "secure-checkout-hint": "Secure checkout with updated tax and shipping totals."
+    "secure-checkout-hint": "Secure checkout with updated tax and shipping totals.",
+    "empty-cart-image-alt": "Empty shopping cart illustration",
+    "remove-from-cart-sr": "Remove {name} from cart",
+    "quantity-label": "Quantity: {quantity}"
+  },
+  "checkout": {
+    "load-error": "Could not load checkout. Please try again.",
+    "order-complete-failed": "Could not complete order.",
+    "order-id-resolve-failed": "Could not resolve new order from response.",
+    "coupon-error-sr-only": "Coupon could not be applied",
+    "address-added-success": "Address added successfully"
   },
   "auth": {
     "forgot-password-link": "Forgot password?",
@@ -44,6 +55,9 @@
     "otp-sent-successfully": "OTP sent successfully",
     "account-created-otp-sent-successfully": "Account created. OTP sent successfully",
     "logged-in-successfully": "Logged in successfully",
+    "verification-code-resent-success": "Verification code sent again successfully",
+    "account-verified-success": "Account verified successfully",
+    "password-reset-success": "Password reset successfully",
     "invalid-verification-code": "Invalid verification code",
     "something-went-wrong-please-try-again": "Something went wrong, please try again",
     "logout-confirm-title": "Confirm logout",
@@ -86,8 +100,55 @@
     "submit": "submit",
     "remove": "Remove",
     "edit": "Edit",
-    "error123": "fifnifjifjfi",
     "add": "Add"
+  },
+  "home": {
+    "page-heading": "Welcome to BNB Store",
+    "meta-title": "Welcome to BNB Store",
+    "site-name": "BNB Store",
+    "logo-alt": "BNB Store Logo",
+    "hero-slide-alt-1": "BNB Store fashion collection showcase",
+    "hero-slide-alt-2": "New season styles at BNB Store",
+    "hero-slide-alt-3": "Premium apparel and accessories",
+    "hero-slide-alt-4": "Shop the latest trends at BNB Store",
+    "featured-collection-description": "Discover handpicked pieces from our latest collection, curated for style and quality.",
+    "load-products-invalid-page": "Invalid page number.",
+    "load-products-failed": "Failed to load products. Please try again."
+  },
+  "carousel": {
+    "previous": "Previous",
+    "next": "Next",
+    "go-to-slide": "Go to slide {number}"
+  },
+  "errors": {
+    "not-found-title": "Oops!",
+    "not-found-subtitle": "Page not found",
+    "not-found-image-alt": "404 page not found illustration",
+    "boundary-title": "Something went wrong!",
+    "boundary-retry": "Try again",
+    "load-page-error": "Could not load this page. Please try again.",
+    "generic": "Error"
+  },
+  "accessibility": {
+    "breadcrumb": "Breadcrumb",
+    "choose-profile-image": "Choose profile image",
+    "profile-image": "Profile image",
+    "select-phone-country": "Select country calling code",
+    "play-video": "Play video",
+    "play": "Play",
+    "close": "Close",
+    "close-menu": "Close menu",
+    "breadcrumb-more": "More breadcrumb items"
+  },
+  "category-meta": {
+    "default-title": "Category",
+    "default-description": "Browse products in this category.",
+    "not-found-title": "Category not found",
+    "not-found-description": "The category you are looking for does not exist.",
+    "unknown-title": "Category",
+    "unknown-description": "No description available for this category.",
+    "error-title": "Error",
+    "error-description": "Unable to load category data. Please try again later."
   },
   "gender": {
     "male": "Male",
@@ -101,7 +162,15 @@
     "title": "Addresses",
     "edit": {
       "title": "Edit Address information"
-    }
+    },
+    "added-success": "Address added successfully",
+    "updated-success": "Address updated successfully",
+    "removed-success": "Address removed successfully",
+    "default-updated-success": "Default address updated successfully"
+  },
+  "profile": {
+    "updated-success": "Profile updated successfully",
+    "password-changed-success": "Password changed successfully"
   },
   "countries": {
     "syria": {
@@ -152,13 +221,24 @@
   "contact-us": {
     "title": "Contact Us",
     "accept-policy": "I have read and accepted the Terms & Conditions.",
-    "accept-privacy-policy": "I have read and understood the Privacy Policy."
+    "accept-privacy-policy": "I have read and understood the Privacy Policy.",
+    "message-sent-success": "Message sent successfully"
   },
   "reviews": {
     "title": "Reviews",
     "all-reviews": "All Reviews",
     "write-review": "Write Review",
-    "send-review": "Send review"
+    "send-review": "Send review",
+    "summary-count": "{count, plural, one {# review} other {# reviews}}",
+    "load-error": "Could not load reviews. Please try again.",
+    "added-success": "Review submitted successfully"
+  },
+  "product": {
+    "preview-quantity": "Quantity: {quantity}",
+    "media-image-alt": "{name} — image {index}",
+    "media-image-alt-single": "{name} — product image",
+    "thumbnail-alt": "{name} — thumbnail {index}",
+    "add-to-cart-success-description": "Item added to your cart successfully"
   },
   "product-social": {
     "like": "Like",
@@ -314,6 +394,27 @@
   "recently-viewed-0": "Recently Viewed",
   "recently-viewed-empty": " Your recently viewed items are empty.",
   "wishlist-empty": "Your Wishlist is empty. When you add items to your Wishlist they will appear here.",
+  "wishlist-load-error": "Could not load your wishlist. Please try again.",
+  "wishlist-removed-success": "Product removed from your wishlist",
+  "wishlist-added-success": "Product added to your wishlist",
+  "no-products-image-alt": "No products illustration",
+  "products-loading": "Loading products…",
+  "remove-from-wishlist-sr": "Remove {name} from wishlist",
+  "recent-items-load-error": "Could not load recently viewed items. Please try again.",
+  "order-statuses": {
+    "pending": "Pending",
+    "processing": "Processing",
+    "completed": "Completed",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled",
+    "canceled": "Cancelled"
+  },
+  "order-payment-statuses": {
+    "paid": "Paid",
+    "unpaid": "Unpaid",
+    "pending": "Pending",
+    "failed": "Failed"
+  },
   "change-language": "Change language",
   "menu": "User menu",
   "search": "Search",
@@ -479,6 +580,7 @@
     "section-title": "Shop Reels",
     "section-description": "Watch short videos and discover products curated for you.",
     "reel-fallback-title": "Reel",
+    "meta-fallback-description": "Watch this reel on BNB Store",
     "back-to-home": "Back to home",
     "duration": "Duration",
     "featured-product": "Featured product",

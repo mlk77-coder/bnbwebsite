@@ -1,6 +1,9 @@
+'use client';
+
 import { Star } from 'lucide-react';
 import { GetReviewsResponse } from '@/types/reviews';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 interface ReviewRatingSummaryProps {
   reviewData: GetReviewsResponse;
@@ -13,6 +16,7 @@ export default function ReviewRatingSummary({
   averageRating,
   totalReviews,
 }: ReviewRatingSummaryProps) {
+  const t = useTranslations('reviews');
   const countedReviews = reviewData.reviews_rate_count.reduce(
     (acc, curr) => acc + curr.count,
     0
@@ -35,7 +39,9 @@ export default function ReviewRatingSummary({
           </span>
           <Star className='size-6 fill-amber-400 text-amber-400' />
         </div>
-        <p className='text-muted-foreground text-sm'>{reviewTotal} reviews</p>
+        <p className='text-muted-foreground text-sm'>
+          {t('summary-count', { count: reviewTotal })}
+        </p>
       </div>
 
       <div className='space-y-2'>

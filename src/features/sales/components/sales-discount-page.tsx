@@ -44,13 +44,23 @@ const SalesDiscountPage: FC<PropsType> = async (props) => {
     request,
     isLoggedIn ? session?.user?.access_token ?? "" : ""
   );
-  if (!response.ok) return <>error</>;
+  if (!response.ok) {
+    return (
+      <PageWrapper>
+        <SectionWrapper>
+          <p className='text-muted-foreground text-sm'>
+            {t('errors.load-page-error')}
+          </p>
+        </SectionWrapper>
+      </PageWrapper>
+    );
+  }
   const { data: productList } = response;
   try {
     return (
       <PageWrapper>
         <SectionWrapper className="max-w-7xl space-y-8 px-2.5 py-4 md:px-4 md:py-4 lg:px-6 lg:py-8 xl:px-7">
-          <CustomBreadcrumb activeLink={"SALE"} links={[]} />
+          <CustomBreadcrumb activeLink={t('sale')} links={[]} />
 
           <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
             <p className="flex w-full items-start justify-start">
@@ -68,8 +78,16 @@ const SalesDiscountPage: FC<PropsType> = async (props) => {
         />
       </PageWrapper>
     );
-  } catch (error) {
-    return <div>error</div>;
+  } catch {
+    return (
+      <PageWrapper>
+        <SectionWrapper>
+          <p className='text-muted-foreground text-sm'>
+            {t('errors.load-page-error')}
+          </p>
+        </SectionWrapper>
+      </PageWrapper>
+    );
   }
 };
 

@@ -12,6 +12,7 @@ type PropsType = {
 
 const ChooseUserImageInput: FC<PropsType> = ({ placeholderImage = '' }) => {
   const t = useTranslations();
+  const tA11y = useTranslations('accessibility');
   const inputRef = useRef<ElementRef<'input'>>(null);
   const form = useFormContext();
   const file: File | undefined = form.watch('image');
@@ -21,20 +22,20 @@ const ChooseUserImageInput: FC<PropsType> = ({ placeholderImage = '' }) => {
       <button
         onClick={() => inputRef?.current?.click()}
         type='button'
-        aria-label='choose profile image'
+        aria-label={tA11y('choose-profile-image')}
         className='bg-secondary flex size-32 items-center justify-center rounded-full'
       >
         {file?.name ? (
           <img
             className='size-full rounded-full object-cover'
             src={convertFileToURL(file)}
-            alt='profile image'
+            alt={tA11y('profile-image')}
           />
         ) : placeholderImage ? (
           <img
             className='size-full rounded-full object-cover'
             src={placeholderImage}
-            alt='profile image'
+            alt={tA11y('profile-image')}
           />
         ) : (
           <Image strokeWidth={1.1} className='size-14' />

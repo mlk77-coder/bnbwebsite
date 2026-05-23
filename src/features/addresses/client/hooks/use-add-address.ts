@@ -7,6 +7,7 @@ import { AddAddressSchema } from "@/schemas/addresses.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 const emptyAddressFormValues = (): AddAddressSchema => ({
@@ -31,6 +32,7 @@ type Options = {
 };
 
 const useAddAddress = (token: string, options?: Options) => {
+  const tAddress = useTranslations("address");
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationFn: addAddressAction,
@@ -46,7 +48,7 @@ const useAddAddress = (token: string, options?: Options) => {
       {
         onSuccess: (response) => {
           if (response === "success") {
-            toast.success("Address added successfully");
+            toast.success(tAddress("added-success"));
             invalidateAddressRelatedQueries(queryClient);
             form.reset(emptyAddressFormValues());
             options?.onMutationSuccess?.();

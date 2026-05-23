@@ -3,7 +3,7 @@
 import { cn, formatLocaleNumber } from '@/lib/utils';
 import { ProductCard as ProductCardType } from '@/types/products';
 import { Heart } from 'lucide-react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { FC } from 'react';
 
 type PropsType = {
@@ -14,8 +14,14 @@ type PropsType = {
 /** Likes count + liked state from listing API (`likes_count`, `is_liked`). */
 const ProductLikeBadge: FC<PropsType> = ({ product, className }) => {
   const locale = useLocale();
+  const t = useTranslations('product-social');
   const likesCount = product.likes_count ?? 0;
   const isLiked = Boolean(product.is_liked);
+  const likeWord = likesCount === 1 ? t('like-singular') : t('like-plural');
+  const count = formatLocaleNumber(likesCount, locale);
+  const ariaLabel = isLiked
+    ? `${count} ${likeWord}, ${t('you-liked')}`
+    : `${count} ${likeWord}`;
 
   return (
     <div
@@ -24,11 +30,7 @@ const ProductLikeBadge: FC<PropsType> = ({ product, className }) => {
         isLiked ? 'bg-red-500/85' : 'bg-black/55',
         className
       )}
-      aria-label={
-        isLiked
-          ? `${likesCount} likes, liked by you`
-          : `${likesCount} likes`
-      }
+      aria-label={ariaLabel}
     >
       <Heart
         className={cn('size-3.5 shrink-0', isLiked && 'fill-white text-white')}

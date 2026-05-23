@@ -21,7 +21,7 @@ import {
 import { Input } from './ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 countries.registerLocale(require('i18n-iso-countries/langs/en.json'));
 countries.registerLocale(require('i18n-iso-countries/langs/ar.json'));
@@ -174,6 +174,8 @@ const CountrySelector: FC<CountrySelectorProps> = ({
   setOpenPopover,
   locale, // تمرير اللغة للتحكم بالواجهة
 }) => {
+  const tA11y = useTranslations('accessibility');
+
   return (
     <Popover open={openPopover} onOpenChange={setOpenPopover}>
       <PopoverTrigger asChild>
@@ -182,7 +184,7 @@ const CountrySelector: FC<CountrySelectorProps> = ({
           variant='outline'
           role='combobox'
           size='sm'
-          aria-label='select phone number'
+          aria-label={tA11y('select-phone-country')}
           aria-expanded={openPopover}
           className={cn(
             'h-11 min-w-24 justify-between rounded-xl bg-white/80 px-3 shadow-sm transition-all hover:bg-white',

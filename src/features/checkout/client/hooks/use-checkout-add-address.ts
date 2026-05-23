@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 const useCheckoutAddAddress = (
@@ -15,6 +16,7 @@ const useCheckoutAddAddress = (
 ) => {
   const setShipping = useCheckoutStore(state => state.setShipping);
   const queryClient = useQueryClient();
+  const tAddress = useTranslations('address');
   const form = useForm<AddAddressSchema>({
     resolver: zodResolver(AddAddressSchema),
     defaultValues: {
@@ -39,7 +41,7 @@ const useCheckoutAddAddress = (
     mutationFn: addAddressAction,
     onSuccess: async data => {
       if (data === 'success') {
-        toast.success('Address added successfully');
+        toast.success(tAddress('added-success'));
         setShipping(-1);
         invalidateAddressRelatedQueries(queryClient);
         form.reset();

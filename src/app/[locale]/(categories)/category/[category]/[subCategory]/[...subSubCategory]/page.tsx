@@ -6,6 +6,7 @@ import {
 import CustomBreadcrumb from '@/components/custom-breadcrumb';
 import PageWrapper from '@/components/page-wrapper';
 import SectionWrapper from '@/components/section-wrapper';
+import { getCategoryMetadataFallback, getSiteBranding } from '@/lib/page-metadata';
 import { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
@@ -31,20 +32,19 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
       subSubCategory[subSubCategory.length - 1],
       locale
     );
-    if (!data.ok)
-      return {
-        title: 'Category Not Found',
-        description: 'The category you are looking for does not exist.',
-      };
+    if (!data.ok) {
+      return getCategoryMetadataFallback('not-found');
+    }
 
     const category = data.data;
+    const { siteName } = await getSiteBranding();
     return {
       title: category?.name,
       description: category?.description,
       openGraph: {
         title: category.name,
         description: category.description || undefined,
-        siteName: 'BNB Store',
+        siteName,
         locale,
         images: category.image ? [category.image] : [],
       },
@@ -58,11 +58,8 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
         noimageindex: false,
       },
     };
-  } catch (error) {
-    return {
-      title: 'Error',
-      description: 'Unable to fetch category details.',
-    };
+  } catch {
+    return getCategoryMetadataFallback('error');
   }
 }
 

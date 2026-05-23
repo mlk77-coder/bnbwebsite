@@ -13,9 +13,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 const useUpdateProfile = (user: Profile, session: CustomSession) => {
+  const tProfile = useTranslations("profile");
   const { update } = useSession();
   const router = useRouter();
   const form = useForm<UpdateProfileSchema>({
@@ -32,7 +34,7 @@ const useUpdateProfile = (user: Profile, session: CustomSession) => {
     mutationFn: updateProfileAction,
     onSuccess: async (data) => {
       if (data === "success") {
-        toast.success("Profile updated successfully");
+        toast.success(tProfile("updated-success"));
       } else toast.error(data);
     },
   });

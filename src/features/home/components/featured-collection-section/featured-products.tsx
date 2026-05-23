@@ -25,6 +25,7 @@ export function FeaturedProducts({
   initialPagination: Pagination;
 }) {
   const t = useTranslations();
+  const tHome = useTranslations('home');
   const [products, setProducts] = useState(initialProducts);
   const [pagination, setPagination] = useState(initialPagination);
   const [loading, setLoading] = useState(false);
@@ -77,7 +78,7 @@ export function FeaturedProducts({
           transition={{ delay: 0.08 }}
           className='text-muted-foreground text-sm'
         >
-          {t('explore-our-selection-description')}
+          {tHome('featured-collection-description')}
         </motion.p>
       </div>
       <motion.div
@@ -116,7 +117,7 @@ export function FeaturedProducts({
               loading ? (
                 <span className='inline-flex items-center gap-2'>
                   <Loader size='sm' />
-                  {t('load-more')}
+                  {t('loading-more')}
                 </span>
               ) : (
                 t('load-more')

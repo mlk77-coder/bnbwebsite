@@ -1,20 +1,14 @@
-import { getCategory } from '@/api/categories/get-category-details';
-import SubCategoryProducts from '@/app/[locale]/(categories)/components/sub-category-products';
+import { getCategory, SubCategoryProducts } from '@/features/categories';
 import CategoryCirclesCarousel from '@/components/category-circles-carousel';
 import CustomBreadcrumb from '@/components/custom-breadcrumb';
 import PageWrapper from '@/components/page-wrapper';
-import SectionWrapper, {
-  sectionWrapperClassName,
-} from '@/components/section-wrapper';
-import getSession from '@/lib/get-session';
-import { cn } from '@/lib/utils';
+import SectionWrapper from '@/components/section-wrapper';
+import { getCategoryMetadataFallback, getSiteBranding } from '@/lib/page-metadata';
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import { cookies, headers } from 'next/headers';
+import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { FC, Suspense } from 'react';
-import RecentlyViewed from '../../../_components/recently-viewed';
-
 type PropsType = {
   params: Promise<{
     locale: string;
@@ -32,15 +26,14 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
     const data = await getCategory(category, locale);
     if (data.ok && data.data) {
       const categoryData = data.data;
-
-      // Check if there are no products and add 'noindex' if true
+      const { siteName } = await getSiteBranding();
       const noindex = categoryData.products_count === 0;
 
       return {
         title: categoryData.name,
         description: categoryData.description,
         robots: {
-          index: !noindex, // Prevent indexing if no products
+          index: !noindex,
           follow: true,
           'max-snippet': -1,
           'max-image-preview': 'standard',
@@ -59,23 +52,17 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
           url: `${process.env.NEXT_PUBLIC_LOCAL_URL}/${locale}/category/${categoryData.slug}`,
           title: categoryData.name,
           description: categoryData.description || undefined,
-          siteName: 'BNB Store',
+          siteName,
           locale,
           images: categoryData.image ? [categoryData.image] : [],
         },
       };
-    } else {
-      return {
-        title: 'Default Category',
-        description: 'Default description for category',
-      };
     }
+
+    return getCategoryMetadataFallback('default');
   } catch (error) {
     console.error('Error fetching category data:', error);
-    return {
-      title: 'Error',
-      description: 'Unable to fetch category data at the moment.',
-    };
+    return getCategoryMetadataFallback('error');
   }
 }
 
@@ -85,10 +72,6 @@ const Page: FC<PropsType> = async props => {
 
   const { category, locale } = params;
 
-  const cookieStore = await cookies();
-  const session = await getSession();
-  const userToken = cookieStore.get('x-user-session')?.value || '';
-  const isLoggedIn = Boolean(session && session.user);
   const t = await getTranslations();
   const headersList = await headers();
   const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
@@ -123,11 +106,6 @@ const Page: FC<PropsType> = async props => {
           />
         </Suspense>
       </SectionWrapper>
-      {/* <RecentlyViewed
-        className={cn('mt-16', sectionWrapperClassName)}
-        isLoggedIn={isLoggedIn}
-        token={session && session.user ? session.user.access_token : userToken}
-      /> */}
     </PageWrapper>
   );
 };

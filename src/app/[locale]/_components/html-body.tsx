@@ -1,5 +1,5 @@
-import { getCurrency } from '@/api/currency/get-currency';
-import { cachedGetSocialLinks } from '@/api/social/get-social-links';
+import { getCurrency } from '@/features/currency';
+import { cachedGetSocialLinks } from '@/features/social';
 import SetCurrency from '@/components/set-currency';
 import { Toaster } from '@/components/ui/sonner';
 import getSession from '@/lib/get-session';

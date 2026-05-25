@@ -7,6 +7,13 @@ type UseMediaQueryOptions = {
 
 const IS_SERVER = typeof window === "undefined";
 
+function readMediaQuery(query: string, fallback: boolean): boolean {
+  if (IS_SERVER) {
+    return fallback;
+  }
+  return window.matchMedia(query).matches;
+}
+
 export function useMediaQuery(
   query: string,
   options?: UseMediaQueryOptions
@@ -48,21 +55,14 @@ export function useMediaQuery(
 
   const [matches, setMatches] = useState<boolean>(() => {
     if (initializeWithValue) {
-      return getMatches(query);
+      return readMediaQuery(query, defaultValue);
     }
     return defaultValue;
   });
 
-  const getMatches = (query: string): boolean => {
-    if (IS_SERVER) {
-      return defaultValue;
-    }
-    return window.matchMedia(query).matches;
-  };
-
   /** Handles the change event of the media query. */
   function handleChange() {
-    setMatches(getMatches(query));
+    setMatches(readMediaQuery(query, defaultValue));
   }
 
   useEffect(() => {

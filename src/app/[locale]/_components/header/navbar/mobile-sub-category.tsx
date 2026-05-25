@@ -6,22 +6,23 @@ type PropsType = {
   subCategory: Category | undefined;
   mainCategorySlug: string;
 };
+
 const MobileSubCategory: FC<PropsType> = ({
   subCategory,
   mainCategorySlug,
 }) => {
-  if (!subCategory) return null;
+  if (!subCategory?.subcategories?.length) return null;
 
   return (
-    <div className='flex flex-col flex-wrap items-start justify-start gap-4 px-5! py-4 sm:px-8!'>
-      {subCategory.subcategories?.map((subSubCategory, index) => (
+    <div className="flex flex-col gap-0.5 border-t border-gray-200/60 pt-2">
+      {subCategory.subcategories.map((subSubCategory, index) => (
         <MobileSubSubCategory
           isLast={subCategory.subcategories.length - 1 === index}
           key={subSubCategory.id}
           mainCategorySlug={mainCategorySlug}
           subCategory={subSubCategory}
         />
-      )) || null}
+      ))}
     </div>
   );
 };

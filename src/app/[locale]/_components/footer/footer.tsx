@@ -2,18 +2,14 @@
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import type { SocialLink } from '@/features/social';
 import { Link } from '@/navigation';
 import { ArrowUp, Mail, Phone } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-export type SocialLink = {
-  id: number;
-  type: 'link' | 'email' | 'phone';
-  value: string;
-  image: string;
-};
+export type { SocialLink };
 
 const socialIcons: Record<string, React.ReactNode> = {
   instagram: (
@@ -61,6 +57,7 @@ const socialIcons: Record<string, React.ReactNode> = {
 
 const Footer = ({ socialLinks }: { socialLinks: SocialLink[] }) => {
   const t = useTranslations();
+  const tHome = useTranslations('home');
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   // Handle scroll to top button visibility
@@ -85,25 +82,9 @@ const Footer = ({ socialLinks }: { socialLinks: SocialLink[] }) => {
       { label: t('new-arrivals'), href: '/new-arrivals' },
       { label: t('best-sellers'), href: '/best-sellers' },
       { label: t('sale'), href: '/sale' },
-      { label: t('size-chart'), href: '/size-chart' },
     ],
     customerService: [
-      {
-        label: t('delivery'),
-        href: '/frequently-asked-questions/delivery-questions',
-      },
-      {
-        label: t('returns-and-refunds'),
-        href: '/frequently-asked-questions/returns-refunds',
-      },
-      { label: t('faqs'), href: '/frequently-asked-questions' },
       { label: t('contact-us.title'), href: '/contact-us' },
-    ],
-    aboutUs: [
-      { label: t('about-bnb-store'), href: '/about-bnb-store' },
-      { label: t('privacy-policy'), href: '/privacy-policy' },
-      { label: t('terms-and-conditions'), href: '/terms-and-conditions' },
-      { label: t('cookies-policy'), href: '/cookies-policy' },
     ],
   };
 
@@ -117,7 +98,7 @@ const Footer = ({ socialLinks }: { socialLinks: SocialLink[] }) => {
             <Link href='/' className='inline-block'>
               <Image
                 src='/logo-light.png'
-                alt='BNB Store'
+                alt={tHome('logo-alt')}
                 width={150}
                 height={40}
                 className='h-10 w-auto object-contain'
@@ -196,7 +177,7 @@ const Footer = ({ socialLinks }: { socialLinks: SocialLink[] }) => {
           </div>
 
           {/* Links Columns */}
-          <div className='grid grid-cols-1 gap-8 sm:grid-cols-3 lg:col-span-8'>
+          <div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-8'>
             {/* Shopping */}
             <div className='space-y-4'>
               <h4 className='font-semibold text-gray-900'>
@@ -224,26 +205,6 @@ const Footer = ({ socialLinks }: { socialLinks: SocialLink[] }) => {
               </h4>
               <ul className='space-y-3'>
                 {footerLinks.customerService.map(item => (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className='hover:text-primary group relative text-sm text-gray-600 transition-colors'
-                    >
-                      {item.label}
-                      <span className='bg-primary absolute inset-s-0 -bottom-0.5 h-0.5 w-0 transition-all duration-300 group-hover:w-full' />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* About Us */}
-            <div className='space-y-4'>
-              <h4 className='font-semibold text-gray-900'>
-                {t('footer.title.about-us')}
-              </h4>
-              <ul className='space-y-3'>
-                {footerLinks.aboutUs.map(item => (
                   <li key={item.href}>
                     <Link
                       href={item.href}
@@ -285,7 +246,8 @@ const Footer = ({ socialLinks }: { socialLinks: SocialLink[] }) => {
 
             {/* Copyright */}
             <p className='text-center text-sm text-gray-500'>
-              © {new Date().getFullYear()} BNB Store. {t('all-rights-reserved')}
+              © {new Date().getFullYear()} {tHome('site-name')}.{' '}
+              {t('all-rights-reserved')}
             </p>
 
             {/* Back to Top Button */}

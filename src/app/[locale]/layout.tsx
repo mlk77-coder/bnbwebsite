@@ -1,9 +1,7 @@
-import { SITE_BRAND_NAME } from '@/lib/site-branding';
-import { cn } from '@/lib/utils';
+import { getSiteBranding } from '@/lib/page-metadata';
 import type { Metadata } from 'next';
 import 'react-photo-view/dist/react-photo-view.css';
 import { getLangDir } from 'rtl-detect';
-import { playfairDisplay, montserrat, cairo } from '../fonts';
 import HtmlBody from './_components/html-body';
 import HtmlHead from './_components/html-head';
 import './globals.css';
@@ -19,29 +17,28 @@ export async function generateMetadata(props: PropsType): Promise<Metadata> {
   const params = await props.params;
 
   const { locale } = params;
+  const { siteName } = await getSiteBranding();
 
   return {
     title: {
-      default: SITE_BRAND_NAME,
-      template: `%s | ${SITE_BRAND_NAME}`,
+      default: siteName,
+      template: `%s | ${siteName}`,
     },
-    authors: [
-      { name: SITE_BRAND_NAME, url: process.env.NEXT_PUBLIC_LOCAL_URL },
-    ],
+    authors: [{ name: siteName, url: process.env.NEXT_PUBLIC_LOCAL_URL }],
     creator: 'Ibrahim',
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_LOCAL_URL}/${locale}`,
     },
     category: 'E-commerce | Fashion, Beauty, and Home Essentials',
-    applicationName: SITE_BRAND_NAME,
+    applicationName: siteName,
     metadataBase: new URL(
       process.env.NEXT_PUBLIC_LOCAL_URL || 'https://www.bnb-stores.com/'
     ),
     abstract:
       'Luxury fashion reimagined. Exquisite designs for the family. Shop now!',
     classification: 'E-commerce | Fashion, Beauty, and Home Essentials',
-    generator: SITE_BRAND_NAME,
-    publisher: SITE_BRAND_NAME,
+    generator: siteName,
+    publisher: siteName,
     keywords: [
       'BNB Store',
       'bnb store',
@@ -184,14 +181,7 @@ export default async function RootLayout(props: PropsType) {
   return (
     <html lang={locale} dir={direction} suppressHydrationWarning>
       <HtmlHead />
-      <body
-        className={cn(
-          'bg-background flex min-h-screen w-full flex-col items-start justify-start antialiased',
-          playfairDisplay.variable,
-          montserrat.variable,
-          cairo.variable
-        )}
-      >
+      <body className="bg-background flex min-h-screen w-full flex-col items-start justify-start antialiased">
         <HtmlBody>
           {props.children}
           {props.loginSheet}

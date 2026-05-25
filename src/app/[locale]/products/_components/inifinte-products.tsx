@@ -1,11 +1,12 @@
 'use client';
 
-import getProductList from '@/api/products/get-products';
+import getProductList from '@/features/products/api/get-products';
 import ProductCard from '@/components/product-card/product-card';
 import { Button } from '@/components/ui/button';
 import Loader from '@/components/ui/loader';
 import { GetProductsResponse } from '@/types/products';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { Fragment, useState } from 'react';
@@ -24,6 +25,8 @@ const InifinteProducts = ({
   const searchParams = useSearchParams();
   const locale = useLocale();
   const t = useTranslations();
+  const { data: session } = useSession();
+  const token = session?.user?.access_token ?? '';
   const [hasFetched, setHasFetched] = useState(false);
 
   const queryFilters: Record<string, string> = {};
@@ -45,7 +48,9 @@ const InifinteProducts = ({
             ...queryFilters,
             ...params,
           },
-          locale
+          locale,
+          undefined,
+          token
         );
         if (response.ok) return response.data;
         else return initialData;

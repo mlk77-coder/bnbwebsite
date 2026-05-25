@@ -1,6 +1,5 @@
-import { FC } from "react";
-import RegisterSheet from "./register-sheet";
-import RegisterPage from "../../(auth)/register/_components/register-page";
+import { RegisterPage, RegisterSheet } from '@/features/auth';
+import { FC } from 'react';
 
 type PropsType = {
   params: Promise<{ locale: string }>;

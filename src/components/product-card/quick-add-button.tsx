@@ -1,8 +1,11 @@
 'use client';
 
+import { addToCartAction } from '@/app/actions/cart-actions';
+import { getLoginUrlWithCallback } from '@/lib/auth-navigation';
+import { ADD_TO_CART_AUTH_REQUIRED } from '@/lib/cart-auth';
 import useCartCountStore from '@/store/use-cart-count-store';
+import { usePathname, useRouter } from '@/navigation';
 import { cn } from '@/lib/utils';
-import axios from 'axios';
 import { Check, Loader2, ShoppingBag } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -18,6 +21,8 @@ type Props = {
 export function QuickAddButton({ productId, outOfStock }: Props) {
   const [state, setState] = useState<State>('idle');
   const increment = useCartCountStore(s => s.incrementProductsCount);
+  const router = useRouter();
+  const pathname = usePathname();
   const t = useTranslations();
 
   const handleAdd = async (e: React.MouseEvent) => {
@@ -27,25 +32,24 @@ export function QuickAddButton({ productId, outOfStock }: Props) {
 
     setState('loading');
     try {
-      await axios.post('/api/cart', { product_id: productId, quantity: 1 });
+      const result = await addToCartAction({
+        product_id: productId,
+        quantity: 1,
+      });
+      if (result !== 'success') {
+        if (result === ADD_TO_CART_AUTH_REQUIRED) {
+          router.push(getLoginUrlWithCallback(pathname || '/'));
+        } else {
+          toast.error(result);
+        }
+        setState('idle');
+        return;
+      }
       increment(1);
       setState('done');
       setTimeout(() => setState('idle'), 2200);
-    } catch (err) {
-      if (
-        axios.isAxiosError(err) &&
-        (err.response?.status === 400 || err.response?.status === 401)
-      ) {
-        toast.error(t('auth.sign-in'), {
-          description: 'Sign in to add items to your cart',
-          action: {
-            label: t('auth.sign-in'),
-            onClick: () => (window.location.href = '/sign-in'),
-          },
-        });
-      } else {
-        toast.error("Couldn't add to cart, please try again");
-      }
+    } catch {
+      toast.error(t('cart.add-failed'));
       setState('idle');
     }
   };
@@ -58,7 +62,7 @@ export function QuickAddButton({ productId, outOfStock }: Props) {
         disabled={!!outOfStock || state === 'loading'}
         aria-label={t('cart.add-to-cart-button')}
         className={cn(
-          'absolute inset-x-0 bottom-0 z-10 hidden items-center justify-center gap-2 sm:flex',
+          'absolute inset-x-0 bottom-0 z-10 hidden cursor-pointer items-center justify-center gap-2 sm:flex',
           'h-11 text-[11px] font-semibold tracking-[0.16em] uppercase',
           'translate-y-full transition-transform duration-300 ease-out group-hover:translate-y-0',
           state === 'done'

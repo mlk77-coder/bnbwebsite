@@ -1,0 +1,24 @@
+# Project Architecture: App Router & Feature-Based Integration
+
+## 1. The "Thin App Router" Rule
+- The `src/app/` directory is strictly for **Routing, Layouts, and Metadata**.
+- **No Business Logic:** Do not write complex logic, API fetching, or heavy transformations inside `app/page.tsx` or `app/layout.tsx`.
+- **Delegation:** Pages must act as "orchestrators". They should import components and functions from `src/features/` and pass the necessary parameters (like slugs or IDs).
+
+## 2. Directory Responsibilities
+- `src/app/`: Defines the URL structure (Routes). Keep components here minimal.
+- `src/features/`: Contains the "Truth" of the application. All API calls, state management, and feature-specific UI live here.
+- `src/components/ui/`: Global, generic UI components (Shadcn).
+- `src/lib/`: Global configurations (Axios, Utils).
+
+## 3. Feature Structure (Internal)
+Each feature in `src/features/[name]/` must contain:
+- `index.ts`: The public entry point. Only export what is needed by the `app/` router.
+- `components/`: UI components (Server-side by default).
+- `client/`: Interactive components (use client).
+- `api/`: Functions for Laravel communication.
+- `types/`: Feature-specific TypeScript interfaces.
+
+## 4. Component Flow
+- **Data Fetching:** Fetch data in a Server Component inside `src/features/`.
+- **Hydration:** Pass that data from the Page (`src/app/...`) down to the Feature components.

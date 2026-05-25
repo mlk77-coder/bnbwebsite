@@ -1,7 +1,6 @@
-import getCart from '@/api/cart/get-cart';
-import getCategories from '@/api/categories/get-categories';
-import { getProfile } from '@/api/profile/get-profile';
-// import getSaleCategories from '@/api/sale/get-sale-categories';
+import { getCart } from '@/features/cart';
+import { getCategories } from '@/features/categories';
+import { getProfile } from '@/features/profile';
 import getSession from '@/lib/get-session';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { cookies, headers } from 'next/headers';
@@ -14,7 +13,7 @@ import LoginButton from '../account/login-button';
 import Logo from './logo';
 import MobileMenu from './mobile-menu';
 import NavLinks from './nav-links';
-import { DUMMY_SALE_CATEGORIES } from '../data/dummy-nav-categories';
+import { getNavSaleCategories } from '@/features/sale/lib/nav-sale-categories';
 import { Category } from '@/types/categories';
 
 const toClientCategory = (category: Category): Category => ({
@@ -34,7 +33,6 @@ const Navbar = async () => {
   const cookieStore = await cookies();
 
   const categoriesApi = getCategories(locale, request);
-  // const salesApi = getSaleCategories(locale, request);
   const [session, categories] = await Promise.all([sessionApi, categoriesApi]);
   const navCategories = categories.map(toClientCategory);
   const mobileMenuLabels = {
@@ -43,10 +41,7 @@ const Navbar = async () => {
     sale: t('sale'),
     allSale: t('all-sale'),
     newArrivals: t('new-arrivals'),
-    sizeChart: t('size-chart'),
-    aboutBnbStore: t('about-bnb-store'),
-    faqs: t('faqs'),
-    returnsAndRefunds: t('returns-and-refunds'),
+    contactUs: t('contact-us.title'),
     allCategoryById: Object.fromEntries(
       navCategories.map(category => [
         category.id,
@@ -54,7 +49,7 @@ const Navbar = async () => {
       ])
     ),
   };
-  const sales = DUMMY_SALE_CATEGORIES;
+  const sales = getNavSaleCategories(locale);
 
   const user_token = cookieStore.get('x-user-session')?.value || '';
   const isLoggedIn = Boolean(session && session.user);

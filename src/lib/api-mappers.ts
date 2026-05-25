@@ -6,6 +6,7 @@ import type {
   GetProductsResponse,
   ProductCard,
 } from '@/types/products';
+import type { ApiProductComment, ProductComment } from '@/types/product-social';
 import type { ApiReview, GetReviewsResponse } from '@/types/reviews';
 
 // Converts the API `meta` pagination shape into the legacy pagination contract used by product lists.
@@ -44,7 +45,9 @@ export function mapApiProduct(product: ApiProduct): ProductCard {
     image: primaryImage,
     rating: product.rating,
     reviews_count: product.reviews_count,
-    is_liked: product.is_liked,
+    likes_count: product.likes_count ?? 0,
+    comments_count: product.comments_count ?? 0,
+    is_liked: Boolean(product.is_liked ?? product.liked),
     is_available: product.is_available,
     stock_quantity: product.stock_quantity ?? 0,
     category_id: product.category_id,
@@ -100,6 +103,35 @@ export function mapReviewsResponse(
     reviews_rate_count: getReviewsRateCount(reviews),
     pagination: mapApiPagination(meta, path),
   };
+}
+
+export function normalizeProductLikes(data: {
+  likes_count: number;
+  is_liked?: boolean;
+  liked?: boolean;
+}): { likes_count: number; is_liked: boolean } {
+  return {
+    likes_count: data.likes_count ?? 0,
+    is_liked: Boolean(data.is_liked ?? data.liked),
+  };
+}
+
+export function mapApiProductComment(comment: ApiProductComment): ProductComment {
+  return {
+    id: comment.id,
+    body: comment.body,
+    userId: comment.user.id,
+    userName: comment.user.name,
+    userAvatar: comment.user.avatar,
+    createdAt: comment.created_at,
+    isMine: Boolean(comment.is_mine),
+  };
+}
+
+export function mapApiProductComments(
+  comments: ApiProductComment[]
+): ProductComment[] {
+  return (comments ?? []).map(mapApiProductComment);
 }
 
 // Produces the full product list response consumed by filters and infinite loading.

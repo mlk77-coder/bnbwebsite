@@ -1,5 +1,4 @@
-import addToCart from "@/api/cart/add-to-cart";
-import clearCart from "@/api/cart/clear-cart";
+import { addToCart, clearCart } from "@/features/cart";
 import getSession from "@/lib/get-session";
 import { isAxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";

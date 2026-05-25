@@ -6,6 +6,7 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig = {
   reactStrictMode: false,
   images: {
+    qualities: [75, 90],
     remotePatterns: [
       {
         protocol: 'https',

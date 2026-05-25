@@ -2,6 +2,7 @@
   "cart": {
     "your-cart-is-empty": "Your cart is empty",
     "add-to-cart-button": "add to cart",
+    "add-failed": "Could not add to cart. Please try again.",
     "title": "Cart",
     "clear-cart": "Clear cart",
     "clear-cart-confirmation": "Are you sure you want to clear all items from your cart?",
@@ -9,7 +10,17 @@
     "loading-description": "We are refreshing your items and totals.",
     "updating": "Updating cart...",
     "products-count": "{count} item(s) in your cart",
-    "secure-checkout-hint": "Secure checkout with updated tax and shipping totals."
+    "secure-checkout-hint": "Secure checkout with updated tax and shipping totals.",
+    "empty-cart-image-alt": "Empty shopping cart illustration",
+    "remove-from-cart-sr": "Remove {name} from cart",
+    "quantity-label": "Quantity: {quantity}"
+  },
+  "checkout": {
+    "load-error": "Could not load checkout. Please try again.",
+    "order-complete-failed": "Could not complete order.",
+    "order-id-resolve-failed": "Could not resolve new order from response.",
+    "coupon-error-sr-only": "Coupon could not be applied",
+    "address-added-success": "Address added successfully"
   },
   "auth": {
     "forgot-password-link": "Forgot password?",
@@ -44,6 +55,9 @@
     "otp-sent-successfully": "OTP sent successfully",
     "account-created-otp-sent-successfully": "Account created. OTP sent successfully",
     "logged-in-successfully": "Logged in successfully",
+    "verification-code-resent-success": "Verification code sent again successfully",
+    "account-verified-success": "Account verified successfully",
+    "password-reset-success": "Password reset successfully",
     "invalid-verification-code": "Invalid verification code",
     "something-went-wrong-please-try-again": "Something went wrong, please try again",
     "logout-confirm-title": "Confirm logout",
@@ -86,8 +100,56 @@
     "submit": "submit",
     "remove": "Remove",
     "edit": "Edit",
-    "error123": "fifnifjifjfi",
     "add": "Add"
+  },
+  "home": {
+    "page-heading": "Welcome to BNB Store",
+    "meta-title": "Welcome to BNB Store",
+    "site-name": "BNB Store",
+    "logo-alt": "BNB Store Logo",
+    "hero-slide-alt-1": "BNB Store fashion collection showcase",
+    "hero-slide-alt-2": "New season styles at BNB Store",
+    "hero-slide-alt-3": "Premium apparel and accessories",
+    "hero-slide-alt-4": "Shop the latest trends at BNB Store",
+    "featured-collection-description": "Discover handpicked pieces from our latest collection, curated for style and quality.",
+    "load-products-invalid-page": "Invalid page number.",
+    "load-products-failed": "Failed to load products. Please try again."
+  },
+  "carousel": {
+    "previous": "Previous",
+    "next": "Next",
+    "go-to-slide": "Go to slide {number}"
+  },
+  "errors": {
+    "not-found-title": "Oops!",
+    "not-found-subtitle": "Page not found",
+    "not-found-image-alt": "404 page not found illustration",
+    "boundary-title": "Something went wrong!",
+    "boundary-retry": "Try again",
+    "load-page-error": "Could not load this page. Please try again.",
+    "generic": "Error"
+  },
+  "accessibility": {
+    "breadcrumb": "Breadcrumb",
+    "choose-profile-image": "Choose profile image",
+    "profile-image": "Profile image",
+    "select-phone-country": "Select country calling code",
+    "play-video": "Play video",
+    "play": "Play",
+    "close": "Close",
+    "close-menu": "Close menu",
+    "main-navigation": "Main navigation",
+    "breadcrumb-more": "More breadcrumb items"
+  },
+  "category-meta": {
+    "default-title": "Category",
+    "default-description": "Browse products in this category.",
+    "not-found-title": "Category not found",
+    "not-found-description": "The category you are looking for does not exist.",
+    "unknown-title": "Category",
+    "unknown-description": "No description available for this category.",
+    "error-title": "Error",
+    "error-description": "Unable to load category data. Please try again later."
   },
   "gender": {
     "male": "Male",
@@ -101,7 +163,15 @@
     "title": "Addresses",
     "edit": {
       "title": "Edit Address information"
-    }
+    },
+    "added-success": "Address added successfully",
+    "updated-success": "Address updated successfully",
+    "removed-success": "Address removed successfully",
+    "default-updated-success": "Default address updated successfully"
+  },
+  "profile": {
+    "updated-success": "Profile updated successfully",
+    "password-changed-success": "Password changed successfully"
   },
   "countries": {
     "syria": {
@@ -151,22 +221,49 @@
   },
   "contact-us": {
     "title": "Contact Us",
-    "accept-policy": "I have read and accepted the <policy>Terms & Conditions</policy>",
-    "accept-privacy-policy": "I have read and understood the <policy>Privacy Policy</policy>"
+    "accept-policy": "I have read and accepted the Terms & Conditions.",
+    "accept-privacy-policy": "I have read and understood the Privacy Policy.",
+    "message-sent-success": "Message sent successfully"
   },
   "reviews": {
     "title": "Reviews",
     "all-reviews": "All Reviews",
     "write-review": "Write Review",
-    "send-review": "Send review"
+    "send-review": "Send review",
+    "summary-count": "{count, plural, one {# review} other {# reviews}}",
+    "load-error": "Could not load reviews. Please try again.",
+    "added-success": "Review submitted successfully"
   },
-  "faq": {
-    "payment-questions": "Payment Questions",
-    "delivery-questions": "Delivery Questions",
-    "general-information": "General Information",
-    "my-order": "My Orders",
-    "returns-refunds": "Returns Refunds",
-    "title": "FAQ Menu"
+  "product": {
+    "preview-quantity": "Quantity: {quantity}",
+    "media-image-alt": "{name} — image {index}",
+    "media-image-alt-single": "{name} — product image",
+    "thumbnail-alt": "{name} — thumbnail {index}",
+    "add-to-cart-success-description": "Item added to your cart successfully"
+  },
+  "product-social": {
+    "like": "Like",
+    "unlike": "Unlike",
+    "like-singular": "like",
+    "like-plural": "likes",
+    "you-liked": "Liked by you",
+    "like-error": "Could not update like. Please try again.",
+    "comments-title": "Comments",
+    "comments-count": "{count} comments",
+    "comment-singular": "comment",
+    "comment-plural": "comments",
+    "empty-comments": "No comments yet. Be the first to share your thoughts!",
+    "loading-comments": "Loading comments…",
+    "add-comment-placeholder": "Add a comment…",
+    "login-to-comment": "Log in to comment",
+    "post-comment": "Post comment",
+    "comment-added": "Comment posted",
+    "comment-deleted": "Comment deleted",
+    "delete-comment": "Delete",
+    "delete-comment-title": "Delete comment?",
+    "delete-comment-description": "This comment will be removed permanently.",
+    "comment-options": "Comment options",
+    "cancel": "Cancel"
   },
   "footer": {
     "title": {
@@ -206,17 +303,9 @@
   "hero-our-collections-tag": "Shop by category",
   "hero-our-collections-empty": "Categories will appear here when available.",
   "hero-view-all-categories": "View all categories",
-  "size-chart": "Size Chart",
   "delivery": "Delivery",
-  "returns-and-refunds": "Returns & Refunds",
-  "faqs": "FAQs",
-  "about-bnb-store": "About BNB Store",
-  "privacy-policy": "Privacy Policy",
-  "terms-and-conditions": "Terms & Conditions",
-  "cookies-policy": "Cookies Policy",
   "enter-your-email": "Enter your email",
   "bnb-store-customer-services": "BNB Store Customer Services",
-  "frequently-asked-questions": "Frequently Asked Questions",
   "sale": "sale",
   "new-in": "new in",
   "show-more": "show more",
@@ -306,6 +395,27 @@
   "recently-viewed-0": "Recently Viewed",
   "recently-viewed-empty": " Your recently viewed items are empty.",
   "wishlist-empty": "Your Wishlist is empty. When you add items to your Wishlist they will appear here.",
+  "wishlist-load-error": "Could not load your wishlist. Please try again.",
+  "wishlist-removed-success": "Product removed from your wishlist",
+  "wishlist-added-success": "Product added to your wishlist",
+  "no-products-image-alt": "No products illustration",
+  "products-loading": "Loading products…",
+  "remove-from-wishlist-sr": "Remove {name} from wishlist",
+  "recent-items-load-error": "Could not load recently viewed items. Please try again.",
+  "order-statuses": {
+    "pending": "Pending",
+    "processing": "Processing",
+    "completed": "Completed",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled",
+    "canceled": "Cancelled"
+  },
+  "order-payment-statuses": {
+    "paid": "Paid",
+    "unpaid": "Unpaid",
+    "pending": "Pending",
+    "failed": "Failed"
+  },
   "change-language": "Change language",
   "menu": "User menu",
   "search": "Search",
@@ -318,7 +428,7 @@
     "select-coupon-description": "You can choose one discount coupon to apply to the current order, or continue purchasing without a coupon."
   },
   "register": {
-    "accept-privacy-policy": "I have read and accepted the <terms>Terms & Conditions</terms> and the <policy>Privacy Policy</policy>.",
+    "accept-privacy-policy": "I have read and accepted the Terms & Conditions and the Privacy Policy.",
     "enabled-email": "Enable receiving email notifications"
   },
   "coupon-discount": "Coupon discount",
@@ -387,10 +497,6 @@
   "select-language": "Select Language",
   "guest": "Guest",
   "open-menu": "Open Menu",
-  "about-bnb-store-description": "BNB Store, Luxury fashion reimagined. Discover exquisite designs for the whole family. Shop now and experience the difference.",
-  "privacy-policy-description": "Your privacy is our priority. Learn how we collect, use, and protect your personal information.",
-  "terms-and-conditions-description": "Your agreement to use our website. Learn about your rights and responsibilities as a user.",
-  "cookies-policy-description": "Learn how we use cookies to enhance your browsing experience. Your privacy is important to us.",
   "sign-in-to-your-account-to-manage-your-orders-and-continue-shopping": "Sign in to your account to manage your orders and continue shopping.",
   "log-in-to-your-account-to-manage-orders-view-purchase-history-and-enjoy-a-seamless-and-secure-shopping-experience": "Sign in to your account and access your order history, wishlist, and more.  Elevate Your Style.  Sign in to your BNB Store account to unlock a world of luxury fashion. Enjoy personalized shopping experiences, exclusive offers, and seamless checkout.",
   "create-your-account-now-to-start-shopping-manage-your-orders-and-enjoy-a-personalized-and-secure-experience": "Create your account now to start shopping, manage your orders, and enjoy a personalized and secure experience.",
@@ -400,11 +506,11 @@
   "my-addresses": "My Addresses",
   "my-orders": "My Orders",
   "meta-description": "With BNB Store, From exquisite fashion to stunning beauty products, stylish travel essentials, and elegant home equipment.",
-  "size-chart-description": "Find the perfect fit with our easy-to-use size chart.",
   "contact-us-description": "Get in touch with BNB Store's dedicated customer support team for any inquiries or concerns. We're here to help.",
   "cart-title": "My Cart",
   "cart-description": "Review your items, apply discounts, and checkout securely.",
-  "faq-description": "Find answers to your frequently asked questions about BNB Store. ",
+  "checkout-title": "Checkout",
+  "checkout-description": "Complete your delivery details and place your order securely.",
   "address-name": "Address name",
   "address-label": "Address",
   "address-fields": {
@@ -470,5 +576,25 @@
   "footer-description": "Luxury fashion reimagined. Discover exquisite designs for the whole family. Shop now and experience the difference.",
   "payment-methods": "Payment Methods",
   "all-rights-reserved": "All rights reserved.",
-  "back-to-top": "Back to top"
+  "back-to-top": "Back to top",
+  "reels": {
+    "section-title": "Shop Reels",
+    "section-description": "Watch short videos and discover products curated for you.",
+    "reel-fallback-title": "Reel",
+    "meta-fallback-description": "Watch this reel on BNB Store",
+    "back-to-home": "Back to home",
+    "duration": "Duration",
+    "featured-product": "Featured product",
+    "previous": "Previous",
+    "next": "Next",
+    "view-details": "View details",
+    "card-details": "Details",
+    "open-reel": "Watch reel",
+    "close": "Close",
+    "viewer-title": "Reels viewer",
+    "swipe-hint": "Swipe to browse reels",
+    "swipe-hint-vertical": "Swipe up or down to browse reels",
+    "keyboard-hint-desktop": "← → or ↑ ↓ to navigate · Esc to close",
+    "sale": "Sale"
+  }
 }

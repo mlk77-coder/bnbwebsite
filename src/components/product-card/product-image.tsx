@@ -1,5 +1,6 @@
 'use client';
 
+import ProductLikeBadge from '@/components/product-card/product-like-badge';
 import { cn } from '@/lib/utils';
 import { ProductCard as ProductCardType } from '@/types/products';
 import Image from 'next/image';
@@ -54,6 +55,8 @@ const ProductImage: FC<Props> = ({ product }) => {
           </span>
         )}
       </div>
+
+      <ProductLikeBadge product={product} />
     </div>
   );
 };

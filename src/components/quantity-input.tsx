@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { Minus, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { FC } from "react";
 import { Button } from "./ui/button";
 
@@ -16,6 +17,7 @@ const QuantityInput: FC<PropsType> = ({
   value,
   size = "default",
 }) => {
+  const t = useTranslations();
   return (
     <div className="flex justify-start items-center gap-2">
       <Button
@@ -25,7 +27,7 @@ const QuantityInput: FC<PropsType> = ({
         type="button"
         size="icon"
       >
-        <span className="sr-only">Minus</span>
+        <span className="sr-only">{t('decrease')}</span>
         <Minus className={cn(size === "sm" ? "size-4" : "")} />
       </Button>
       <p
@@ -45,7 +47,7 @@ const QuantityInput: FC<PropsType> = ({
         size="icon"
         type="button"
       >
-        <span className="sr-only">Plus</span>
+        <span className="sr-only">{t('increase')}</span>
         <Plus className={cn(size === "sm" ? "size-4" : "")} />
       </Button>
     </div>

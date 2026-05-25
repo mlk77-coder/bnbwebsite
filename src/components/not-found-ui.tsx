@@ -1,34 +1,35 @@
-import Image from "next/image";
-import PageWrapper from "./page-wrapper";
-import { buttonVariants } from "./ui/button";
-import { cn } from "@/lib/utils";
-import { Link } from "@/navigation";
-import { Undo2 } from "lucide-react";
+import Image from 'next/image';
+import { getTranslations } from 'next-intl/server';
+import PageWrapper from './page-wrapper';
+import { buttonVariants } from './ui/button';
+import { cn } from '@/lib/utils';
+import { Link } from '@/navigation';
+import { Undo2 } from 'lucide-react';
 
-const NotFoundUi = () => {
+const NotFoundUi = async () => {
+  const t = await getTranslations('errors');
+  const tGlobal = await getTranslations();
+
   return (
-    <PageWrapper
-      dir="ltr"
-      className="flex-1 flex justify-center flex-col items-center"
-    >
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-orange">
-          OOPS!
+    <PageWrapper className='flex flex-1 flex-col items-center justify-center'>
+      <div className='space-y-2 text-center'>
+        <h1 className='text-orange text-3xl font-bold sm:text-4xl md:text-5xl'>
+          {t('not-found-title')}
         </h1>
-        <p className="text-lg md:text-2xl text-orange">PAGE NOT FOUND</p>
+        <p className='text-orange text-lg md:text-2xl'>{t('not-found-subtitle')}</p>
       </div>
       <Image
-        src="/error.svg"
-        alt="error 404 fot found"
+        src='/error.svg'
+        alt={t('not-found-image-alt')}
         width={900}
         height={900}
       />
       <Link
-        className={cn(buttonVariants({ size: "lg" }), "uppercase")}
-        href="/"
+        className={cn(buttonVariants({ size: 'lg' }), 'uppercase')}
+        href='/'
       >
-        <Undo2 className="size-5 me-1" />
-        back to home
+        <Undo2 className='me-1 size-5' />
+        {tGlobal('return-home')}
       </Link>
     </PageWrapper>
   );

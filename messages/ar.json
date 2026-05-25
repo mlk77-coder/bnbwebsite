@@ -2,6 +2,7 @@
   "cart": {
     "your-cart-is-empty": "سلة التسوق الخاصة بك فارغة",
     "add-to-cart-button": "إضافة إلى السلة",
+    "add-failed": "تعذرت الإضافة إلى السلة. يرجى المحاولة مرة أخرى.",
     "title": "سلة التسوق",
     "clear-cart": "مسح السلة",
     "clear-cart-confirmation": "هل أنت متأكد أنك تريد مسح جميع المنتجات من السلة؟",
@@ -9,7 +10,17 @@
     "loading-description": "نقوم بتحديث المنتجات والإجماليات.",
     "updating": "يتم تحديث السلة...",
     "products-count": "{count} منتج في سلتك",
-    "secure-checkout-hint": "دفع آمن مع تحديث الضريبة والشحن بشكل مباشر."
+    "secure-checkout-hint": "دفع آمن مع تحديث الضريبة والشحن بشكل مباشر.",
+    "empty-cart-image-alt": "رسم توضيحي لسلة تسوق فارغة",
+    "remove-from-cart-sr": "إزالة {name} من السلة",
+    "quantity-label": "الكمية: {quantity}"
+  },
+  "checkout": {
+    "load-error": "تعذر تحميل صفحة الدفع. يرجى المحاولة مرة أخرى.",
+    "order-complete-failed": "تعذر إتمام الطلب.",
+    "order-id-resolve-failed": "تعذر الحصول على رقم الطلب من الاستجابة.",
+    "coupon-error-sr-only": "تعذر تطبيق القسيمة",
+    "address-added-success": "تمت إضافة العنوان بنجاح"
   },
   "auth": {
     "forgot-password-link": "نسيت كلمة المرور؟",
@@ -44,6 +55,9 @@
     "otp-sent-successfully": "تم إرسال رمز OTP بنجاح",
     "account-created-otp-sent-successfully": "تم إنشاء الحساب وإرسال رمز OTP بنجاح",
     "logged-in-successfully": "تم تسجيل الدخول بنجاح",
+    "verification-code-resent-success": "تم إرسال رمز التحقق مرة أخرى بنجاح",
+    "account-verified-success": "تم التحقق من الحساب بنجاح",
+    "password-reset-success": "تم إعادة تعيين كلمة المرور بنجاح",
     "invalid-verification-code": "رمز التحقق غير صحيح",
     "something-went-wrong-please-try-again": "حدث خطأ ما، يرجى المحاولة مرة أخرى",
     "logout-confirm-title": "تأكيد تسجيل الخروج",
@@ -88,6 +102,55 @@
     "edit": "تعديل",
     "add": "إضافة"
   },
+  "home": {
+    "page-heading": "مرحباً بك في BNB Store",
+    "meta-title": "مرحباً بك في BNB Store",
+    "site-name": "BNB Store",
+    "logo-alt": "شعار BNB Store",
+    "hero-slide-alt-1": "عرض مجموعة أزياء BNB Store",
+    "hero-slide-alt-2": "تصاميم الموسم الجديد في BNB Store",
+    "hero-slide-alt-3": "ملابس وإكسسوارات فاخرة",
+    "hero-slide-alt-4": "تسوق أحدث الصيحات في BNB Store",
+    "featured-collection-description": "اكتشف قطعاً مختارة بعناية من أحدث مجموعاتنا، مُنتقاة للأناقة والجودة.",
+    "load-products-invalid-page": "رقم الصفحة غير صالح.",
+    "load-products-failed": "تعذر تحميل المنتجات. يرجى المحاولة مرة أخرى."
+  },
+  "carousel": {
+    "previous": "السابق",
+    "next": "التالي",
+    "go-to-slide": "الانتقال إلى الشريحة {number}"
+  },
+  "errors": {
+    "not-found-title": "عذراً!",
+    "not-found-subtitle": "الصفحة غير موجودة",
+    "not-found-image-alt": "رسم توضيحي لصفحة غير موجودة 404",
+    "boundary-title": "حدث خطأ ما!",
+    "boundary-retry": "حاول مرة أخرى",
+    "load-page-error": "تعذر تحميل هذه الصفحة. يرجى المحاولة مرة أخرى.",
+    "generic": "خطأ"
+  },
+  "accessibility": {
+    "breadcrumb": "مسار التنقل",
+    "choose-profile-image": "اختر صورة الملف الشخصي",
+    "profile-image": "صورة الملف الشخصي",
+    "select-phone-country": "اختر رمز الدولة للاتصال",
+    "play-video": "تشغيل الفيديو",
+    "play": "تشغيل",
+    "close": "إغلاق",
+    "close-menu": "إغلاق القائمة",
+    "main-navigation": "القائمة الرئيسية",
+    "breadcrumb-more": "المزيد من عناصر مسار التنقل"
+  },
+  "category-meta": {
+    "default-title": "الفئة",
+    "default-description": "تصفح المنتجات في هذه الفئة.",
+    "not-found-title": "الفئة غير موجودة",
+    "not-found-description": "الفئة التي تبحث عنها غير موجودة.",
+    "unknown-title": "الفئة",
+    "unknown-description": "لا يوجد وصف متاح لهذه الفئة.",
+    "error-title": "خطأ",
+    "error-description": "تعذر تحميل بيانات الفئة. يرجى المحاولة لاحقاً."
+  },
   "gender": {
     "male": "ذكر",
     "female": "أنثى"
@@ -100,7 +163,15 @@
     "title": "العناوين",
     "edit": {
       "title": "تعديل معلومات العنوان"
-    }
+    },
+    "added-success": "تمت إضافة العنوان بنجاح",
+    "updated-success": "تم تحديث العنوان بنجاح",
+    "removed-success": "تم حذف العنوان بنجاح",
+    "default-updated-success": "تم تحديث العنوان الافتراضي بنجاح"
+  },
+  "profile": {
+    "updated-success": "تم تحديث الملف الشخصي بنجاح",
+    "password-changed-success": "تم تغيير كلمة المرور بنجاح"
   },
   "countries": {
     "syria": {
@@ -150,14 +221,49 @@
   },
   "contact-us": {
     "title": "تواصل معنا",
-    "accept-policy": "لقد قرأت وقبلت <policy>الشروط والأحكام</policy>",
-    "accept-privacy-policy": "لقد قرأت وفهمت <policy>سياسة الخصوصية</policy>"
+    "accept-policy": "لقد قرأت وقبلت الشروط والأحكام.",
+    "accept-privacy-policy": "لقد قرأت وفهمت سياسة الخصوصية.",
+    "message-sent-success": "تم إرسال الرسالة بنجاح"
   },
   "reviews": {
     "title": "التعليقات",
     "write-review": "اكتب تعليقاً",
     "send-review": "إرسال التعليق",
-    "all-reviews": "جميع التعليقات"
+    "all-reviews": "جميع التعليقات",
+    "summary-count": "{count, plural, one {تعليق واحد} two {تعليقان} few {# تعليقات} many {# تعليق} other {# تعليق}}",
+    "load-error": "تعذر تحميل التعليقات. يرجى المحاولة مرة أخرى.",
+    "added-success": "تم إرسال التقييم بنجاح"
+  },
+  "product": {
+    "preview-quantity": "الكمية: {quantity}",
+    "media-image-alt": "{name} — صورة {index}",
+    "media-image-alt-single": "{name} — صورة المنتج",
+    "thumbnail-alt": "{name} — معاينة {index}",
+    "add-to-cart-success-description": "تمت إضافة المنتج إلى السلة بنجاح"
+  },
+  "product-social": {
+    "like": "إعجاب",
+    "unlike": "إلغاء الإعجاب",
+    "like-singular": "إعجاب",
+    "like-plural": "إعجابات",
+    "you-liked": "أعجبك",
+    "like-error": "تعذر تحديث الإعجاب. حاول مرة أخرى.",
+    "comments-title": "التعليقات",
+    "comments-count": "{count} تعليق",
+    "comment-singular": "تعليق",
+    "comment-plural": "تعليقات",
+    "empty-comments": "لا توجد تعليقات بعد. كن أول من يشارك رأيه!",
+    "loading-comments": "جاري تحميل التعليقات…",
+    "add-comment-placeholder": "أضف تعليقاً…",
+    "login-to-comment": "سجّل الدخول للتعليق",
+    "post-comment": "نشر التعليق",
+    "comment-added": "تم نشر التعليق",
+    "comment-deleted": "تم حذف التعليق",
+    "delete-comment": "حذف",
+    "delete-comment-title": "حذف التعليق؟",
+    "delete-comment-description": "سيتم حذف هذا التعليق نهائياً.",
+    "comment-options": "خيارات التعليق",
+    "cancel": "إلغاء"
   },
   "footer": {
     "title": {
@@ -167,14 +273,6 @@
       "find-us-on-social-media": "تابعنا على وسائل التواصل الاجتماعي",
       "bnb-store-membership": "عضوية BNB Store"
     }
-  },
-  "faq": {
-    "payment-questions": "أسئلة الدفع",
-    "delivery-questions": "أسئلة التوصيل",
-    "general-information": "المعلومات العامة",
-    "my-order": "طلباتي",
-    "returns-refunds": "الإرجاع واسترداد الأموال",
-    "title": "قائمة الأسئلة الشائعة"
   },
   "or": "أو",
   "sign-out": "تسجيل الخروج",
@@ -205,17 +303,9 @@
   "hero-our-collections-tag": "تسوق حسب الفئة",
   "hero-our-collections-empty": "ستظهر الفئات هنا عند توفرها.",
   "hero-view-all-categories": "عرض كل الفئات",
-  "size-chart": "مخطط المقاسات",
   "delivery": "التوصيل",
-  "returns-and-refunds": "الإرجاع والاسترداد.",
-  "faqs": "الأسئلة الشائعة",
-  "about-bnb-store": "حول BNB Store",
-  "privacy-policy": "سياسة الخصوصية",
-  "terms-and-conditions": "الشروط والأحكام",
-  "cookies-policy": "سياسة ملفات تعريف الارتباط",
   "enter-your-email": "أدخل بريدك الإلكتروني",
   "bnb-store-customer-services": "خدمة عملاء BNB Store",
-  "frequently-asked-questions": "الأسئلة الشائعة",
   "sale": "تخفيضات",
   "new-in": "جديدنا",
   "show-more": "عرض المزيد",
@@ -262,6 +352,7 @@
   "your-cart": "سلة التسوق الخاصة بك:",
   "failed-to-fetch-cart": "فشل جلب سلة التسوق",
   "total": "المجموع",
+  "unit-price": "سعر الوحدة:",
   "out-of-stock": "غير متوفر حاليا",
   "in-stock": "متوفر في المخزن",
   "few-in-stock": "متبقي القليل منه",
@@ -301,8 +392,30 @@
   "adderess": "العنوان",
   "country": "البلد",
   "city": "المدينة",
+  "recently-viewed-0": "تم مشاهدتها مؤخرًا",
   "recently-viewed-empty": "لا توجد عناصر في مشاهداتك الأخيرة.",
   "wishlist-empty": "قائمة المفضلة الخاصة بك فارغة. عندما تضيف عناصر إلى المفضلة، ستظهر هنا.",
+  "wishlist-load-error": "تعذر تحميل قائمة المفضلة. يرجى المحاولة مرة أخرى.",
+  "wishlist-removed-success": "تمت إزالة المنتج من قائمة المفضلة",
+  "wishlist-added-success": "تمت إضافة المنتج إلى قائمة المفضلة",
+  "no-products-image-alt": "رسم توضيحي لعدم وجود منتجات",
+  "products-loading": "جاري تحميل المنتجات…",
+  "remove-from-wishlist-sr": "إزالة {name} من المفضلة",
+  "recent-items-load-error": "تعذر تحميل العناصر التي شاهدتها مؤخراً. يرجى المحاولة مرة أخرى.",
+  "order-statuses": {
+    "pending": "قيد الانتظار",
+    "processing": "قيد المعالجة",
+    "completed": "مكتمل",
+    "delivered": "تم التوصيل",
+    "cancelled": "ملغى",
+    "canceled": "ملغى"
+  },
+  "order-payment-statuses": {
+    "paid": "مدفوع",
+    "unpaid": "غير مدفوع",
+    "pending": "قيد الانتظار",
+    "failed": "فشل"
+  },
   "change-language": "تغيير اللغة",
   "menu": "قائمة المستخدم",
   "search": "البحث",
@@ -315,7 +428,7 @@
     "select-coupon-description": "يمكنك اختيار كوبون خصم واحد لتطبيقه على الطلب الحالي، أو متابعة الشراء دون كوبون."
   },
   "register": {
-    "accept-privacy-policy": "لقد قرأت وقبلت <terms>الشروط والأحكام</terms> و<policy>سياسة الخصوصية</policy>.",
+    "accept-privacy-policy": "لقد قرأت وقبلت الشروط والأحكام وسياسة الخصوصية.",
     "enabled-email": "تمكين تلقي إشعارات البريد الإلكتروني"
   },
   "coupon-discount": "قسيمة حسم",
@@ -384,10 +497,6 @@
   "select-language": "اختر اللغة",
   "guest": "ضيف",
   "open-menu": "افتح القائمة",
-  "about-bnb-store-description": "BNB Store، إعادة تعريف الأزياء الفاخرة. اكتشف تصاميم رائعة لكل أفراد العائلة. تسوق الآن واستمتع بالتميز.",
-  "privacy-policy-description": "خصوصيتك هي أولويتنا. تعرف على كيفية جمعنا واستخدامنا وحماية معلوماتك الشخصية.",
-  "terms-and-conditions-description": "موافقتك على استخدام موقعنا. تعرّف على حقوقك ومسؤولياتك كمستخدم.",
-  "cookies-policy-description": "تعرّف على كيفية استخدامنا لملفات تعريف الارتباط لتحسين تجربة التصفح الخاصة بك. خصوصيتك تهمنا.",
   "sign-in-to-your-account-to-manage-your-orders-and-continue-shopping": "قم بتسجيل الدخول إلى حسابك لإدارة طلباتك ومتابعة التسوق.",
   "log-in-to-your-account-to-manage-orders-view-purchase-history-and-enjoy-a-seamless-and-secure-shopping-experience": "سجّل الدخول إلى حسابك واطّلع على سجل طلباتك وقائمة الرغبات والمزيد.  ارتقِ بأسلوبك ومظهرك.  سجّل الدخول إلى حساب BNB Store الخاص بك لتكتشف عالم من الأزياء الفاخرة. استمتع بتجارب تسوق مخصصة وعروض حصرية وعملية شراء سلسة ولطيفة.",
   "create-your-account-now-to-start-shopping-manage-your-orders-and-enjoy-a-personalized-and-secure-experience": "أنشئ حسابك الآن للبدء في التسوق، إدارة طلباتك، والحصول على تجربة مخصصة وآمنة.",
@@ -397,11 +506,11 @@
   "my-addresses": "عناويني",
   "my-orders": "طلباتي",
   "meta-description": "مع BNB Store، من الأزياء الرائعة إلى منتجات التجميل المذهلة، ومستلزمات السفر الأنيقة، ومعدات المنزل الأنيقة.",
-  "size-chart-description": " اعثر على المقاس المثالي بسهولة من خلال استخدام جدول المقاسات الخاص بنا.",
   "contact-us-description": "تواصل مع فريق دعم العملاء المخصص لشركة BNB Store لأي استفسارات أو مخاوف. نحن هنا لمساعدتك والاستجابة لسؤالك",
   "cart-title": "سلة التسوق الخاصة بي",
   "cart-description": "راجع العناصر الخاصة بك، احصل على الخصومات، وادفع بأمان.",
-  "faq-description": "ابحث عن إجابات لأسئلتك الشائعة حول BNB Store.",
+  "checkout-title": "إتمام الشراء",
+  "checkout-description": "أكمل تفاصيل التوصيل وقدّم طلبك بأمان.",
   "address-name": "اسم العنوان",
   "address-label": "العنوان",
   "address-fields": {
@@ -467,5 +576,25 @@
   "footer-description": "أزياء فاخرة بإعادة تعريف. اكتشف تصاميم رائعة لجميع أفراد العائلة. تسوق الآن واستمتع بالتميز.",
   "payment-methods": "طرق الدفع",
   "all-rights-reserved": "جميع الحقوق محفوظة.",
-  "back-to-top": "العودة للأعلى"
+  "back-to-top": "العودة للأعلى",
+  "reels": {
+    "section-title": "ريلز التسوق",
+    "section-description": "شاهد فيديوهات قصيرة واكتشف منتجات مختارة لك.",
+    "reel-fallback-title": "ريل",
+    "meta-fallback-description": "شاهد هذا الريل على BNB Store",
+    "back-to-home": "العودة للرئيسية",
+    "duration": "المدة",
+    "featured-product": "المنتج المميز",
+    "previous": "السابق",
+    "next": "التالي",
+    "view-details": "عرض التفاصيل",
+    "card-details": "التفاصيل",
+    "open-reel": "مشاهدة الريل",
+    "close": "إغلاق",
+    "viewer-title": "عارض الريلز",
+    "swipe-hint": "اسحب للتصفح بين الريلز",
+    "swipe-hint-vertical": "اسحب للأعلى أو الأسفل للتصفح",
+    "keyboard-hint-desktop": "← → أو ↑ ↓ للتنقل · Esc للإغلاق",
+    "sale": "تخفيض"
+  }
 }

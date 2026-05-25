@@ -2,60 +2,25 @@
 
 import { SheetClose } from "@/components/ui/sheet";
 import { Link } from "@/navigation";
+import { MessageCircle } from "lucide-react";
 
 type PropsType = {
   labels: {
-    sizeChart: string;
-    aboutBnbStore: string;
-    faqs: string;
-    returnsAndRefunds: string;
+    contactUs: string;
   };
 };
 
 const MenuBottomLinks = ({ labels }: PropsType) => {
   return (
-    <div className="bg-beige/75 !px-6 py-9 flex flex-col justify-start items-start gap-8">
+    <SheetClose asChild>
       <Link
-        href="/size-chart"
-        className="underline underline-offset-1 hover:text-orange"
+        href="/contact-us"
+        className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 active:bg-primary/85"
       >
-        <SheetClose asChild>
-          <span>{labels.sizeChart}</span>
-        </SheetClose>
+        <MessageCircle className="size-4 shrink-0" aria-hidden />
+        {labels.contactUs}
       </Link>
-      <Link
-        href="/about-bnb-store"
-        className="underline underline-offset-1 hover:text-orange"
-      >
-        <SheetClose asChild>
-          <span>{labels.aboutBnbStore}</span>
-        </SheetClose>
-      </Link>
-      {/* <Link
-        href="/membership"
-        className="underline underline-offset-1 hover:text-orange"
-      >
-        <SheetClose asChild>
-          <span>{t("membership")}</span>
-        </SheetClose>
-      </Link> */}
-      <Link
-        href="/frequently-asked-questions/general-information"
-        className="underline underline-offset-1 hover:text-orange"
-      >
-        <SheetClose asChild>
-          <span>{labels.faqs}</span>
-        </SheetClose>
-      </Link>
-      <Link
-        href="/frequently-asked-questions/returns-refunds"
-        className="underline underline-offset-1 hover:text-orange"
-      >
-        <SheetClose asChild>
-          <span>{labels.returnsAndRefunds}</span>
-        </SheetClose>
-      </Link>
-    </div>
+    </SheetClose>
   );
 };
 

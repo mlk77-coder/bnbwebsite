@@ -8,7 +8,7 @@ import { PopoverClose } from "@radix-ui/react-popover";
 import Image from "next/image";
 import { ArrowRight, PackageOpen, ShoppingBag, X } from "lucide-react";
 import { Fragment } from "react";
-import useUpdateCart from "../../../cart/hooks/use-update-cart";
+import useUpdateCart from "@/features/cart/client/hooks/use-update-cart";
 import { useTranslations } from "next-intl";
 import useCurrencyStore from "@/store/use-currency-store";
 import Loader from "@/components/ui/loader";
@@ -27,6 +27,7 @@ const CartPopoverContent = ({
   insideSheet?: boolean;
 }) => {
   const t = useTranslations();
+  const tA11y = useTranslations('accessibility');
   const currency = useCurrencyStore((state) => state.currency);
   const symbol = useCurrencyStore((state) => state.symbol);
   const { isPending, data, isError, isFetching } = useUpdateCart(
@@ -53,7 +54,7 @@ const CartPopoverContent = ({
   if (isError)
     return (
       <p className="w-full p-8 text-center text-lg text-primary">
-        Failed to fetch cart
+        {t('failed-to-fetch-cart')}
       </p>
     );
   if (data.items.length === 0)
@@ -100,7 +101,7 @@ const CartPopoverContent = ({
             size="icon"
             className="size-8 rounded-full text-muted-foreground hover:bg-red-50 hover:text-red-500"
           >
-            <span className="sr-only">close</span>
+            <span className="sr-only">{tA11y('close')}</span>
             <X className="size-4" />
           </Button>
         </PopoverClose>

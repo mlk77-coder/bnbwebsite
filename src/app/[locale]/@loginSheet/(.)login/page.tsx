@@ -1,7 +1,7 @@
-import { FC } from 'react';
-import LoginDialog from './login-dialog';
-import LoginPage from '../../(auth)/login/_components/login-page';
+import { LoginDialog, LoginPage } from '@/features/auth';
 import { cookies } from 'next/headers';
+import { FC } from 'react';
+
 type PropsType = {
   params: Promise<{ locale: string }>;
 };

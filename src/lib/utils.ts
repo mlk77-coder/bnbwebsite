@@ -18,6 +18,17 @@ export function cn(...inputs: ClassValue[]): string {
   return twMerge(clsx(inputs));
 }
 
+/** True when the event target is inside a Radix layer portaled outside a dialog/sheet. */
+export function isPortaledOverlayTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof Element)) return false;
+  return Boolean(
+    target.closest("[data-radix-popper-content-wrapper]") ||
+      target.closest("[data-radix-dropdown-menu-content]") ||
+      target.closest("[data-radix-select-content]") ||
+      target.closest("[role='menu']")
+  );
+}
+
 /**
  * Formats a given price according to the provided currency code.
  * Uses `Intl.NumberFormat` to format the value into a currency string (e.g., "$1,000.00").
@@ -31,6 +42,10 @@ export const formatPrice = (value: number, currencyCode: string): string =>
     style: "currency",
     currency: currencyCode,
   }).format(value);
+
+/** Locale-aware integers with stable SSR/hydration (Node vs browser differ on default digits for `ar`). */
+export const formatLocaleNumber = (value: number, locale: string): string =>
+  new Intl.NumberFormat(locale, { numberingSystem: "latn" }).format(value);
 
 /**
  * Handles errors from API actions, with a special focus on Axios errors.

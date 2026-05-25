@@ -1,6 +1,6 @@
 "use client";
 
-import { getRecentlyViewed } from "@/api/recently-viewed/get-recently-viewed";
+import { getRecentlyViewed } from "@/features/recent-items";
 import { ProductCard as ProductCardType } from "@/types/products";
 import { useCallback, useEffect, useState } from "react";
 

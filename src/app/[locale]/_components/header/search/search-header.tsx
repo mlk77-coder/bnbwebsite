@@ -228,7 +228,7 @@ const SearchHeader: FC<SearchHeaderProps> = ({ isMobile = false }) => {
                         {products.slice(0, 4).map(product => (
                           <Link
                             key={product.id}
-                            href={`/product/${product.slug}`}
+                            href={`/products/${product.id}`}
                             onClick={() => setIsOpen(false)}
                             className='group'
                           >
@@ -397,7 +397,7 @@ const SearchHeader: FC<SearchHeaderProps> = ({ isMobile = false }) => {
                       {products.slice(0, 4).map(product => (
                         <Link
                           key={product.id}
-                          href={`/product/${product.slug}`}
+                          href={`/products/${product.id}`}
                           onClick={() => setIsOpen(false)}
                           className='group rounded-xl p-2 transition-colors hover:bg-gray-50'
                         >

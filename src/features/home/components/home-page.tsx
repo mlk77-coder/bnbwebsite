@@ -5,11 +5,16 @@ import { CategoriesCarousel } from '@/features/home/components/categories-sectio
 import { FeaturedProducts } from '@/features/home/components/featured-collection-section/featured-products';
 import { HeroSection } from '@/features/home/components/hero-section';
 import { FEATURED_PRODUCTS_PER_PAGE } from '@/features/home/constants';
+import {
+  getProductCollection,
+  HERO_PRODUCTS_LIMIT,
+} from '@/features/product-collections';
 import { getProducts } from '@/features/products';
 import ReelsSection from '@/features/reels/client/reels-section';
 import { getReels, REELS_HOME_PER_PAGE } from '@/features/reels';
 import getSession from '@/lib/get-session';
 import type { Pagination } from '@/types';
+import type { ProductCard } from '@/types/products';
 import { heroDummyContent } from '@/lib/hero-section-dummy-data';
 import { headers } from 'next/headers';
 import { getTranslations } from 'next-intl/server';
@@ -29,19 +34,29 @@ const fallbackFeaturedPagination: Pagination = {
   total: 0,
 };
 
+const emptyProducts: ProductCard[] = [];
+
 const HomePage: FC<PropsType> = async props => {
   const params = await props.params;
-
   const { locale } = params;
   const t = await getTranslations('home');
-
   const session = await getSession();
   const token = session?.user?.access_token ?? '';
   const headersList = await headers();
   const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
     headers: headersList,
   });
-  const [categories, productsResponse, reelsResponse] = await Promise.all([
+  const heroLimit = String(HERO_PRODUCTS_LIMIT);
+  const heroParams = { limit: heroLimit };
+  const [
+    categories,
+    productsResponse,
+    reelsResponse,
+    trendyResponse,
+    latestResponse,
+    saleResponse,
+    mostViewedResponse,
+  ] = await Promise.all([
     getCategories(locale, request),
     getProducts(
       { per_page: String(FEATURED_PRODUCTS_PER_PAGE), page: '1' },
@@ -55,12 +70,31 @@ const HomePage: FC<PropsType> = async props => {
       request,
       token
     ),
+    getProductCollection('featured', heroParams, locale, request, token),
+    getProductCollection('latest', heroParams, locale, request, token),
+    getProductCollection(
+      'on-sale',
+      {
+        ...heroParams,
+        page: '1',
+        sort_by: 'discount',
+      },
+      locale,
+      request,
+      token
+    ),
+
+    getProductCollection('most-viewed', heroParams, locale, request, token),
   ]);
+
   const products = productsResponse.ok ? productsResponse.data.products : [];
+
   const featuredPagination = productsResponse.ok
     ? productsResponse.data.pagination
     : fallbackFeaturedPagination;
+
   const reels = reelsResponse.ok ? reelsResponse.data.reels : [];
+
   const homeCategories = categories.map(category => ({
     id: category.id,
     name: category.name,
@@ -69,34 +103,46 @@ const HomePage: FC<PropsType> = async props => {
     parents_slugs: [],
   }));
 
+  const trendyProducts = trendyResponse.ok
+    ? trendyResponse.data.products
+    : emptyProducts;
+
+  const latestProducts = latestResponse.ok
+    ? latestResponse.data.products
+    : emptyProducts;
+
+  const saleProducts = saleResponse.ok
+    ? saleResponse.data.products
+    : emptyProducts;
+
+  const mostViewedProducts = mostViewedResponse.ok
+    ? mostViewedResponse.data.products
+    : emptyProducts;
+
   return (
     <PageWrapper>
       <h1 className='sr-only'>{t('page-heading')}</h1>
+
       <HeroSection
         content={heroDummyContent}
-        bestSellingProducts={products}
-        highlightedProducts={products}
-        discounts={null}
-        collectionsCategories={homeCategories.slice(0, 4)}
+        trendyProducts={trendyProducts}
+        saleProducts={saleProducts}
+        latestProducts={latestProducts}
+        mostViewedProducts={mostViewedProducts}
       />
+
       <ReelsSection reels={reels} />
+
       <SectionWrapper className='bg-transparent py-0!'>
         <CategoriesCarousel categories={homeCategories} />
       </SectionWrapper>
+
       <FeaturedProducts
         key={locale}
         locale={locale}
         initialProducts={products}
         initialPagination={featuredPagination}
       />
-
-      {/* <RecentlyViewed
-        className={cn("mt-16", sectionWrapperClassName)}
-        isLoggedIn={isLoggedIn}
-        token={
-          session && session.user ? session.user.access_token : userToken
-        }
-      /> */}
     </PageWrapper>
   );
 };

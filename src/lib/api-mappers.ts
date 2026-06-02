@@ -1,12 +1,11 @@
 import type { ApiMetaPagination, Pagination } from '@/types';
-import type { ApiCategory } from '@/types/categories';
+import type { ApiProductComment, ProductComment } from '@/types/product-social';
 import type {
   ApiProduct,
   GetProductDetailsResponse,
   GetProductsResponse,
   ProductCard,
 } from '@/types/products';
-import type { ApiProductComment, ProductComment } from '@/types/product-social';
 import type { ApiReview, GetReviewsResponse } from '@/types/reviews';
 
 // Converts the API `meta` pagination shape into the legacy pagination contract used by product lists.
@@ -28,6 +27,10 @@ export function mapApiPagination(
     per_page: meta.per_page,
     total: meta.total,
   };
+}
+
+export function mapApiProductList(products: ApiProduct[]): ProductCard[] {
+  return products.map(mapApiProduct);
 }
 
 // Converts the new product API shape into the existing ProductCard contract.
@@ -116,7 +119,9 @@ export function normalizeProductLikes(data: {
   };
 }
 
-export function mapApiProductComment(comment: ApiProductComment): ProductComment {
+export function mapApiProductComment(
+  comment: ApiProductComment
+): ProductComment {
   return {
     id: comment.id,
     body: comment.body,

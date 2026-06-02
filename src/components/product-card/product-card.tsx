@@ -34,7 +34,7 @@ const ProductCard: FC<PropsType> = ({
       {/* ── Image zone ── */}
       <div className='relative overflow-hidden rounded-xl'>
         {/* Clickable image → product page */}
-        <Wrapper href={`/products/${product.slug}`} tabIndex={-1} aria-hidden>
+        <Wrapper href={`/products/${product.id}`} tabIndex={-1} aria-hidden>
           <ProductImage product={product} />
         </Wrapper>
 
@@ -50,7 +50,7 @@ const ProductCard: FC<PropsType> = ({
 
       {/* ── Info zone ── */}
       <div className='flex flex-1 flex-col'>
-        <Wrapper href={`/products/${product.slug}`}>
+        <Wrapper href={`/products/${product.id}`}>
           <ProductInfo product={product} />
         </Wrapper>
         <ProductSocialStats product={product} />

@@ -1,26 +1,17 @@
-import { useTranslations } from 'next-intl';
 import { HeroSlider } from './hero-slider';
 import { QuadCard } from './quad-card';
-import { TopRatedCard } from './top-rated-card';
 import type { HeroSectionProps } from './hero-section-types';
+import { PRODUCT_COLLECTION_SEE_MORE } from '@/features/product-collections';
+import { getTranslations } from 'next-intl/server';
 
-export function HeroSection({
+export async function HeroSection({
   content,
-  bestSellingProducts,
-  highlightedProducts,
-  discounts,
-  collectionsCategories,
+  trendyProducts,
+  saleProducts,
+  latestProducts,
+  mostViewedProducts,
 }: HeroSectionProps) {
-  const t = useTranslations();
-  const topRatedProduct =
-    highlightedProducts[4] ??
-    bestSellingProducts[4] ??
-    highlightedProducts[1] ??
-    bestSellingProducts[1] ??
-    highlightedProducts[0] ??
-    bestSellingProducts[0] ??
-    null;
-  const saleHref = discounts?.slug ? `/sale/${discounts.slug}` : '/sale';
+  const t = await getTranslations();
 
   return (
     <section className='relative w-full'>
@@ -32,25 +23,31 @@ export function HeroSection({
             <QuadCard
               variant='trendy'
               title={t('Trendy')}
-              products={highlightedProducts}
-              seeMoreHref='/'
+              products={trendyProducts}
+              seeMoreHref={PRODUCT_COLLECTION_SEE_MORE.featured}
               seeMoreLabel={t('see-more')}
             />
             <QuadCard
-              variant='best-selling'
-              title={t('best-sellers')}
-              products={bestSellingProducts}
-              seeMoreHref={saleHref}
+              variant='sale'
+              title={t('sale')}
+              products={saleProducts}
+              seeMoreHref={PRODUCT_COLLECTION_SEE_MORE['on-sale']}
               seeMoreLabel={t('see-more')}
             />
             <QuadCard
-              variant='collections'
+              variant='latest'
               title={t('new-arrivals')}
-              categories={collectionsCategories}
-              seeMoreHref='/new-arrivals'
+              products={latestProducts}
+              seeMoreHref={PRODUCT_COLLECTION_SEE_MORE.latest}
               seeMoreLabel={t('see-more')}
             />
-            <TopRatedCard product={topRatedProduct} />
+            <QuadCard
+              variant='most-viewed'
+              title={t('most-viewed')}
+              products={mostViewedProducts}
+              seeMoreHref={PRODUCT_COLLECTION_SEE_MORE['most-viewed']}
+              seeMoreLabel={t('see-more')}
+            />
           </div>
         </div>
       </div>

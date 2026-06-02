@@ -5,6 +5,7 @@ import SectionWrapper, {
   sectionWrapperClassName,
 } from "@/components/section-wrapper";
 import { SubCategoryProducts } from "@/features/categories";
+import { CollectionPageHeader } from "@/features/product-collections/components/collection-page-header";
 import getSession from "@/lib/get-session";
 import { cookies } from "next/headers";
 import { getTranslations } from "next-intl/server";
@@ -32,13 +33,12 @@ const NewArrivalsCategoryPage: FC<PropsType> = async (props) => {
     const t = await getTranslations();
     return (
       <PageWrapper>
-        <SectionWrapper className="max-w-screen-xl space-y-8 px-2.5 py-4 md:px-4 md:py-4 lg:px-6 lg:py-8 xl:px-7">
+        <SectionWrapper className="space-y-8! md:py-4 lg:py-8">
           <CustomBreadcrumb activeLink={t("new-arrivals")} links={[]} />
-          <div className="w-full space-y-4 text-primary">
-            <h1 className="text-xl font-bold text-primary sm:text-3xl md:text-4xl">
-              {t("new-arrivals")}
-            </h1>
-          </div>
+          <CollectionPageHeader
+            title={t("new-arrivals")}
+            description={t("new-arrivals-description")}
+          />
           <Suspense
             fallback={
               <p className='text-muted-foreground text-sm'>

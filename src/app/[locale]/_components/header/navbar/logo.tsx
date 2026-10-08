@@ -15,7 +15,8 @@ const Logo = () => {
         priority
         width={200}
         height={56}
-        className="h-8 lg:h-10 w-auto max-w-[min(200px,42vw)] object-contain object-start"
+        className="h-8 max-w-[min(200px,42vw)] object-contain object-start lg:h-10"
+        style={{ width: 'auto' }}
       />
     </Link>
   );

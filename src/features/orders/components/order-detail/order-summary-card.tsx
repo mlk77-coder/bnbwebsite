@@ -1,3 +1,4 @@
+import CartItemVariants from '@/features/cart/client/cart-item-variants';
 import CheckoutProductPrice from '@/features/checkout/client/checkout-product-price';
 import OrderDeliveryLabel from '@/features/orders/client/order-delivery-label';
 import OrderSubtotalLabel from '@/features/orders/client/order-subtotal-label';
@@ -68,9 +69,9 @@ const OrderSummaryCard = ({ order, t, itemQty, embedded = false }: Props) => {
                     sizes='64px'
                   />
                 </div>
-                <div className='min-w-0 flex-1 pt-0.5'>
+                <div className='min-w-0 flex-1 space-y-1.5 pt-0.5'>
                   <div className='flex items-start justify-between gap-3'>
-                    <span className='text-sm leading-snug font-medium capitalize'>
+                    <span className='font-body text-sm leading-snug font-medium tracking-normal capitalize'>
                       {line.quantity}&nbsp;&times;&nbsp;
                       <span>{line.product.name}</span>
                     </span>
@@ -79,6 +80,12 @@ const OrderSummaryCard = ({ order, t, itemQty, embedded = false }: Props) => {
                       quantity={line.quantity}
                     />
                   </div>
+                  {line.variant?.attributes?.length ? (
+                    <CartItemVariants
+                      attributes={line.variant.attributes}
+                      compact
+                    />
+                  ) : null}
                 </div>
               </div>
             </li>

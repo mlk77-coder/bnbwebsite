@@ -24,8 +24,10 @@ const iconWrapClassName = cn(
   'group-hover:shadow-sm'
 );
 
-const arrowClassName =
-  'size-3.5 transition-transform duration-300 group-hover:translate-x-0.5';
+const arrowClassName = cn(
+  'size-3.5 transition-transform duration-300',
+  'group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5'
+);
 
 type BaseProps = {
   label: ReactNode;

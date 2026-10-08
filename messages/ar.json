@@ -239,7 +239,9 @@
     "media-image-alt": "{name} — صورة {index}",
     "media-image-alt-single": "{name} — صورة المنتج",
     "thumbnail-alt": "{name} — معاينة {index}",
-    "add-to-cart-success-description": "تمت إضافة المنتج إلى السلة بنجاح"
+    "add-to-cart-success-description": "تمت إضافة المنتج إلى السلة بنجاح",
+    "select-variant": "اختر الخيارات",
+    "variant-unavailable": "هذا التوليف غير متوفر"
   },
   "product-social": {
     "like": "إعجاب",
@@ -369,7 +371,7 @@
   "select-your-location": "اختر عنوانك",
   "add-new-adress": "إضافة عنوان جديد",
   "you-don-t-have-any-orders-yet": "ليس لديك أي طلبات حتى الآن",
-  "orders": "الطلبيات",
+  "orders": "الطلبات",
   "choose-image": "اختر صورة",
   "sign-in": "تسجيل الدخول",
   "arabic": "العربية",

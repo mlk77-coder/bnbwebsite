@@ -13,17 +13,13 @@ const NotFoundUi = async () => {
   return (
     <PageWrapper className='flex flex-1 flex-col items-center justify-center'>
       <div className='space-y-2 text-center'>
-        <h1 className='text-orange text-3xl font-bold sm:text-4xl md:text-5xl'>
+        <h1 className='text-primary text-3xl font-bold sm:text-4xl md:text-5xl'>
           {t('not-found-title')}
         </h1>
-        <p className='text-orange text-lg md:text-2xl'>{t('not-found-subtitle')}</p>
+        <p className='text-primary text-lg md:text-2xl'>
+          {t('not-found-subtitle')}
+        </p>
       </div>
-      <Image
-        src='/error.svg'
-        alt={t('not-found-image-alt')}
-        width={900}
-        height={900}
-      />
       <Link
         className={cn(buttonVariants({ size: 'lg' }), 'uppercase')}
         href='/'

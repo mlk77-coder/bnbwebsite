@@ -11,8 +11,7 @@ import useToggleWishList from '@/features/products/client/hooks/use-toggle-wishl
 import Loader from '@/components/ui/loader';
 import { useTranslations } from 'next-intl';
 
-interface WishlistButtonProps
-  extends React.ComponentPropsWithoutRef<'button'> {}
+interface WishlistButtonProps extends React.ComponentPropsWithoutRef<'button'> {}
 
 const WishlistButton: FC<WishlistButtonProps> = ({ ...props }) => {
   const t = useTranslations();
@@ -20,10 +19,10 @@ const WishlistButton: FC<WishlistButtonProps> = ({ ...props }) => {
     <Button
       {...props}
       variant='ghost'
-      size='lg'
-      className='text-base w-full capitalize'
+      size='default'
+      className='h-11 w-full border text-sm capitalize'
     >
-      <Heart className='size-5 me-2' />
+      <Heart className='me-2 size-4' />
       {t('add-to-wishlist')}
     </Button>
   );
@@ -48,11 +47,11 @@ const WishToggleButton: FC<PropsType> = ({ session, id }) => {
         type='button'
         onClick={() => signIn()}
         className={cn(
-          buttonVariants({ variant: 'ghost', size: 'lg' }),
-          'text-base w-full border cursor-pointer'
+          buttonVariants({ variant: 'ghost', size: 'default' }),
+          'h-11 w-full cursor-pointer border text-sm'
         )}
       >
-        <Heart className='size-5 me-2' />
+        <Heart className='me-2 size-4' />
         {t('add-to-wishlist')}
       </button>
     );
@@ -66,15 +65,15 @@ const WishToggleButton: FC<PropsType> = ({ session, id }) => {
         disabled={isPendingWishList}
         onClick={handleToggleWishList}
         variant='ghost'
-        size='lg'
-        className='text-base border w-full'
+        size='default'
+        className='h-11 w-full border text-sm'
       >
         {isPendingWishList ? (
-          <Loader className='size-5 me-2' />
+          <Loader className='me-2 size-4' />
         ) : (
-          <Heart className='size-5 me-2' />
+          <Heart className='me-2 size-4' />
         )}
-        <span className='inline-block min-w-40'>{t('add-to-wishlist')}</span>
+        {t('add-to-wishlist')}
       </Button>
     );
   else
@@ -83,17 +82,15 @@ const WishToggleButton: FC<PropsType> = ({ session, id }) => {
         disabled={isPendingWishList}
         onClick={handleToggleWishList}
         variant='ghost'
-        size='lg'
-        className='text-base border w-full'
+        size='default'
+        className='h-11 w-full border text-sm'
       >
         {isPendingWishList ? (
-          <Loader className='size-5 me-2' />
+          <Loader className='me-2 size-4' />
         ) : (
-          <Heart className='size-5 fill-red-500 text-red-500 me-2' />
+          <Heart className='me-2 size-4 fill-red-500 text-red-500' />
         )}
-        <span className='inline-block min-w-40'>
-          {t('remove-from-wishlist')}
-        </span>
+        {t('remove-from-wishlist')}
       </Button>
     );
 };

@@ -1,7 +1,7 @@
 import type { OrderDetail } from '@/types/order';
 
-export const parseOrderMoney = (value: string) => {
-  const n = Number.parseFloat(value);
+export const parseOrderMoney = (value: string | number) => {
+  const n = typeof value === 'number' ? value : Number.parseFloat(value);
   return Number.isFinite(n) ? n : 0;
 };
 

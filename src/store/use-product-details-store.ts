@@ -1,23 +1,30 @@
+import type { CartVariantAttribute } from '@/types/cart';
 import { create } from 'zustand';
+
+type ProductDetailPreview = {
+  name: string;
+  image: string;
+  price: number;
+  salePrice?: number | null;
+  compareAtPrice?: number;
+};
 
 type Store = {
   productId: number;
   setProductId: (id: number) => void;
 
+  selectedVariantId: number | null;
+  setSelectedVariantId: (id: number | null) => void;
+
+  selectedVariantAttributes: CartVariantAttribute[];
+  setSelectedVariantAttributes: (attrs: CartVariantAttribute[]) => void;
+
   isProductAvailable: boolean;
   setIsProductAvailable: (isProductAvailable: boolean) => void;
 
-  productDetail: {
-    name: string;
-    image: string;
-    price: number;
-  };
+  productDetail: ProductDetailPreview;
 
-  setProductDetail: (product: {
-    name: string;
-    image: string;
-    price: number;
-  }) => void;
+  setProductDetail: (product: ProductDetailPreview) => void;
 
   quantity: number;
   setQuantity: (quantity: number) => void;
@@ -25,36 +32,44 @@ type Store = {
   reset: () => void;
 };
 
+const initialProductDetail: ProductDetailPreview = {
+  name: '',
+  image: '',
+  price: 0,
+  salePrice: null,
+  compareAtPrice: 0,
+};
+
 const useProductDetailsStore = create<Store>(set => ({
   productId: -1,
   setProductId: id => set({ productId: id }),
 
+  selectedVariantId: null,
+  setSelectedVariantId: id => set({ selectedVariantId: id }),
+
+  selectedVariantAttributes: [],
+  setSelectedVariantAttributes: attrs =>
+    set({ selectedVariantAttributes: attrs }),
+
   isProductAvailable: true,
   setIsProductAvailable: isProductAvailable => set({ isProductAvailable }),
 
-  productDetail: {
-    name: '',
-    image: '',
-    price: 0,
-  },
+  productDetail: initialProductDetail,
 
   setProductDetail: product => set({ productDetail: product }),
 
   quantity: 1,
-  setQuantity: quantity => set({ quantity: quantity }),
+  setQuantity: quantity => set({ quantity }),
 
   reset: () =>
-    set(state => ({
-      ...state,
-      productDetail: {
-        name: '',
-        image: '',
-        price: 0,
-      },
+    set({
+      productDetail: initialProductDetail,
       productId: -1,
+      selectedVariantId: null,
+      selectedVariantAttributes: [],
       quantity: 1,
       isProductAvailable: true,
-    })),
+    }),
 }));
 
 export default useProductDetailsStore;

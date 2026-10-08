@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "generate:og": "node scripts/generate-og-image.mjs"
+    "generate:og": "node scripts/generate-og-image.mjs",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@fontsource/cairo": "^5.2.7",
@@ -31,7 +32,7 @@
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slider": "^1.2.1",
-    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-slot": "^1.4.0",
     "@radix-ui/react-switch": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
     "@radix-ui/react-toggle": "^1.1.0",
@@ -66,7 +67,7 @@
     "react-dom": "^19.2.0",
     "react-fast-marquee": "^1.6.5",
     "react-hook-form": "^7.75.0",
-    "react-photo-view": "^1.2.6",
+    "react-photo-view": "^1.2.7",
     "react-star-ratings": "^2.3.0",
     "request-ip": "^3.3.0",
     "rtl-detect": "^1.1.2",
@@ -97,6 +98,7 @@
     "@types/uuid": "^10.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
+    "patch-package": "^8.0.1",
     "postcss": "^8",
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.7.2",

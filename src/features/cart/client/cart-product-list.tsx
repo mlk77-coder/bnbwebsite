@@ -1,16 +1,15 @@
-"use client";
+'use client';
 
-import { Cart } from "@/types/cart";
-import useUpdateCart from "@/features/cart/client/hooks/use-update-cart";
-import CartProductCard from "@/features/cart/client/cart-product-card";
-import Loader from "@/components/ui/loader";
-import { useTranslations } from "next-intl";
-import Image from "next/image";
-import { Link } from "@/navigation";
-import { ShoppingBag, Undo2Icon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import ClearCartButton from "@/features/cart/client/clear-cart-button";
-import { Fragment } from "react";
+import { Cart } from '@/types/cart';
+import useUpdateCart from '@/features/cart/client/hooks/use-update-cart';
+import CartProductCard from '@/features/cart/client/cart-product-card';
+import Loader from '@/components/ui/loader';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/navigation';
+import { ShoppingBag, Undo2Icon } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import ClearCartButton from '@/features/cart/client/clear-cart-button';
+import { Fragment } from 'react';
 
 const CartProductsList = ({
   cart,
@@ -27,73 +26,66 @@ const CartProductsList = ({
     isLoggedIn
   );
   const t = useTranslations();
-  const tCart = useTranslations('cart');
   if (isPending)
     return (
-      <div className="flex min-h-80 w-full flex-col items-center justify-center gap-4 rounded-3xl border border-primary/10 bg-primary/5">
-        <span className="flex size-16 items-center justify-center rounded-full bg-white shadow-lg shadow-primary/10">
-          <Loader size="lg" className="text-primary" />
+      <div className='border-primary/10 bg-primary/5 flex min-h-80 w-full flex-col items-center justify-center gap-4 rounded-3xl border'>
+        <span className='shadow-primary/10 flex size-16 items-center justify-center rounded-full bg-white shadow-lg'>
+          <Loader size='lg' className='text-primary' />
         </span>
-        <div className="text-center">
-          <p className="text-lg font-semibold text-primary">
-            {t("cart.loading")}
+        <div className='text-center'>
+          <p className='text-primary text-lg font-semibold'>
+            {t('cart.loading')}
           </p>
-          <p className="text-sm text-muted-foreground">
-            {t("cart.loading-description")}
+          <p className='text-muted-foreground text-sm'>
+            {t('cart.loading-description')}
           </p>
         </div>
       </div>
     );
   if (isError)
     return (
-      <p className="w-full text-center text-primary text-lg">
-        {t("failed-to-fetch-cart")}
+      <p className='text-primary w-full text-center text-lg'>
+        {t('failed-to-fetch-cart')}
       </p>
     );
   return (
     <Fragment>
       {isFetching ? (
-        <div className="absolute inset-x-0 top-0 z-20 flex justify-center pt-3">
-          <div className="flex items-center gap-2 rounded-full border border-primary/10 bg-white/90 px-4 py-2 text-sm font-medium text-primary shadow-lg shadow-primary/10 backdrop-blur">
-            <Loader size="xs" className="text-primary" />
-            {t("cart.updating")}
+        <div className='absolute inset-x-0 top-0 z-20 flex justify-center pt-3'>
+          <div className='border-primary/10 text-primary shadow-primary/10 flex items-center gap-2 rounded-full border bg-white/90 px-4 py-2 text-sm font-medium shadow-lg backdrop-blur'>
+            <Loader size='xs' className='text-primary' />
+            {t('cart.updating')}
           </div>
         </div>
       ) : null}
       {data.items.length === 0 ? (
-        <div className="w-full flex flex-col capitalize items-center text-xl rounded p-4 gap-20">
-          <Image
-            src="/empty-cart.svg"
-            alt={tCart('empty-cart-image-alt')}
-            width={600}
-            height={400}
-          />
-          <p className="text-2xl font-semibold text-primary">
-            {t("cart.your-cart-is-empty")}
+        <div className='flex w-full flex-col items-center gap-20 rounded p-4 text-xl capitalize'>
+          <p className='text-primary text-2xl font-semibold'>
+            {t('cart.your-cart-is-empty')}
           </p>
           <Link
-            href="/"
+            href='/'
             className={cn(
-              " flex gap-1.5 text-primary items-center relative before:content-[''] before:absolute before:-bottom-0.5 before:w-full before:h-px before:bg-primary hover:before:hidden"
+              "text-primary before:bg-primary relative flex items-center gap-1.5 before:absolute before:-bottom-0.5 before:h-px before:w-full before:content-[''] hover:before:hidden"
             )}
           >
             <Undo2Icon size={16} />
-            {t("go-home")}
+            {t('go-home')}
           </Link>
         </div>
       ) : (
         <Fragment>
-          <div className="flex flex-col gap-4 rounded-3xl border border-primary/10 bg-white p-5 shadow-sm shadow-primary/5 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-3">
-              <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                <ShoppingBag className="size-5" />
+          <div className='border-primary/10 shadow-primary/5 flex flex-col gap-4 rounded-3xl border bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between'>
+            <div className='flex items-center gap-3'>
+              <span className='bg-primary/10 text-primary flex size-12 items-center justify-center rounded-2xl'>
+                <ShoppingBag className='size-5' />
               </span>
               <div>
-                <h1 className="text-2xl font-bold text-primary sm:text-3xl">
-                  {t("your-cart")}
+                <h1 className='text-primary text-2xl font-bold sm:text-3xl'>
+                  {t('your-cart')}
                 </h1>
-                <p className="text-sm text-muted-foreground">
-                  {t("cart.products-count", {
+                <p className='text-muted-foreground text-sm'>
+                  {t('cart.products-count', {
                     count: data.items.reduce(
                       (sum, item) => sum + item.quantity,
                       0
@@ -104,8 +96,8 @@ const CartProductsList = ({
             </div>
             <ClearCartButton />
           </div>
-          <div className="overflow-hidden rounded-xl border border-gray-100 bg-white md:space-y-4 md:overflow-visible md:rounded-none md:border-0 md:bg-transparent">
-            {data.items.map((item) => (
+          <div className='overflow-hidden rounded-xl border border-gray-100 bg-white md:space-y-4 md:overflow-visible md:rounded-none md:border-0 md:bg-transparent'>
+            {data.items.map(item => (
               <CartProductCard
                 key={`${item.id}-${item.product.id}`}
                 item={item}

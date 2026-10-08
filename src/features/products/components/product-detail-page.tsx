@@ -11,7 +11,7 @@ import { cookies, headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { FC } from 'react';
 import RecentlyViewed from '@/app/[locale]/_components/recently-viewed';
-import ProductImagesSlider from '@/features/products/client/product-images-slider';
+import ProductGallery from '@/features/products/client/product-gallery';
 import ProductPrice from '@/features/products/client/product-price';
 import AddToCartButton from '@/features/products/client/add-to-cart-button';
 import ProductBreadcrumb from '@/features/products/components/product-breadcrumb';
@@ -23,6 +23,8 @@ import { getProductComments } from '@/features/products/api/get-product-comments
 import { getProductLikes } from '@/features/products/api/get-product-likes';
 import { normalizeCommentsData } from '@/features/products/lib/normalize-comments-data';
 import ProductSocialPanel from '@/features/products/components/product-social-panel';
+import ProductVariantSelector from '@/features/products/client/product-variant-selector';
+import ProductDetailsSpecs from '@/features/products/components/product-details';
 
 type PropsType = {
   params: Promise<{ locale: string; slug: string }>;
@@ -51,7 +53,6 @@ const ProductDetailPage: FC<PropsType> = async props => {
   );
   if (!response.ok) notFound();
   const product = response.data;
-
   const [likesResponse, commentsResponse] = await Promise.all([
     getProductLikes(product.id, locale, token, request),
     getProductComments(product.id, locale, token, request),
@@ -74,33 +75,41 @@ const ProductDetailPage: FC<PropsType> = async props => {
         <ProductBreadcrumb category={product.category} />
         <div className='relative grid size-full grid-cols-1 items-start gap-6 md:grid-cols-10 md:gap-12'>
           <div className='flex flex-col gap-10 md:sticky md:top-20 md:col-span-5'>
-            <ProductImagesSlider
+            <ProductGallery
               name={product.name}
               images={product.images}
               mainImage={product.image}
             />
           </div>
-          <div className='space-y-5 md:col-span-5'>
-            <div>
-              <h1 className='text-primary text-xl font-medium'>
+          <div className='space-y-4 md:col-span-5'>
+            <div className='space-y-2'>
+              <h1 className='font-body text-primary text-xl font-medium tracking-normal'>
                 {product.name}
               </h1>
+              <ProductPrice defaultProduct={product} />
+              <div
+                className='text-muted-foreground text-sm leading-relaxed max-md:hidden'
+                dangerouslySetInnerHTML={{
+                  __html: cleanDescription(product.description || ''),
+                }}
+              />
             </div>
-            <ProductPrice defaultProduct={product} />
-            <div
-              className='max-md:hidden'
-              dangerouslySetInnerHTML={{
-                __html: cleanDescription(product.description || ''),
-              }}
-            />
-            <Separator />
-            <div className='space-y-3'>
-              <div className='flex items-center justify-start gap-3'>
-                <h3 className='text-primary font-bold'>{t('quantity')}:</h3>
-                <ProductSelectQuantity />
+            <Separator className='my-1' />
+            <div className='pt-3'>
+              <ProductVariantSelector product={product} />
+            </div>
+            <div className='flex items-center gap-2.5'>
+              <span className='text-primary text-sm font-semibold'>
+                {t('quantity')}:
+              </span>
+              <ProductSelectQuantity />
+            </div>
+            {product.specifications ? (
+              <div className='max-md:hidden'>
+                <ProductDetailsSpecs details={product.specifications} />
               </div>
-            </div>
-            <div className='flex w-full flex-col items-center justify-center gap-3 lg:flex-row'>
+            ) : null}
+            <div className='flex w-full flex-col gap-2 sm:flex-row sm:items-stretch'>
               <AddToCartButton product={product} />
               <WishToggleButton session={session} id={product.id} />
             </div>

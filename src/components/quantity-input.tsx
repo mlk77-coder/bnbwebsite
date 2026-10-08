@@ -1,39 +1,46 @@
-"use client";
+'use client';
 
-import { cn } from "@/lib/utils";
-import { Minus, Plus } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { FC } from "react";
-import { Button } from "./ui/button";
+import { cn } from '@/lib/utils';
+import { Minus, Plus } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { FC } from 'react';
+import { Button } from './ui/button';
 
 type PropsType = {
   value: number;
   setValue: (quantity: number) => void;
-  size?: "default" | "sm";
+  size?: 'default' | 'sm';
 };
 
 const QuantityInput: FC<PropsType> = ({
   setValue,
   value,
-  size = "default",
+  size = 'default',
 }) => {
   const t = useTranslations();
+  const isSm = size === 'sm';
+
   return (
-    <div className="flex justify-start items-center gap-2">
+    <div
+      className={cn(
+        'flex items-center justify-start',
+        isSm ? 'gap-1' : 'gap-2'
+      )}
+    >
       <Button
         onClick={() => setValue(value - 1)}
         disabled={value === 1}
-        className={cn(size === "sm" ? "size-7" : "")}
-        type="button"
-        size="icon"
+        className={cn(isSm && 'size-6 rounded-md')}
+        type='button'
+        size='icon'
       >
-        <span className="sr-only">{t('decrease')}</span>
-        <Minus className={cn(size === "sm" ? "size-4" : "")} />
+        <span className='sr-only'>{t('decrease')}</span>
+        <Minus className={cn(isSm ? 'size-3' : undefined)} />
       </Button>
       <p
         className={cn(
-          "size-10 rounded flex border border-foreground justify-center items-center select-none",
-          size === "sm" ? "text-sm" : ""
+          'border-foreground/80 flex items-center justify-center border select-none',
+          isSm ? 'size-6 rounded-md text-xs' : 'size-10 rounded'
         )}
       >
         {value}
@@ -43,12 +50,12 @@ const QuantityInput: FC<PropsType> = ({
           if (value < 10) setValue(value + 1);
         }}
         disabled={value === 10}
-        className={cn(size === "sm" ? "size-7" : "")}
-        size="icon"
-        type="button"
+        className={cn(isSm && 'size-6 rounded-md')}
+        size='icon'
+        type='button'
       >
-        <span className="sr-only">{t('increase')}</span>
-        <Plus className={cn(size === "sm" ? "size-4" : "")} />
+        <span className='sr-only'>{t('increase')}</span>
+        <Plus className={cn(isSm ? 'size-3' : undefined)} />
       </Button>
     </div>
   );

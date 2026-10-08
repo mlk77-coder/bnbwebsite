@@ -24,7 +24,7 @@ const ProductInfo: FC<ProductInfoProps> = ({ product }) => {
       <p className='truncate text-sm leading-snug font-medium'>
         {product.name}
       </p>
-      <div className='flex items-center gap-2 text-sm'>
+      <div className='flex items-center gap-1.5 text-sm'>
         {salePrice ? (
           <>
             <span className='text-orange font-semibold'>{salePrice}</span>

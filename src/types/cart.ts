@@ -8,11 +8,26 @@ export type CartProduct = {
   stock_quantity: number;
 };
 
+export type CartVariantAttribute = {
+  attribute_name: string;
+  value: string;
+};
+
+/** Cart line variant — stock_quantity is never shown in the UI. */
+export type CartVariant = {
+  id: number;
+  sku: string;
+  price: number;
+  sale_price?: number | null;
+  attributes: CartVariantAttribute[];
+};
+
 export type CartItem = {
   id: number;
   product: CartProduct;
   quantity: number;
   subtotal: number;
+  variant?: CartVariant | null;
 };
 
 export type CartSummary = {
@@ -30,6 +45,7 @@ export type Cart = {
 export type AddToCartBody = {
   product_id: number;
   quantity: number;
+  variant_id?: number;
 };
 
 export type UpdateCartItemBody = {

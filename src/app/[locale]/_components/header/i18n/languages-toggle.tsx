@@ -118,7 +118,8 @@ const LanguagesToggle: FC<PropsType> = ({ inMobileMenu = false }) => {
               className={cn(
                 "cursor-pointer p-3 rounded-xl transition-all duration-200",
                 "hover:bg-gray-50 focus:bg-gray-50",
-                "flex items-center gap-3",
+                "flex items-center gap-3 pl-3",
+                "[&>span:first-child]:hidden",
                 locale === lang.code && "bg-primary/5 hover:bg-primary/10"
               )}
             >

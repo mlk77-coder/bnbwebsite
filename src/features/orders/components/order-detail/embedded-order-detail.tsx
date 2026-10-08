@@ -1,6 +1,6 @@
 import { Separator } from '@/components/ui/separator';
 import { Link } from '@/navigation';
-import { ArrowLeft, PackageCheck } from 'lucide-react';
+import { ArrowRight, PackageCheck } from 'lucide-react';
 import OrderInfoSections from './order-info-sections';
 import OrderSummaryCard from './order-summary-card';
 import type { OrderDetailContentProps } from './types';
@@ -33,8 +33,8 @@ const EmbeddedOrderDetail = ({
           href='/orders'
           className='text-primary hover:bg-primary/5 border-primary/15 inline-flex items-center gap-1.5 self-start rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors'
         >
-          <ArrowLeft className='size-4' aria-hidden />
           {t('orders')}
+          <ArrowRight className='size-4 rtl:rotate-180' aria-hidden />
         </Link>
       </div>
 

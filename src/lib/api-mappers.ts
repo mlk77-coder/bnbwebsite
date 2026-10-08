@@ -2,9 +2,13 @@ import type { ApiMetaPagination, Pagination } from '@/types';
 import type { ApiProductComment, ProductComment } from '@/types/product-social';
 import type {
   ApiProduct,
+  ApiProductVariant,
+  ApiProductVariantAttribute,
   GetProductDetailsResponse,
   GetProductsResponse,
   ProductCard,
+  ProductVariant,
+  ProductVariantAttribute,
 } from '@/types/products';
 import type { ApiReview, GetReviewsResponse } from '@/types/reviews';
 
@@ -40,7 +44,7 @@ export function mapApiProduct(product: ApiProduct): ProductCard {
   return {
     id: product.id,
     name: product.name,
-    slug: String(product.id),
+    slug: product.slug || String(product.id),
     description: product.description,
     price: product.price,
     sale_price: product.sale_price,
@@ -58,17 +62,48 @@ export function mapApiProduct(product: ApiProduct): ProductCard {
   };
 }
 
+function mapVariantAttribute(
+  attr: ApiProductVariantAttribute & {
+    name?: string;
+    type?: string | null;
+  }
+): ProductVariantAttribute {
+  return {
+    id: attr.id,
+    attributeId: attr.attribute_id,
+    name: attr.attribute_name || attr.name || '',
+    type: attr.attribute_type ?? attr.type ?? null,
+    value: attr.value,
+  };
+}
+
+function mapApiProductVariant(variant: ApiProductVariant): ProductVariant {
+  return {
+    id: variant.id,
+    sku: variant.sku,
+    price: variant.price,
+    sale_price: variant.sale_price,
+    is_active: variant.is_active,
+    // stock_quantity stays server-side only — UI gets a boolean.
+    is_in_stock: variant.is_active && variant.stock_quantity > 0,
+    images: variant.images ?? [],
+    attributes: (variant.attributes ?? []).map(mapVariantAttribute),
+  };
+}
+
 // Adapts `/products/{id}` to the product detail contract used by the page UI.
 export function mapApiProductDetails(
   product: ApiProduct
 ): GetProductDetailsResponse {
-  const productCard = mapApiProduct(product);
+  const { stock_quantity: _stock, ...productCard } = mapApiProduct(product);
 
   return {
     ...productCard,
     description: product.description || '',
     quantity_in_cart: 0,
     created_at: new Date().toISOString(),
+    variants: (product.variants ?? []).map(mapApiProductVariant),
+    specifications: product.specifications ?? null,
   };
 }
 

@@ -1,4 +1,5 @@
-import type { ApiPaginatedData } from "@/types";
+import type { ApiPaginatedData } from '@/types';
+import type { CartVariant } from '@/types/cart';
 
 /** Row from GET `/orders` */
 export type OrderSummary = {
@@ -21,8 +22,9 @@ export type OrderDetailItem = {
   id: number;
   product: OrderListItemProduct;
   quantity: number;
-  price: string;
-  subtotal: string;
+  price: string | number;
+  subtotal: string | number;
+  variant?: CartVariant | null;
 };
 
 export type OrderDetailAddress = {

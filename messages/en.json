@@ -239,7 +239,9 @@
     "media-image-alt": "{name} — image {index}",
     "media-image-alt-single": "{name} — product image",
     "thumbnail-alt": "{name} — thumbnail {index}",
-    "add-to-cart-success-description": "Item added to your cart successfully"
+    "add-to-cart-success-description": "Item added to your cart successfully",
+    "select-variant": "Select options",
+    "variant-unavailable": "This combination is not available"
   },
   "product-social": {
     "like": "Like",

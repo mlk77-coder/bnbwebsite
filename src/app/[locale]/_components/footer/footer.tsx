@@ -101,7 +101,8 @@ const Footer = ({ socialLinks }: { socialLinks: SocialLink[] }) => {
                 alt={tHome('logo-alt')}
                 width={150}
                 height={40}
-                className='h-10 w-auto object-contain'
+                className='h-10 object-contain'
+                style={{ width: 'auto' }}
               />
             </Link>
             <p className='max-w-xs text-sm leading-relaxed text-gray-600'>

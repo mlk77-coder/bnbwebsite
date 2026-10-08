@@ -9,7 +9,6 @@ import { Link } from '@/navigation';
 import { Undo2Icon } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import { cookies, headers } from 'next/headers';
-import Image from 'next/image';
 import { FC, Fragment } from 'react';
 
 type PropsType = {
@@ -22,7 +21,6 @@ const CartPage: FC<PropsType> = async props => {
 
   const cookieStore = await cookies();
   const t = await getTranslations();
-  const tCart = await getTranslations('cart');
   const session = await getSession();
   const headersList = await headers();
   const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
@@ -34,7 +32,6 @@ const CartPage: FC<PropsType> = async props => {
   const token = isLoggedIn ? session?.user?.access_token || '' : user_token;
 
   const response = await getCart(token, locale, isLoggedIn, request);
-
   const cartItems = response.data?.data?.items || [];
   const hasItems = cartItems.length > 0;
 
@@ -50,12 +47,6 @@ const CartPage: FC<PropsType> = async props => {
       >
         {!hasItems ? (
           <div className='flex w-full flex-col items-center gap-5 rounded p-4 text-xl capitalize'>
-            <Image
-              src='/empty-cart.svg'
-              alt={tCart('empty-cart-image-alt')}
-              width={600}
-              height={400}
-            />
             <p className='text-primary text-2xl font-semibold'>
               {t('cart.your-cart-is-empty')}
             </p>

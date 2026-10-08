@@ -6,7 +6,7 @@ import useProductDetailsStore from '@/store/use-product-details-store';
 const ProductSelectQuantity = () => {
   const quantity = useProductDetailsStore(state => state.quantity);
   const setQuantity = useProductDetailsStore(state => state.setQuantity);
-  return <QuantityInput value={quantity} setValue={setQuantity} />;
+  return <QuantityInput value={quantity} setValue={setQuantity} size='sm' />;
 };
 
 export default ProductSelectQuantity;

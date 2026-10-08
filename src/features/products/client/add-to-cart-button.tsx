@@ -10,7 +10,7 @@ import useProductDetailsStore from '@/store/use-product-details-store';
 import { AddToCartBody } from '@/types/cart';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { FC, Fragment, useEffect, useState } from 'react';
+import { FC, Fragment, useState } from 'react';
 import AddToCartErrorDialog from '@/features/products/client/add-to-cart-error-dialog';
 import AddToCartSuccessDialog from '@/features/products/client/add-to-cart-success-dialog';
 import { ProductDetails } from '@/types/products';
@@ -25,23 +25,19 @@ const AddToCartButton: FC<PropsType> = ({ product }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const quantity = useProductDetailsStore(state => state.quantity);
+  const selectedVariantId = useProductDetailsStore(
+    state => state.selectedVariantId
+  );
+  const isProductAvailable = useProductDetailsStore(
+    state => state.isProductAvailable
+  );
   const incrementProductsCount = useCartCountStore(
     state => state.incrementProductsCount
   );
-  const setProductDetail = useProductDetailsStore(
-    state => state.setProductDetail
-  );
 
-  useEffect(() => {
-    setProductDetail({
-      name: product.name,
-      image: product.image,
-      price:
-        product.sale_price && product.sale_price < product.price
-          ? product.sale_price
-          : product.price,
-    });
-  }, [product, setProductDetail]);
+  const hasVariants = product.variants.length > 0;
+  const canAdd =
+    isProductAvailable && (!hasVariants || selectedVariantId != null);
 
   const t = useTranslations();
   const { mutate, isPending, isError, reset, isSuccess } = useMutation({
@@ -71,22 +67,28 @@ const AddToCartButton: FC<PropsType> = ({ product }) => {
       setErrorMessage(message);
     },
   });
+
   return (
     <Fragment>
       <Button
-        disabled={!product.is_available || isPending}
+        disabled={!canAdd || isPending}
         onClick={() =>
           mutate({
             quantity,
             product_id: product.id,
+            ...(selectedVariantId != null
+              ? { variant_id: selectedVariantId }
+              : {}),
           })
         }
-        size='lg'
-        className='w-full uppercase'
+        size='default'
+        className='h-11 w-full text-sm font-semibold tracking-wide uppercase'
       >
-        {product.is_available
+        {canAdd
           ? t('cart.add-to-cart-button')
-          : t('this-item-is-out-of-stock')}
+          : hasVariants && selectedVariantId == null
+            ? t('product.select-variant')
+            : t('this-item-is-out-of-stock')}
       </Button>
       <AddToCartErrorDialog
         errorMessage={errorMessage}

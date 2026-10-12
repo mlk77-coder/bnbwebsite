@@ -1,10 +1,14 @@
 import PageWrapper from '@/components/page-wrapper';
-import SectionWrapper from '@/components/section-wrapper';
 import { getCategories } from '@/features/categories';
+import { DealsRail } from '@/features/home/client/deals-rail';
 import { CategoriesCarousel } from '@/features/home/components/categories-section/categories-carousel';
 import { FeaturedProducts } from '@/features/home/components/featured-collection-section/featured-products';
 import { HeroSection } from '@/features/home/components/hero-section';
-import { FEATURED_PRODUCTS_PER_PAGE } from '@/features/home/constants';
+import {
+  FEATURED_PRODUCTS_PER_PAGE,
+  HOME_DEALS_LIMIT,
+  HOME_SECTION_SPACING,
+} from '@/features/home/constants';
 import {
   getProductCollection,
   HERO_PRODUCTS_LIMIT,
@@ -75,7 +79,8 @@ const HomePage: FC<PropsType> = async props => {
     getProductCollection(
       'on-sale',
       {
-        ...heroParams,
+        limit: String(HOME_DEALS_LIMIT),
+        per_page: String(HOME_DEALS_LIMIT),
         page: '1',
         sort_by: 'discount',
       },
@@ -129,13 +134,14 @@ const HomePage: FC<PropsType> = async props => {
         saleProducts={saleProducts}
         latestProducts={latestProducts}
         mostViewedProducts={mostViewedProducts}
+        featuredProducts={products}
       />
 
-      <ReelsSection reels={reels} />
+      <CategoriesCarousel categories={homeCategories} />
 
-      <SectionWrapper className='bg-transparent py-0!'>
-        <CategoriesCarousel categories={homeCategories} />
-      </SectionWrapper>
+      <DealsRail products={saleProducts} />
+
+      <ReelsSection reels={reels} className={HOME_SECTION_SPACING} />
 
       <FeaturedProducts
         key={locale}

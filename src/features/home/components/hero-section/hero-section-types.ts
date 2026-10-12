@@ -7,4 +7,5 @@ export type HeroSectionProps = {
   saleProducts: ProductCard[];
   latestProducts: ProductCard[];
   mostViewedProducts: ProductCard[];
+  featuredProducts: ProductCard[];
 };

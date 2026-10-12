@@ -112,6 +112,33 @@
     "hero-slide-alt-3": "Premium apparel and accessories",
     "hero-slide-alt-4": "Shop the latest trends at BNB Store",
     "featured-collection-description": "Discover handpicked pieces from our latest collection, curated for style and quality.",
+    "deals-title": "Today's Deals",
+    "deals-description": "The best discounts on hand-picked products.",
+    "see-all": "See all",
+    "hero-label": "Featured promotions",
+    "up-to-discount": "Up to {value}% off",
+    "starting-from": "Starting from {price}",
+    "new-badge": "New",
+    "collection-panels": {
+      "sale": {
+        "title": "Deals",
+        "tagline": "Selected pieces at reduced prices"
+      },
+      "latest": { "title": "New Arrivals", "tagline": "The latest additions" },
+      "trendy": {
+        "title": "Trending",
+        "tagline": "What customers are choosing"
+      },
+      "most-viewed": {
+        "title": "Most Viewed",
+        "tagline": "Currently in focus"
+      },
+      "lowest-price": { "title": "Best Value", "tagline": "Accessible picks" },
+      "most-loved": {
+        "title": "Favorites",
+        "tagline": "Loved by our customers"
+      }
+    },
     "load-products-invalid-page": "Invalid page number.",
     "load-products-failed": "Failed to load products. Please try again."
   },

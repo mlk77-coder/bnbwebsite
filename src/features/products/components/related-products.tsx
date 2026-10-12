@@ -4,7 +4,7 @@ import { fetcher } from '@/lib/fetcher';
 import { GetProductsResponse } from '@/types/products';
 import { getLocale, getTranslations } from 'next-intl/server';
 import RelatedProductsCarousel from '@/features/products/client/related-products-carousel';
-import Loader from '@/components/ui/loader';
+import { ProductGridSkeleton } from '@/components/skeletons/product-skeletons';
 
 type PropsType = {
   id: string;
@@ -30,9 +30,10 @@ const RelatedProducts: FC<PropsType> = async ({ id }) => {
             <h2 className='w-full border-b pb-2 text-lg sm:text-xl font-bold text-primary ltr:tracking-wider'>
               {t('related-products')}
             </h2>
-            <div className='flex justify-center items-center pt-4'>
-              <Loader variant='bars' className='text-primary' size='lg' />
-            </div>
+            <ProductGridSkeleton
+              count={4}
+              className='lg:grid-cols-4 xl:grid-cols-4'
+            />
           </SectionWrapper>
         }
       >

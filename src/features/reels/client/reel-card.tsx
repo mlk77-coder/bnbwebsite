@@ -71,7 +71,7 @@ const ReelCard: FC<PropsType> = ({
           </div>
         </button>
 
-        <div className='pointer-events-none absolute inset-x-0 bottom-0 z-20 space-y-2.5 p-3'>
+        <div className='pointer-events-none absolute inset-x-0 bottom-0 z-20 space-y-2 p-2.5 sm:space-y-2.5 sm:p-3'>
           {reel.seller ? (
             <div className='flex items-center gap-2'>
               <Avatar className='size-7 border border-white/30'>
@@ -92,7 +92,7 @@ const ReelCard: FC<PropsType> = ({
           ) : null}
 
           {reel.caption ? (
-            <p className='line-clamp-2 text-xs leading-snug text-white/90'>
+            <p className='line-clamp-1 text-xs leading-snug text-white/90 sm:line-clamp-2'>
               {reel.caption}
             </p>
           ) : null}

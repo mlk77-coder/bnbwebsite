@@ -1,6 +1,7 @@
 import CustomBreadcrumb from '@/components/custom-breadcrumb';
 import PageWrapper from '@/components/page-wrapper';
 import SectionWrapper from '@/components/section-wrapper';
+import { ProductGridSkeleton } from '@/components/skeletons/product-skeletons';
 import { CollectionPageHeader } from '@/features/product-collections/components/collection-page-header';
 import { CollectionInfiniteProducts } from '@/features/product-collections/components/collection-infinite-products';
 import { COLLECTION_PRODUCTS_PER_PAGE } from '@/features/product-collections/constants';
@@ -70,13 +71,7 @@ const ProductCollectionPage: FC<PropsType> = async props => {
         <CustomBreadcrumb activeLink={t(titleKey)} links={[]} />
         <CollectionPageHeader title={t(titleKey)} description={description} />
         {response.ok ? (
-          <Suspense
-            fallback={
-              <p className='text-muted-foreground text-sm'>
-                {t('products-loading')}
-              </p>
-            }
-          >
+          <Suspense fallback={<ProductGridSkeleton />}>
             <CollectionInfiniteProducts
               collection={collection}
               initialData={productList}

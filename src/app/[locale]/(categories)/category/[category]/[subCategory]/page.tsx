@@ -107,7 +107,6 @@ const Page: FC<PropsType> = async props => {
             }))}
             title={t('hero-shop-by-category')}
             description={t('explore-our-selection-description')}
-            sectionClassName='py-0!'
           />
         ) : null}
         <SubCategoryProducts

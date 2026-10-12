@@ -1,13 +1,16 @@
-'use client';
+﻿'use client';
 
 import { LoadMorePill } from '@/components/load-more-pill';
 import { loadMorePillRowClassName } from '@/components/load-more-pill.constants';
 import ProductCard from '@/components/product-card/product-card';
-import SectionWrapper, {
-  sectionWrapperClassName,
-} from '@/components/section-wrapper';
+import SectionWrapper from '@/components/section-wrapper';
 import Loader from '@/components/ui/loader';
 import { loadMoreFeaturedProductsAction } from '@/features/home/actions/load-more-featured-products';
+import { SectionHeading } from '@/components/section-heading';
+import {
+  HOME_LAST_SECTION_SPACING,
+  HOME_SECTION_SPACING,
+} from '@/features/home/constants';
 import { cn } from '@/lib/utils';
 import type { Pagination } from '@/types';
 import type { ProductCard as ProductCardType } from '@/types/products';
@@ -61,29 +64,16 @@ export function FeaturedProducts({
   };
 
   return (
-    <SectionWrapper className={cn(sectionWrapperClassName, 'mt-0 pt-0')}>
-      <div className='mb-6 space-y-1.5'>
-        <motion.h2
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className='text-xl font-bold tracking-wide sm:text-2xl lg:text-3xl'
-        >
-          {t('featured-collection')}
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.08 }}
-          className='text-muted-foreground text-sm'
-        >
-          {tHome('featured-collection-description')}
-        </motion.p>
-      </div>
+    <SectionWrapper
+      className={cn(HOME_SECTION_SPACING, HOME_LAST_SECTION_SPACING)}
+    >
+      <SectionHeading
+        title={t('featured-collection')}
+        description={tHome('featured-collection-description')}
+      />
       <motion.div
         layout
-        className='grid grid-cols-2 gap-x-3 gap-y-8 sm:grid-cols-5 md:gap-x-5 md:gap-y-10 lg:grid-cols-5'
+        className='grid grid-cols-2 gap-x-3 gap-y-8 sm:grid-cols-3 md:grid-cols-4 md:gap-x-5 md:gap-y-10 xl:grid-cols-5'
       >
         <AnimatePresence mode='popLayout'>
           {products.map((product, i) => (

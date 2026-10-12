@@ -112,6 +112,27 @@
     "hero-slide-alt-3": "ملابس وإكسسوارات فاخرة",
     "hero-slide-alt-4": "تسوق أحدث الصيحات في BNB Store",
     "featured-collection-description": "اكتشف قطعاً مختارة بعناية من أحدث مجموعاتنا، مُنتقاة للأناقة والجودة.",
+    "deals-title": "عروض اليوم",
+    "deals-description": "أقوى الخصومات على منتجات مختارة بعناية.",
+    "see-all": "عرض الكل",
+    "hero-label": "العروض المميزة",
+    "up-to-discount": "خصم حتى {value}%",
+    "starting-from": "تبدأ من {price}",
+    "new-badge": "جديد",
+    "collection-panels": {
+      "sale": { "title": "عروض", "tagline": "قطع مختارة بأسعار مخفّضة" },
+      "latest": { "title": "وصل حديثاً", "tagline": "أحدث الإضافات" },
+      "trendy": { "title": "الرائج", "tagline": "ما يختاره العملاء" },
+      "most-viewed": {
+        "title": "الأكثر مشاهدة",
+        "tagline": "ما يلفت الانتباه الآن"
+      },
+      "lowest-price": {
+        "title": "قيمة مميزة",
+        "tagline": "اختيارات بأسعار مناسبة"
+      },
+      "most-loved": { "title": "المفضّلات", "tagline": "الأقرب إلى عملائنا" }
+    },
     "load-products-invalid-page": "رقم الصفحة غير صالح.",
     "load-products-failed": "تعذر تحميل المنتجات. يرجى المحاولة مرة أخرى."
   },

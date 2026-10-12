@@ -2,6 +2,7 @@ import { getCategory, SubCategoryProducts } from '@/features/categories';
 import CategoryCirclesCarousel from '@/components/category-circles-carousel';
 import CustomBreadcrumb from '@/components/custom-breadcrumb';
 import PageWrapper from '@/components/page-wrapper';
+import { ProductGridSkeleton } from '@/components/skeletons/product-skeletons';
 import SectionWrapper from '@/components/section-wrapper';
 import { getCategoryMetadataFallback, getSiteBranding } from '@/lib/page-metadata';
 import { Metadata } from 'next';
@@ -95,10 +96,9 @@ const Page: FC<PropsType> = async props => {
             }))}
             title={t('hero-shop-by-category')}
             description={t('explore-our-selection-description')}
-            sectionClassName='py-0!'
           />
         ) : null}
-        <Suspense fallback={<>loading.....</>}>
+        <Suspense fallback={<ProductGridSkeleton />}>
           <SubCategoryProducts
             category={String(categoryData.id)}
             searchParams={searchParams}

@@ -5,6 +5,7 @@ import {
 } from '@/features/categories';
 import CustomBreadcrumb from '@/components/custom-breadcrumb';
 import PageWrapper from '@/components/page-wrapper';
+import { ProductGridSkeleton } from '@/components/skeletons/product-skeletons';
 import SectionWrapper from '@/components/section-wrapper';
 import { getCategoryMetadataFallback, getSiteBranding } from '@/lib/page-metadata';
 import { Metadata } from 'next';
@@ -92,7 +93,7 @@ const Page: FC<PropsType> = async props => {
             activeLink={categoryData.name}
             links={getBreadcrumbLinks(categoryData)}
           />
-          <Suspense fallback={<>loading.....</>}>
+          <Suspense fallback={<ProductGridSkeleton />}>
             <SubCategoryProducts
               category={String(categoryData.id)}
               searchParams={searchParams}

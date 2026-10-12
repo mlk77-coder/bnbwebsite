@@ -1,3 +1,3 @@
-import RouteLoading from '@/components/route-loading';
+import { SplitPageSkeleton } from '@/components/skeletons/page-skeletons';
 
-export default RouteLoading;
+export default SplitPageSkeleton;

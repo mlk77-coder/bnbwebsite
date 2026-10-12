@@ -63,13 +63,18 @@ const Carousel = forwardRef<
       plugins,
       className,
       children,
+      dir,
       ...props
     },
     ref
   ) => {
+    const direction =
+      opts?.direction ?? (dir === 'rtl' ? 'rtl' : 'ltr');
+
     const [carouselRef, api] = useEmblaCarousel(
       {
         ...opts,
+        direction,
         axis: orientation === 'horizontal' ? 'x' : 'y',
       },
       plugins
@@ -132,7 +137,7 @@ const Carousel = forwardRef<
       >
         <div
           ref={ref}
-          dir='ltr'
+          dir={direction}
           className={cn('group/container relative', className)}
           role='region'
           aria-roledescription='carousel'

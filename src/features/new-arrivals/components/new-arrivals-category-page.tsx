@@ -1,6 +1,7 @@
 import RecentlyViewed from "@/app/[locale]/_components/recently-viewed";
 import CustomBreadcrumb from "@/components/custom-breadcrumb";
 import PageWrapper from "@/components/page-wrapper";
+import { ProductGridSkeleton } from "@/components/skeletons/product-skeletons";
 import SectionWrapper, {
   sectionWrapperClassName,
 } from "@/components/section-wrapper";
@@ -39,13 +40,7 @@ const NewArrivalsCategoryPage: FC<PropsType> = async (props) => {
             title={t("new-arrivals")}
             description={t("new-arrivals-description")}
           />
-          <Suspense
-            fallback={
-              <p className='text-muted-foreground text-sm'>
-                {t('products-loading')}
-              </p>
-            }
-          >
+          <Suspense fallback={<ProductGridSkeleton />}>
             <SubCategoryProducts category={slug} searchParams={searchParams} />
           </Suspense>
         </SectionWrapper>

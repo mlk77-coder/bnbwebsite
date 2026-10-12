@@ -1,5 +1,6 @@
-'use client';
+﻿'use client';
 
+import { SectionHeading } from '@/components/section-heading';
 import SectionWrapper, {
   sectionWrapperClassName,
 } from '@/components/section-wrapper';
@@ -19,13 +20,17 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { FC, useCallback, useEffect, useState } from 'react';
 
+const navButtonClassName =
+  'border-border flex size-8 items-center justify-center rounded-full border bg-white shadow-sm transition-all duration-300 sm:size-10 disabled:cursor-not-allowed disabled:opacity-40 enabled:hover:border-primary enabled:hover:bg-primary enabled:hover:text-white enabled:active:scale-95';
+
 type PropsType = {
   reels: ReelCardType[];
+  className?: string;
 };
 
-const ReelsSection: FC<PropsType> = ({ reels }) => {
+const ReelsSection: FC<PropsType> = ({ reels, className }) => {
   const t = useTranslations('reels');
-  const locale = useLocale();
+  const direction = useLocale() === 'ar' ? 'rtl' : 'ltr';
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
@@ -72,71 +77,44 @@ const ReelsSection: FC<PropsType> = ({ reels }) => {
 
   return (
     <>
-      <SectionWrapper className={cn(sectionWrapperClassName, 'pb-0')}>
-        <div className='mb-6 flex items-center justify-between sm:mb-8'>
-          <div className='space-y-1.5'>
-            <motion.h2
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className='text-xl font-bold tracking-wide sm:text-2xl lg:text-3xl'
-            >
-              {t('section-title')}
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.08 }}
-              className='text-muted-foreground text-sm'
-            >
-              {t('section-description')}
-            </motion.p>
-          </div>
-
+      <SectionWrapper className={cn(sectionWrapperClassName, 'pb-0', className)}>
+        <SectionHeading
+          title={t('section-title')}
+          description={t('section-description')}
+        >
           <div className='flex items-center gap-2'>
             <button
               type='button'
               onClick={prevSlide}
               disabled={!canScrollPrev}
-              className={cn(
-                'border-border flex h-8 w-8 items-center justify-center rounded-2xl border bg-white shadow-sm transition-all duration-300 sm:h-10 sm:w-10',
-                !canScrollPrev
-                  ? 'cursor-not-allowed opacity-40'
-                  : 'hover:border-primary hover:bg-primary hover:text-white hover:shadow-md active:scale-95'
-              )}
+              className={navButtonClassName}
               aria-label={t('previous')}
             >
-              <ChevronLeft className='h-4 w-4 sm:h-5 sm:w-5 rtl:rotate-180' />
+              <ChevronLeft className='size-4 sm:size-5 rtl:rotate-180' />
             </button>
             <button
               type='button'
               onClick={nextSlide}
               disabled={!canScrollNext}
-              className={cn(
-                'border-border flex h-8 w-8 items-center justify-center rounded-2xl border bg-white shadow-sm transition-all duration-300 sm:h-10 sm:w-10',
-                !canScrollNext
-                  ? 'cursor-not-allowed opacity-40'
-                  : 'hover:border-primary hover:bg-primary hover:text-white hover:shadow-md active:scale-95'
-              )}
+              className={navButtonClassName}
               aria-label={t('next')}
             >
-              <ChevronRight className='h-4 w-4 sm:h-5 sm:w-5 rtl:rotate-180' />
+              <ChevronRight className='size-4 sm:size-5 rtl:rotate-180' />
             </button>
           </div>
-        </div>
+        </SectionHeading>
 
         <Carousel
           setApi={setApi}
-          opts={{ align: 'start', dragFree: true }}
-          dir={locale === 'ar' ? 'rtl' : 'ltr'}
+          opts={{ align: 'start', dragFree: true, direction }}
+          dir={direction}
           className='cursor-grab select-none active:cursor-grabbing'
         >
-          <CarouselContent className='-ml-3 sm:-ml-4'>
+          <CarouselContent className='-ms-3 sm:-ms-4'>
             {reels.map((reel, index) => (
               <CarouselItem
                 key={reel.id}
-                className='basis-[100%] pt-1 pl-3 sm:basis-1/3 sm:pl-4 md:basis-1/4 lg:basis-1/5 xl:basis-[18%]'
+                className='basis-[62%] ps-3 pt-1 sm:basis-1/3 sm:ps-4 md:basis-1/4 lg:basis-1/5 xl:basis-[18%]'
               >
                 <motion.div
                   initial={{ opacity: 0, y: 18 }}

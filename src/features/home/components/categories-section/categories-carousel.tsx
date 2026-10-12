@@ -1,23 +1,32 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import CategoryCirclesCarousel from '@/components/category-circles-carousel';
-import { HomePageCategory } from '@/types/home';
+import SectionWrapper from '@/components/section-wrapper';
+import { HOME_SECTION_SPACING } from '@/features/home/constants';
+import type { HomePageCategory } from '@/types/home';
+import { useTranslations } from 'next-intl';
+import { FC } from 'react';
 
-interface CategoriesCarouselProps {
+type CategoriesCarouselProps = {
   categories: HomePageCategory[];
-}
+};
 
-export function CategoriesCarousel({ categories }: CategoriesCarouselProps) {
+export const CategoriesCarousel: FC<CategoriesCarouselProps> = ({
+  categories,
+}) => {
   const t = useTranslations();
 
+  if (!categories.length) return null;
+
   return (
-    <CategoryCirclesCarousel
-      items={categories}
-      title={t('hero-shop-by-category')}
-      description={t('explore-our-selection-description')}
-    />
+    <SectionWrapper className={HOME_SECTION_SPACING}>
+      <CategoryCirclesCarousel
+        items={categories}
+        title={t('hero-shop-by-category')}
+        description={t('explore-our-selection-description')}
+      />
+    </SectionWrapper>
   );
-}
+};
 
 export default CategoriesCarousel;

@@ -1,18 +1,24 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import Image from 'next/image';
-import { Link } from '@/navigation';
-import { cn } from '@/lib/utils';
 import {
   Carousel,
   CarouselApi,
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
+import { SectionHeading } from '@/components/section-heading';
+import { cn } from '@/lib/utils';
+import { Link } from '@/navigation';
+import { motion } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
+import { FC, useEffect, useState } from 'react';
+
+const PLACEHOLDER = '/no-product.svg';
+
+const navButtonClassName =
+  'border-border flex size-8 items-center justify-center rounded-full border bg-white shadow-sm transition-all duration-300 sm:size-10 disabled:cursor-not-allowed disabled:opacity-40 enabled:hover:border-primary enabled:hover:bg-primary enabled:hover:text-white enabled:active:scale-95';
 
 export type CategoryCircleItem = {
   id: number | string;
@@ -27,16 +33,7 @@ type CategoryCirclesCarouselProps = {
   items: CategoryCircleItem[];
   title?: string;
   description?: string;
-  sectionClassName?: string;
-  innerClassName?: string;
-  headerClassName?: string;
-  titleClassName?: string;
-  descriptionClassName?: string;
-  navigationClassName?: string;
-  itemClassName?: string;
-  imageWrapperClassName?: string;
-  nameClassName?: string;
-  showProgress?: boolean;
+  className?: string;
 };
 
 function getCategoryPath(item: CategoryCircleItem) {
@@ -47,40 +44,26 @@ function getCategoryPath(item: CategoryCircleItem) {
   return `/category/${item.slug ?? item.id}`;
 }
 
-export function CategoryCirclesCarousel({
+export const CategoryCirclesCarousel: FC<CategoryCirclesCarouselProps> = ({
   items,
   title,
   description,
-  sectionClassName,
-  innerClassName,
-  headerClassName,
-  titleClassName,
-  descriptionClassName,
-  navigationClassName,
-  itemClassName,
-  imageWrapperClassName,
-  nameClassName,
-  showProgress = true,
-}: CategoryCirclesCarouselProps) {
-  const [api, setApi] = useState<CarouselApi | null>(null);
-  const [current, setCurrent] = useState(0);
-  const locale = useLocale();
+  className,
+}) => {
   const tCarousel = useTranslations('carousel');
-  const [count, setCount] = useState(0);
+  const direction = useLocale() === 'ar' ? 'rtl' : 'ltr';
+  const [api, setApi] = useState<CarouselApi | null>(null);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     if (!api) return;
 
     const onSelect = () => {
-      setCurrent(api.selectedScrollSnap());
       setCanScrollPrev(api.canScrollPrev());
       setCanScrollNext(api.canScrollNext());
     };
 
-    setCount(api.scrollSnapList().length);
     onSelect();
     api.on('select', onSelect);
     api.on('reInit', onSelect);
@@ -91,203 +74,97 @@ export function CategoryCirclesCarousel({
     };
   }, [api]);
 
-  const nextSlide = useCallback(() => {
-    api?.scrollNext();
-  }, [api]);
-
-  const prevSlide = useCallback(() => {
-    api?.scrollPrev();
-  }, [api]);
-
   if (!items.length) return null;
 
-  return (
-    <section className={cn('w-full py-8 sm:py-12', sectionClassName)}>
-      <div className={cn('max-w-screen-3xl mx-auto w-full', innerClassName)}>
-        {(title || description) && (
-          <div
-            className={cn(
-              'mb-6 flex items-center justify-between sm:mb-8',
-              headerClassName
-            )}
-          >
-            <div className='space-y-1'>
-              {title ? (
-                <motion.h2
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  className={cn(
-                    'text-foreground text-lg font-bold tracking-wide sm:text-xl lg:text-2xl',
-                    titleClassName
-                  )}
-                >
-                  {title}
-                </motion.h2>
-              ) : null}
-              {description ? (
-                <motion.p
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 }}
-                  className={cn(
-                    'text-muted-foreground text-xs sm:text-sm',
-                    descriptionClassName
-                  )}
-                >
-                  {description}
-                </motion.p>
-              ) : null}
-            </div>
+  const hasOverflow = canScrollPrev || canScrollNext;
 
-            <div className={cn('flex items-center gap-2', navigationClassName)}>
+  return (
+    <section className={className}>
+      {title ? (
+        <SectionHeading title={title} description={description}>
+          {hasOverflow ? (
+            <div className='hidden items-center gap-2 sm:flex'>
               <button
-                onClick={prevSlide}
+                type='button'
+                onClick={() => api?.scrollPrev()}
                 disabled={!canScrollPrev}
-                className={cn(
-                  'border-border flex h-8 w-8 items-center justify-center rounded-2xl border bg-white shadow-sm transition-all duration-300 sm:h-10 sm:w-10',
-                  !canScrollPrev
-                    ? 'cursor-not-allowed opacity-40'
-                    : 'hover:border-primary hover:bg-primary hover:text-white hover:shadow-md active:scale-95'
-                )}
+                className={navButtonClassName}
                 aria-label={tCarousel('previous')}
               >
-                <ChevronLeft className='h-4 w-4 sm:h-5 sm:w-5 rtl:rotate-180' />
+                <ChevronLeft className='size-4 sm:size-5 rtl:rotate-180' />
               </button>
               <button
-                onClick={nextSlide}
+                type='button'
+                onClick={() => api?.scrollNext()}
                 disabled={!canScrollNext}
-                className={cn(
-                  'border-border flex h-8 w-8 items-center justify-center rounded-2xl border bg-white shadow-sm transition-all duration-300 sm:h-10 sm:w-10',
-                  !canScrollNext
-                    ? 'cursor-not-allowed opacity-40'
-                    : 'hover:border-primary hover:bg-primary hover:text-white hover:shadow-md active:scale-95'
-                )}
+                className={navButtonClassName}
                 aria-label={tCarousel('next')}
               >
-                <ChevronRight className='h-4 w-4 sm:h-5 sm:w-5 rtl:rotate-180' />
+                <ChevronRight className='size-4 sm:size-5 rtl:rotate-180' />
               </button>
             </div>
-          </div>
-        )}
-
-        <div
-          className='relative'
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          <Carousel
-            setApi={setApi}
-            opts={{ align: 'start', dragFree: true }}
-            dir={locale == 'ar' ? 'rtl' : 'ltr'}
-            className='cursor-grab select-none active:cursor-grabbing'
-          >
-            <CarouselContent className='-ml-3 sm:-ml-4'>
-              {items.map((item, index) => (
-                <CarouselItem
-                  key={item.id}
-                  className={cn(
-                    'basis-1/3 pt-1 pl-3 sm:basis-1/4 sm:pl-4 md:basis-1/5 lg:basis-1/6 xl:basis-1/8 2xl:basis-[10%]',
-                    itemClassName
-                  )}
-                >
-                  <CategoryCircle
-                    item={item}
-                    index={index}
-                    isHovered={isHovered}
-                    imageWrapperClassName={imageWrapperClassName}
-                    nameClassName={nameClassName}
-                  />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
-
-          {showProgress && count > 1 ? (
-            <div className='mt-6 flex items-center justify-center gap-1 sm:mt-8'>
-              {Array.from({ length: count }).map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => api?.scrollTo(index)}
-                  className={cn(
-                    'h-1.5 rounded-2xl transition-all duration-300',
-                    current === index
-                      ? 'bg-primary w-6'
-                      : 'bg-border hover:bg-muted-foreground/50 w-1.5'
-                  )}
-                  aria-label={tCarousel('go-to-slide', { number: index + 1 })}
-                />
-              ))}
-            </div>
           ) : null}
-        </div>
-      </div>
+        </SectionHeading>
+      ) : null}
+
+      <Carousel
+        setApi={setApi}
+        opts={{ align: 'start', dragFree: true, direction }}
+        dir={direction}
+        className='cursor-grab select-none active:cursor-grabbing'
+      >
+        <CarouselContent className='-ms-3 sm:-ms-5'>
+          {items.map((item, index) => (
+            <CarouselItem
+              key={item.id}
+              className={cn(
+                'basis-[28%] ps-3 sm:basis-[20%] sm:ps-5',
+                'md:basis-[16%] lg:basis-[12.5%] xl:basis-[10%]'
+              )}
+            >
+              <CategoryCircle item={item} index={index} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
     </section>
   );
-}
+};
 
 type CategoryCircleProps = {
   item: CategoryCircleItem;
   index: number;
-  isHovered: boolean;
-  imageWrapperClassName?: string;
-  nameClassName?: string;
 };
 
-function CategoryCircle({
-  item,
-  index,
-  isHovered,
-  imageWrapperClassName,
-  nameClassName,
-}: CategoryCircleProps) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.05, duration: 0.4 }}
+const CategoryCircle: FC<CategoryCircleProps> = ({ item, index }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 14 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.35, delay: Math.min(index, 8) * 0.04 }}
+  >
+    <Link
+      href={getCategoryPath(item)}
+      draggable={false}
+      className='group flex flex-col items-center gap-3'
     >
-      <Link href={getCategoryPath(item)} className='group block'>
-        <div className='flex flex-col items-center gap-2 sm:gap-3'>
-          <div className='relative'>
-            <div className='from-primary/20 absolute inset-0 rounded-2xl bg-linear-to-br to-orange-400/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100' />
-            <div
-              className={cn(
-                'border-border/50 group-hover:border-primary/30 relative h-24 w-24 overflow-hidden rounded-2xl border-2 bg-white shadow-sm transition-all duration-400 group-hover:shadow-lg sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32',
-                imageWrapperClassName
-              )}
-            >
-              <div className='absolute inset-0 z-10 bg-linear-to-t from-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
-              <Image
-                src={item.image || '/no-product.svg'}
-                alt={item.name}
-                fill
-                sizes='(max-width: 640px) 96px, (max-width: 768px) 96px, (max-width: 1024px) 112px, 128px'
-                className='object-cover transition-transform duration-500 ease-out group-hover:scale-110'
-              />
-            </div>
-            <motion.div
-              className='border-primary/0 group-hover:border-primary/60 pointer-events-none absolute inset-0 rounded-2xl border-2'
-              animate={isHovered ? { scale: [1, 1.05, 1] } : {}}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-          </div>
-          <div className='text-center'>
-            <p
-              className={cn(
-                'text-foreground group-hover:text-primary line-clamp-2 max-w-[80px] text-xs font-medium transition-colors duration-300 sm:max-w-[100px] sm:text-sm',
-                nameClassName
-              )}
-            >
-              {item.name}
-            </p>
-          </div>
-        </div>
-      </Link>
-    </motion.div>
-  );
-}
+      <span className='bg-card ring-border/70 group-hover:ring-primary relative block aspect-square w-full overflow-hidden rounded-full p-1 shadow-sm ring-1 transition-all duration-300 group-hover:shadow-lg group-hover:ring-2'>
+        <span className='relative block size-full overflow-hidden rounded-full'>
+          <Image
+            src={item.image || PLACEHOLDER}
+            alt={item.name}
+            fill
+            sizes='(max-width: 640px) 28vw, (max-width: 1024px) 16vw, 10vw'
+            draggable={false}
+            className='object-cover transition-transform duration-500 ease-out group-hover:scale-110'
+          />
+        </span>
+      </span>
+      <span className='group-hover:text-primary line-clamp-2 text-center text-xs leading-snug font-medium transition-colors duration-300 sm:text-sm'>
+        {item.name}
+      </span>
+    </Link>
+  </motion.div>
+);
 
 export default CategoryCirclesCarousel;

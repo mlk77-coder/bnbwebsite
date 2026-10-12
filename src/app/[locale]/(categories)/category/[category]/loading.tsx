@@ -1,3 +1,5 @@
-import RouteLoading from '@/components/route-loading';
+import { ListingPageSkeleton } from '@/components/skeletons/page-skeletons';
 
-export default RouteLoading;
+const Loading = () => <ListingPageSkeleton showCircles />;
+
+export default Loading;

@@ -1,9 +1,10 @@
 import { cachedGetOrders } from '@/features/orders/api/get-orders';
 import InfiniteOrders from '@/features/orders/client/infinite-orders';
+import { getFetcherErrorMessage } from '@/lib/fetcher';
 import getSession from '@/lib/get-session';
 import { getTranslations } from 'next-intl/server';
 import { headers } from 'next/headers';
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { PackageCheck } from 'lucide-react';
 import { FC } from 'react';
 import { Separator } from '@/components/ui/separator';
@@ -22,18 +23,30 @@ const ProfileOrdersPage: FC<PropsType> = async props => {
   const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
     headers: headersList,
   });
-  if (!session?.user) return notFound();
+  if (!session?.user) {
+    redirect('/login');
+  }
 
   const ordersResponse = await cachedGetOrders(
     locale,
     session.user.access_token,
     request
   );
-  if (!ordersResponse.ok) return notFound();
-  const body = ordersResponse.data;
-  if (!body.success) return notFound();
+  if (!ordersResponse.ok || !ordersResponse.data?.success) {
+    const detail = getFetcherErrorMessage(ordersResponse.error);
+    return (
+      <div className='space-y-2'>
+        <p className='text-muted-foreground text-sm'>{t('orders-load-error')}</p>
+        {detail ? (
+          <pre className='bg-muted text-destructive overflow-x-auto rounded-lg p-3 text-xs whitespace-pre-wrap'>
+            {`API ${ordersResponse.status}: ${detail}`}
+          </pre>
+        ) : null}
+      </div>
+    );
+  }
 
-  const firstPage = body.data;
+  const firstPage = ordersResponse.data.data;
 
   return (
     <div className='flex size-full flex-col items-start justify-start gap-6'>

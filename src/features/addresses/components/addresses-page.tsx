@@ -1,9 +1,10 @@
 import AddressesSection from '@/features/addresses/client/addresses-section';
 import { cachedGetAddresses } from '@/features/addresses/api/get-addresses';
+import { getFetcherErrorMessage } from '@/lib/fetcher';
 import getSession from '@/lib/get-session';
 import { getTranslations } from 'next-intl/server';
 import { headers } from 'next/headers';
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { Home } from 'lucide-react';
 import { FC } from 'react';
 import { Separator } from '@/components/ui/separator';
@@ -21,14 +22,30 @@ const AddressesPage: FC<PropsType> = async props => {
   const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
     headers: headersList,
   });
-  if (!session?.user) return notFound();
+  if (!session?.user) {
+    redirect('/login');
+  }
 
   const addressesResponse = await cachedGetAddresses(
     locale,
     session.user.access_token,
     request
   );
-  if (!addressesResponse.ok) return notFound();
+  if (!addressesResponse.ok) {
+    const detail = getFetcherErrorMessage(addressesResponse.error);
+    return (
+      <div className='space-y-2'>
+        <p className='text-muted-foreground text-sm'>
+          {t('addresses-load-error')}
+        </p>
+        {detail ? (
+          <pre className='bg-muted text-destructive overflow-x-auto rounded-lg p-3 text-xs whitespace-pre-wrap'>
+            {`API ${addressesResponse.status}: ${detail}`}
+          </pre>
+        ) : null}
+      </div>
+    );
+  }
   const addresses = addressesResponse.data.data;
 
   return (

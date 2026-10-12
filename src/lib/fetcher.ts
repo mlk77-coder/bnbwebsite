@@ -19,6 +19,13 @@ export interface FetcherError {
 
 export type FetcherResponse<T> = FetcherSuccess<T> | FetcherError;
 
+export function getFetcherErrorMessage(
+  error: FetcherErrorDetail | undefined
+): string | null {
+  if (!error) return null;
+  return typeof error === 'string' ? error : error.message;
+}
+
 export function getClientIP(req?: NextApiRequest | Request): string {
   if (!req) return '';
 

@@ -1,9 +1,10 @@
 import WishlistGrid from '@/features/wishlist/client/wishlist-grid';
 import { getWishlist } from '@/features/wishlist/api/get-wishlist';
+import { getFetcherErrorMessage } from '@/lib/fetcher';
 import getSession from '@/lib/get-session';
 import { getTranslations } from 'next-intl/server';
 import { headers } from 'next/headers';
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { Heart } from 'lucide-react';
 import { FC } from 'react';
 import { Separator } from '@/components/ui/separator';
@@ -22,7 +23,9 @@ const WishlistPage: FC<PropsType> = async props => {
   const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
     headers: headersList,
   });
-  if (!session || !session.user) return notFound();
+  if (!session?.user) {
+    redirect('/login');
+  }
   const wishListResponse = await getWishlist(
     locale,
     session.user.access_token,
@@ -30,8 +33,16 @@ const WishlistPage: FC<PropsType> = async props => {
   );
 
   if (!wishListResponse.ok) {
+    const detail = getFetcherErrorMessage(wishListResponse.error);
     return (
-      <p className='text-muted-foreground text-sm'>{t('wishlist-load-error')}</p>
+      <div className='space-y-2'>
+        <p className='text-muted-foreground text-sm'>{t('wishlist-load-error')}</p>
+        {detail ? (
+          <pre className='bg-muted text-destructive overflow-x-auto rounded-lg p-3 text-xs whitespace-pre-wrap'>
+            {`API ${wishListResponse.status}: ${detail}`}
+          </pre>
+        ) : null}
+      </div>
     );
   }
   return (
@@ -50,7 +61,7 @@ const WishlistPage: FC<PropsType> = async props => {
       <Separator />
       <WishlistGrid
         initialData={wishListResponse.data.data}
-        token={session?.user?.access_token || ''}
+        token={session.user.access_token}
       />
     </div>
   );

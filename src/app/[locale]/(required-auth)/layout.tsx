@@ -1,5 +1,5 @@
-import redirectHard from "@/app/actions/redirect-hard-action";
 import getSession from "@/lib/get-session";
+import { redirect } from "next/navigation";
 import { Fragment } from "react";
 
 const AuthLayout = async ({
@@ -9,7 +9,10 @@ const AuthLayout = async ({
 }>) => {
   const session = await getSession();
 
-  if (!session) await redirectHard("/login");
+  if (!session) {
+    redirect("/login");
+  }
+
   return <Fragment>{children}</Fragment>;
 };
 

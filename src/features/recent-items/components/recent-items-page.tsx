@@ -1,8 +1,9 @@
 import RecentItemsGrid from '@/features/recent-items/client/recent-items-grid';
 import { cachedGetRecentlyViewed } from '@/features/recent-items/api/get-recently-viewed';
+import { getFetcherErrorMessage } from '@/lib/fetcher';
 import getSession from '@/lib/get-session';
 import { getTranslations } from 'next-intl/server';
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { Clock } from 'lucide-react';
 import { FC } from 'react';
 import { Separator } from '@/components/ui/separator';
@@ -17,7 +18,9 @@ const RecentItemsPage: FC<PropsType> = async props => {
 
   const session = await getSession();
   const t = await getTranslations();
-  if (!session?.user) return notFound();
+  if (!session?.user) {
+    redirect('/login');
+  }
 
   const recentResponse = await cachedGetRecentlyViewed(
     locale,
@@ -25,10 +28,18 @@ const RecentItemsPage: FC<PropsType> = async props => {
   );
 
   if (!recentResponse.ok) {
+    const detail = getFetcherErrorMessage(recentResponse.error);
     return (
-      <p className='text-muted-foreground text-sm'>
-        {t('recent-items-load-error')}
-      </p>
+      <div className='space-y-2'>
+        <p className='text-muted-foreground text-sm'>
+          {t('recent-items-load-error')}
+        </p>
+        {detail ? (
+          <pre className='bg-muted text-destructive overflow-x-auto rounded-lg p-3 text-xs whitespace-pre-wrap'>
+            {`API ${recentResponse.status}: ${detail}`}
+          </pre>
+        ) : null}
+      </div>
     );
   }
 

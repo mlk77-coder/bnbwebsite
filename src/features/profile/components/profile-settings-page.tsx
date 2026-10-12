@@ -1,9 +1,10 @@
 import SettingsForm from '@/features/profile/client/settings-form';
 import { cachedGetProfile } from '@/features/profile/api/get-profile';
+import { getFetcherErrorMessage } from '@/lib/fetcher';
 import getSession from '@/lib/get-session';
 import { getTranslations } from 'next-intl/server';
 import { headers } from 'next/headers';
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { Settings } from 'lucide-react';
 import { FC } from 'react';
 import { Separator } from '@/components/ui/separator';
@@ -23,14 +24,28 @@ const ProfileSettingsPage: FC<PropsType> = async props => {
   const request = new Request(`${process.env.NEXT_PUBLIC_LOCAL_URL}`, {
     headers: headersList,
   });
-  if (!session?.user) return notFound();
+  if (!session?.user) {
+    redirect('/login');
+  }
 
   const profileResponse = await cachedGetProfile(
     locale,
     session.user.access_token,
     request
   );
-  if (!profileResponse.ok) return notFound();
+  if (!profileResponse.ok) {
+    const detail = getFetcherErrorMessage(profileResponse.error);
+    return (
+      <div className='space-y-2'>
+        <p className='text-muted-foreground text-sm'>{t('profile-load-error')}</p>
+        {detail ? (
+          <pre className='bg-muted text-destructive overflow-x-auto rounded-lg p-3 text-xs whitespace-pre-wrap'>
+            {`API ${profileResponse.status}: ${detail}`}
+          </pre>
+        ) : null}
+      </div>
+    );
+  }
 
   return (
     <div className='flex size-full flex-col items-start justify-start gap-6'>

@@ -47,7 +47,7 @@ const WishlistGrid: FC<PropsType> = ({ token, initialData }) => {
 
   return (
     <Fragment>
-      <div className='grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+      <div className='grid w-full grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4'>
         {data.length === 0 ? (
           <p className='border-primary/10 bg-secondary/40 text-muted-foreground col-span-full rounded-xl border px-4 py-8 text-center text-sm'>
             {t('wishlist-empty')}

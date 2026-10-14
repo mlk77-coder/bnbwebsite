@@ -1,6 +1,5 @@
 import PageWrapper from '@/components/page-wrapper';
 import SectionWrapper from '@/components/section-wrapper';
-import { getTranslations } from 'next-intl/server';
 import ProfileBreadcrumb from './_components/profile-breadcrumb';
 import ProfileNavbar from './_components/profile-navbar';
 
@@ -9,14 +8,13 @@ const ProfileLayout = async ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const t = await getTranslations();
   return (
     <PageWrapper className='from-secondary/50 bg-linear-to-b via-white to-white'>
-      <SectionWrapper className='relative space-y-6 lg:py-8!'>
+      <SectionWrapper className='relative space-y-4 sm:space-y-6 lg:py-8!'>
         <ProfileBreadcrumb />
-        <div className='grid w-full gap-5 lg:grid-cols-[280px_1fr]'>
+        <div className='grid w-full min-w-0 max-w-full gap-3 sm:gap-5 lg:grid-cols-[280px_1fr]'>
           <ProfileNavbar />
-          <div className='border-primary/10 min-w-0 rounded-3xl border bg-white p-4 sm:p-6'>
+          <div className='border-primary/10 min-w-0 rounded-2xl border bg-white p-4 sm:rounded-3xl sm:p-6'>
             {children}
           </div>
         </div>

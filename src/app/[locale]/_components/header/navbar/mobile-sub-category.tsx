@@ -14,7 +14,7 @@ const MobileSubCategory: FC<PropsType> = ({
   if (!subCategory?.subcategories?.length) return null;
 
   return (
-    <div className="flex flex-col gap-0.5 border-t border-gray-200/60 pt-2">
+    <div className='flex flex-col gap-0.5 border-t border-black/5 pt-1.5'>
       {subCategory.subcategories.map((subSubCategory, index) => (
         <MobileSubSubCategory
           isLast={subCategory.subcategories.length - 1 === index}

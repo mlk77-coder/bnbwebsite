@@ -44,10 +44,10 @@ const AccountLogoutButton: FC<AccountLogoutButtonProps> = ({
         <button
           type='button'
           onClick={handleClick}
+          aria-label={t('sign-out')}
           className={cn(
             'flex w-full items-center gap-3 rounded-2xl border border-transparent px-2 py-2 text-sm font-semibold text-red-600 transition-colors hover:border-red-100/70 hover:bg-red-50 focus-visible:ring-2 focus-visible:ring-red-200 focus-visible:outline-none',
-            rowClassName,
-            labelClassName
+            rowClassName
           )}
         >
           <span
@@ -58,7 +58,9 @@ const AccountLogoutButton: FC<AccountLogoutButtonProps> = ({
           >
             <LogOut className='size-4' />
           </span>
-          <span className='flex-1 text-start'>{t('sign-out')}</span>
+          <span className={cn('flex-1 text-start', labelClassName)}>
+            {t('sign-out')}
+          </span>
         </button>
       </div>
 

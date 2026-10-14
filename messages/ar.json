@@ -448,7 +448,7 @@
   "change-language": "تغيير اللغة",
   "menu": "قائمة المستخدم",
   "search": "البحث",
-  "all-category": "{category}",
+  "all-category": "كل {category}",
   "membership": "العضوية",
   "select-an-address": "حدد عنوانك",
   "select-saved-address-to-place-order": "يُرجى اختيار عنوان محفوظ من القائمة لإتمام الطلب.",

@@ -1,26 +1,26 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetClose,
   SheetContent,
   SheetTrigger,
-} from "@/components/ui/sheet";
-import { FetcherResponse } from "@/lib/fetcher";
-import { GetCartResponse } from "@/types/cart";
-import { Category } from "@/types/categories";
-import { X, Menu } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
-import { FC } from "react";
-import { getLangDir } from "rtl-detect";
-import CartPopover from "../cart/cart-popover";
-import SearchHeader from "../search/search-header";
-import Logo from "./logo";
-import MenuBottomLinks from "./menu-bottom-links";
-import MobileCategories from "./mobile-categories";
-import MobileMenuHeader from "./mobile-menu-header";
-import { CustomSession } from "@/lib/auth-options";
+} from '@/components/ui/sheet';
+import { FetcherResponse } from '@/lib/fetcher';
+import { GetCartResponse } from '@/types/cart';
+import { Category } from '@/types/categories';
+import { X, Menu } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
+import { FC } from 'react';
+import { getLangDir } from 'rtl-detect';
+import CartPopover from '../cart/cart-popover';
+import SearchHeader from '../search/search-header';
+import Logo from './logo';
+import MenuBottomLinks from './menu-bottom-links';
+import MobileCategories from './mobile-categories';
+import MobileMenuHeader from './mobile-menu-header';
+import { CustomSession } from '@/lib/auth-options';
 
 type PropsType = {
   categories: Category[];
@@ -51,16 +51,16 @@ const MobileMenu: FC<PropsType> = ({
 }) => {
   const locale = useLocale();
   const dir = getLangDir(locale);
-  const isRTL = dir === "rtl";
+  const isRTL = dir === 'rtl';
   const t = useTranslations();
-  const tA11y = useTranslations("accessibility");
+  const tA11y = useTranslations('accessibility');
   const menuLabels = labels ?? {
-    openMenu: t("open-menu"),
-    signIn: t("sign-in"),
-    sale: t("sale"),
-    allSale: t("all-sale"),
-    newArrivals: t("new-arrivals"),
-    contactUs: t("contact-us.title"),
+    openMenu: t('open-menu'),
+    signIn: t('sign-in'),
+    sale: t('sale'),
+    allSale: t('all-sale'),
+    newArrivals: t('new-arrivals'),
+    contactUs: t('contact-us.title'),
     allCategoryById: {},
   };
 
@@ -68,12 +68,12 @@ const MobileMenu: FC<PropsType> = ({
     <Sheet modal={false}>
       <SheetTrigger asChild>
         <Button
-          className="lg:hidden group relative hover:bg-gray-100/80 transition-all duration-300"
-          variant="ghost"
-          size="icon"
+          className='group relative transition-all duration-300 hover:bg-gray-100/80 lg:hidden'
+          variant='ghost'
+          size='icon'
           aria-label={menuLabels.openMenu}
         >
-          <Menu className="w-5 h-5 text-gray-700 group-hover:text-gray-900 transition-colors" />
+          <Menu className='h-5 w-5 text-gray-700 transition-colors group-hover:text-gray-900' />
         </Button>
       </SheetTrigger>
       <SheetContent
@@ -81,29 +81,29 @@ const MobileMenu: FC<PropsType> = ({
         hiddenCloseButton
         allowPortaledOverlays
         dir={dir}
-        className="flex h-full max-h-screen w-full max-w-[min(100vw,22rem)] flex-col gap-0 overflow-hidden border-gray-100/80 bg-background p-0 data-[state=closed]:duration-200 sm:max-w-sm"
-        side={isRTL ? "right" : "left"}
+        className='flex h-full max-h-screen w-full max-w-[min(100vw,22rem)] flex-col gap-0 overflow-hidden border-0 bg-[#faf9f7] p-0 shadow-2xl data-[state=closed]:duration-200 sm:max-w-sm'
+        side={isRTL ? 'right' : 'left'}
       >
-        <div className="sticky top-0 z-10 border-b border-gray-100/80 bg-white/95 backdrop-blur-xl">
-          <div className="flex h-14 items-center justify-between gap-2 px-4">
-            <div className="flex min-w-0 items-center gap-2">
+        <div className='sticky top-0 z-10 border-b border-black/5 bg-white/90 backdrop-blur-xl'>
+          <div className='flex h-14 items-center justify-between gap-2 px-3'>
+            <div className='flex min-w-0 items-center gap-1.5'>
               <SheetClose asChild>
                 <Button
-                  variant="ghost"
-                  size="icon"
-                  className="shrink-0 hover:bg-gray-100/80"
+                  variant='ghost'
+                  size='icon'
+                  className='size-9 shrink-0 rounded-full hover:bg-black/5'
                 >
-                  <span className="sr-only">{tA11y("close-menu")}</span>
-                  <X className="size-5 text-gray-700" />
+                  <span className='sr-only'>{tA11y('close-menu')}</span>
+                  <X className='size-5 text-gray-700' />
                 </Button>
               </SheetClose>
               <SheetClose asChild>
-                <span className="inline-flex">
+                <span className='inline-flex'>
                   <Logo />
                 </span>
               </SheetClose>
             </div>
-            <div className="flex shrink-0 items-center gap-0.5">
+            <div className='flex shrink-0 items-center gap-0.5'>
               <SearchHeader isMobile />
               <CartPopover
                 insideSheet
@@ -115,8 +115,8 @@ const MobileMenu: FC<PropsType> = ({
           </div>
         </div>
 
-        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
-          <div className="border-b border-gray-100/80 bg-accent/40 px-4 py-3">
+        <div className='flex min-h-0 flex-1 flex-col overflow-y-auto'>
+          <div className='px-3 pt-3'>
             <MobileMenuHeader
               session={session}
               userToken={userToken}
@@ -124,7 +124,13 @@ const MobileMenu: FC<PropsType> = ({
             />
           </div>
 
-          <nav className="flex-1 px-2 py-3" aria-label={tA11y("main-navigation")}>
+          <nav
+            className='flex-1 px-3 py-4'
+            aria-label={tA11y('main-navigation')}
+          >
+            <p className='text-muted-foreground mb-2 px-1 text-[11px] font-semibold tracking-[0.14em] uppercase'>
+              {t('categories')}
+            </p>
             <MobileCategories
               categories={categories}
               sales={sales}
@@ -132,7 +138,7 @@ const MobileMenu: FC<PropsType> = ({
             />
           </nav>
 
-          <div className="mt-auto border-t border-gray-100/80 p-4">
+          <div className='sticky bottom-0 border-t border-black/5 bg-white/95 p-3 backdrop-blur-md'>
             <MenuBottomLinks labels={menuLabels} />
           </div>
         </div>

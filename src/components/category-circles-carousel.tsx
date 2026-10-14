@@ -1,11 +1,9 @@
 'use client';
 
 import {
-  Carousel,
-  CarouselApi,
-  CarouselContent,
-  CarouselItem,
-} from '@/components/ui/carousel';
+  HorizontalRail,
+  useHorizontalRailControls,
+} from '@/components/horizontal-rail';
 import { SectionHeading } from '@/components/section-heading';
 import { cn } from '@/lib/utils';
 import { Link } from '@/navigation';
@@ -13,7 +11,7 @@ import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 
 const PLACEHOLDER = '/no-product.svg';
 
@@ -51,28 +49,14 @@ export const CategoryCirclesCarousel: FC<CategoryCirclesCarouselProps> = ({
   className,
 }) => {
   const tCarousel = useTranslations('carousel');
-  const direction = useLocale() === 'ar' ? 'rtl' : 'ltr';
-  const [api, setApi] = useState<CarouselApi | null>(null);
-  const [canScrollPrev, setCanScrollPrev] = useState(false);
-  const [canScrollNext, setCanScrollNext] = useState(false);
-
-  useEffect(() => {
-    if (!api) return;
-
-    const onSelect = () => {
-      setCanScrollPrev(api.canScrollPrev());
-      setCanScrollNext(api.canScrollNext());
-    };
-
-    onSelect();
-    api.on('select', onSelect);
-    api.on('reInit', onSelect);
-
-    return () => {
-      api.off('select', onSelect);
-      api.off('reInit', onSelect);
-    };
-  }, [api]);
+  const isRtl = useLocale() === 'ar';
+  const {
+    railRef,
+    canScrollPrev,
+    canScrollNext,
+    scrollPrev,
+    scrollNext,
+  } = useHorizontalRailControls(isRtl);
 
   if (!items.length) return null;
 
@@ -86,7 +70,7 @@ export const CategoryCirclesCarousel: FC<CategoryCirclesCarouselProps> = ({
             <div className='hidden items-center gap-2 sm:flex'>
               <button
                 type='button'
-                onClick={() => api?.scrollPrev()}
+                onClick={scrollPrev}
                 disabled={!canScrollPrev}
                 className={navButtonClassName}
                 aria-label={tCarousel('previous')}
@@ -95,7 +79,7 @@ export const CategoryCirclesCarousel: FC<CategoryCirclesCarouselProps> = ({
               </button>
               <button
                 type='button'
-                onClick={() => api?.scrollNext()}
+                onClick={scrollNext}
                 disabled={!canScrollNext}
                 className={navButtonClassName}
                 aria-label={tCarousel('next')}
@@ -107,26 +91,19 @@ export const CategoryCirclesCarousel: FC<CategoryCirclesCarouselProps> = ({
         </SectionHeading>
       ) : null}
 
-      <Carousel
-        setApi={setApi}
-        opts={{ align: 'start', dragFree: true, direction }}
-        dir={direction}
-        className='cursor-grab select-none active:cursor-grabbing'
-      >
-        <CarouselContent className='-ms-3 sm:-ms-5'>
-          {items.map((item, index) => (
-            <CarouselItem
-              key={item.id}
-              className={cn(
-                'basis-[28%] ps-3 sm:basis-[20%] sm:ps-5',
-                'md:basis-[16%] lg:basis-[12.5%] xl:basis-[10%]'
-              )}
-            >
-              <CategoryCircle item={item} index={index} />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
+      <HorizontalRail railRef={railRef}>
+        {items.map((item, index) => (
+          <div
+            key={item.id}
+            className={cn(
+              'w-[28%] shrink-0 snap-start sm:w-[20%]',
+              'md:w-[16%] lg:w-[12.5%] xl:w-[10%]'
+            )}
+          >
+            <CategoryCircle item={item} index={index} />
+          </div>
+        ))}
+      </HorizontalRail>
     </section>
   );
 };

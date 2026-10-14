@@ -8,6 +8,7 @@ import {
   sortByMostLiked,
 } from '@/features/home/lib/collection-panels';
 import { PRODUCT_COLLECTION_SEE_MORE } from '@/features/product-collections';
+import { horizontalRailClassName } from '@/components/horizontal-rail.constants';
 import { cn } from '@/lib/utils';
 
 const LG_GRID_COLS: Record<number, string> = {
@@ -64,8 +65,8 @@ export function HeroSection({
       {panels.length > 0 ? (
         <div
           className={cn(
-            'scrollbar-hide -mx-2.5 flex scroll-px-2.5 gap-3 overflow-x-auto px-2.5 pb-1',
-            'snap-x snap-mandatory md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 lg:gap-5',
+            horizontalRailClassName,
+            'md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 md:scroll-px-0',
             LG_GRID_COLS[panels.length]
           )}
         >

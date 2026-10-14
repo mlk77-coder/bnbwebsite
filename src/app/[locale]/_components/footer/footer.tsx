@@ -105,7 +105,7 @@ const Footer = ({ socialLinks }: { socialLinks: SocialLink[] }) => {
                 style={{ width: 'auto' }}
               />
             </Link>
-            <p className='max-w-xs text-sm leading-relaxed text-gray-600'>
+            <p className='max-w-xs text-start text-sm leading-relaxed text-gray-600'>
               {t('footer-description')}
             </p>
 
@@ -223,7 +223,7 @@ const Footer = ({ socialLinks }: { socialLinks: SocialLink[] }) => {
 
         {/* Payment Methods & Trust Badges */}
         <div className='mt-12 border-t border-gray-100 pt-8'>
-          <div className='flex flex-col items-center justify-between gap-6 md:flex-row'>
+          <div className='flex flex-col items-start justify-between gap-6 md:flex-row md:items-center'>
             {/* Payment Methods */}
             <div className='flex items-center gap-4'>
               <span className='text-xs tracking-wider text-gray-500 uppercase'>
@@ -246,7 +246,7 @@ const Footer = ({ socialLinks }: { socialLinks: SocialLink[] }) => {
             </div>
 
             {/* Copyright */}
-            <p className='text-center text-sm text-gray-500'>
+            <p className='text-start text-sm text-gray-500'>
               © {new Date().getFullYear()} {tHome('site-name')}.{' '}
               {t('all-rights-reserved')}
             </p>

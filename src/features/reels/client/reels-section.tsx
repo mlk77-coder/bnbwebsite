@@ -5,11 +5,9 @@ import SectionWrapper, {
   sectionWrapperClassName,
 } from '@/components/section-wrapper';
 import {
-  Carousel,
-  CarouselApi,
-  CarouselContent,
-  CarouselItem,
-} from '@/components/ui/carousel';
+  HorizontalRail,
+  useHorizontalRailControls,
+} from '@/components/horizontal-rail';
 import ReelCard from '@/features/reels/client/reel-card';
 import ReelsViewer from '@/features/reels/client/reels-viewer';
 import { prefetchReelNeighbors } from '@/features/reels/lib/reel-video-prefetch';
@@ -30,33 +28,16 @@ type PropsType = {
 
 const ReelsSection: FC<PropsType> = ({ reels, className }) => {
   const t = useTranslations('reels');
-  const direction = useLocale() === 'ar' ? 'rtl' : 'ltr';
-  const [api, setApi] = useState<CarouselApi | null>(null);
-  const [canScrollPrev, setCanScrollPrev] = useState(false);
-  const [canScrollNext, setCanScrollNext] = useState(false);
+  const isRtl = useLocale() === 'ar';
+  const {
+    railRef,
+    canScrollPrev,
+    canScrollNext,
+    scrollPrev,
+    scrollNext,
+  } = useHorizontalRailControls(isRtl);
   const [viewerOpen, setViewerOpen] = useState(false);
   const [viewerIndex, setViewerIndex] = useState(0);
-
-  useEffect(() => {
-    if (!api) return;
-
-    const onSelect = () => {
-      setCanScrollPrev(api.canScrollPrev());
-      setCanScrollNext(api.canScrollNext());
-    };
-
-    onSelect();
-    api.on('select', onSelect);
-    api.on('reInit', onSelect);
-
-    return () => {
-      api.off('select', onSelect);
-      api.off('reInit', onSelect);
-    };
-  }, [api]);
-
-  const nextSlide = useCallback(() => api?.scrollNext(), [api]);
-  const prevSlide = useCallback(() => api?.scrollPrev(), [api]);
 
   const handleOpenReel = useCallback(
     (reelId: number) => {
@@ -85,7 +66,7 @@ const ReelsSection: FC<PropsType> = ({ reels, className }) => {
           <div className='flex items-center gap-2'>
             <button
               type='button'
-              onClick={prevSlide}
+              onClick={scrollPrev}
               disabled={!canScrollPrev}
               className={navButtonClassName}
               aria-label={t('previous')}
@@ -94,7 +75,7 @@ const ReelsSection: FC<PropsType> = ({ reels, className }) => {
             </button>
             <button
               type='button'
-              onClick={nextSlide}
+              onClick={scrollNext}
               disabled={!canScrollNext}
               className={navButtonClassName}
               aria-label={t('next')}
@@ -104,34 +85,30 @@ const ReelsSection: FC<PropsType> = ({ reels, className }) => {
           </div>
         </SectionHeading>
 
-        <Carousel
-          setApi={setApi}
-          opts={{ align: 'start', dragFree: true, direction }}
-          dir={direction}
-          className='cursor-grab select-none active:cursor-grabbing'
-        >
-          <CarouselContent className='-ms-3 sm:-ms-4'>
-            {reels.map((reel, index) => (
-              <CarouselItem
-                key={reel.id}
-                className='basis-[62%] ps-3 pt-1 sm:basis-1/3 sm:ps-4 md:basis-1/4 lg:basis-1/5 xl:basis-[18%]'
+        <HorizontalRail railRef={railRef}>
+          {reels.map((reel, index) => (
+            <div
+              key={reel.id}
+              className={cn(
+                'w-[62%] shrink-0 snap-start pt-1 sm:w-[31%]',
+                'md:w-[23%] lg:w-[18%] xl:w-[18%]'
+              )}
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05, duration: 0.35 }}
               >
-                <motion.div
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05, duration: 0.35 }}
-                >
-                  <ReelCard
-                    reel={reel}
-                    priority={index < 3}
-                    onOpen={handleOpenReel}
-                  />
-                </motion.div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
+                <ReelCard
+                  reel={reel}
+                  priority={index < 3}
+                  onOpen={handleOpenReel}
+                />
+              </motion.div>
+            </div>
+          ))}
+        </HorizontalRail>
       </SectionWrapper>
 
       <ReelsViewer

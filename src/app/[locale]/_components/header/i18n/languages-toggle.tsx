@@ -31,7 +31,8 @@ const LanguagesToggle: FC<PropsType> = ({ inMobileMenu = false }) => {
 
   function onSelectChange(newLocale: string) {
     startTransition(() => {
-      const newUrl = `${pathname}?${searchParams.toString()}`;
+      const query = searchParams.toString();
+      const newUrl = query ? `${pathname}?${query}` : pathname;
       if (pathname.includes("/login") || pathname.includes("/register")) {
         window.location.replace(`/${newLocale}${newUrl}`);
       } else {
@@ -54,7 +55,7 @@ const LanguagesToggle: FC<PropsType> = ({ inMobileMenu = false }) => {
         "group relative hover:bg-gray-100/80 transition-all duration-300",
         isPending && "transition-opacity [&:disabled]:opacity-30",
         inMobileMenu
-          ? "h-10 shrink-0 gap-2 rounded-lg border border-gray-100/80 bg-white/90 px-3 capitalize shadow-sm hover:bg-white"
+          ? "h-9 shrink-0 gap-1.5 rounded-xl border border-black/5 bg-[#faf9f7] px-2.5 capitalize hover:bg-black/[0.03]"
           : "hidden md:flex"
       )}
       variant="ghost"
